@@ -1,0 +1,29 @@
+\begin{table*}[ht]
+\caption{The results obtained by DQV and DQV-Max on a subset of 15 \texttt{Atari} games. We can see that our newly introduced algorithms have a comparable, and often even better performance than DQN and DDQN. As highlighted by the green cells the overall best performing algorithm in our set of experiments is DQV-Max while the second-best performing algorithm is DQV (as reported by the yellow cells). Specific attention should be given to the games \texttt{BankHeist} and \texttt{Enduro} where DQV and DQV-Max are the only algorithms which can master the game with a final super-human performance.}
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l|r|r|r|r|r|r}
+\hline
+Environment & Random & Human & DQN \cite{mnih2015human} & DDQN \cite{van2016deep} & DQV & DQV-Max\\
+\hline
+\texttt{Asteroids} &719.10 &13156.70 &\cellcolor{yellow!25}1629.33 &930.60 &1445.40 & \cellcolor{green!25}1846.08\\
+\texttt{Bank Heist} &14.20 & 734.40 & 429.67 & 728.30 & \cellcolor{green!25}1236.50 & \cellcolor{yellow!25}1118.28 \\
+\texttt{Boxing} &0.10 & 4.30 & 71.83 & \cellcolor{green!25}81.70 & 78.66 & \cellcolor{yellow!25}{80.15} \\
+\texttt{Crazy Climber} &10780.50 & 35410.50 & \cellcolor{green!25}114103.33 & 101874.00 & \cellcolor{yellow!25}108600.00 & 1000131.00\\
+\texttt{Enduro} &0.00 & 309.60 & 301.77 & 319.50 & \cellcolor{yellow!25}829.33 & \cellcolor{green!25}875.64 \\
+\texttt{Fishing Derby} &-91.70 & 5.50 & -0.80 & \cellcolor{yellow!25}20.30 & 1.12 & \cellcolor{green!25}20.42  \\
+\texttt{Frostbite} &65.20 & 4334.70 & \cellcolor{green!25}328.33 & 241.50 & 271.86 & \cellcolor{yellow!25}281.36 \\
+\texttt{Gopher} &257.60 & 2321.00 &\cellcolor{green!25}{8520.00} &8215.40 &\cellcolor{yellow!25}{8230.30} &7940.00 \\
+\texttt{Ice Hockey} &-11.20 & 0.90 & \cellcolor{yellow!25}-1.60 & -2.40 & -1.88 & \cellcolor{green!25}-1.12\\
+\texttt{James Bond} &29.00 & 406.70 & \cellcolor{green!25}{576.67} & 438.00 & 372.41 & \cellcolor{yellow!25}{440.80} \\
+\texttt{Montezuma's Revenge} &0.00 & 4366.70 & 0.00 & 0.00 & 0.00 & 0.00\\
+\texttt{Ms.Pacman} &307.30 & 15693.40 & 2311.00 & 3210.00 & \cellcolor{green!25}3590.00 & \cellcolor{yellow!25}3390.00\\
+\texttt{Pong} &-20.70 &9.30 & 18.90 & 21.00 & \cellcolor{yellow!25}21.00 & \cellcolor{green!25}21.00\\
+\texttt{Road Runner} &11.50 &7845.00 &18256.67  &\cellcolor{green!25}48377.00  &\cellcolor{yellow!25}39290.00  & 20700.00\\
+\texttt{Zaxxon} &32.50 &9173.30 &4976.67  &\cellcolor{yellow!25}10182.00  &\cellcolor{green!25}10950.00  & 8487.00\\
+
+\hline
+\end{tabular}%
+}
+\label{tab:results}
+\end{table*}

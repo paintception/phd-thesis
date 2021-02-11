@@ -1,0 +1,107 @@
+%Chapter 1
+
+\chapter{Introduction} % Chapter title
+
+\label{ch:introduction} % For referencing the chapter elsewhere, use \autoref{ch:introduction} 
+
+\section{Preliminaries}
+We formally define the RL setting as a Markov Decision Process (MDP) where the main components are a finite set of states $\mathcal{S}$ $=\{s^{1}, s^{2},...,s^{n}\}$, a finite set of actions $\mathcal{A}$ and a time-counter variable $t$. In each state $s_{t}\in \mathcal{S}$, the RL agent can perform an action $a_{t} \in$ $\mathcal{A}(s_t)$ and transit to the next state as defined by a transition probability distribution $p(s_{t+1} | s_{t}, a_{t})$.
+ When moving from $s_t$ to a successor state $s_{t+1}$ the agent receives a reward signal $r_t$ coming from the reward function $\Re (s_{t}, a_{t}, s_{t+1})$. The actions of the agent are selected based on its policy $\pi:\mathcal{S} \rightarrow \mathcal{A}$ that maps each state to a particular action. For every state $s \in \mathcal{S}$, under policy $\pi$ its \textit{value function} $V^{\pi}$ is defined as:
+\begin{align}
+    V^{\pi}(s)=\mathds{E}\bigg[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k}\bigg| s_t = s, \pi \bigg],
+\end{align}
+which denotes the expected cumulative discounted reward that the agent will get when starting in state $s$ and by following policy $\pi$ thereafter. Similarly, we can also define the \textit{state-action} value function $Q$ for denoting the value of taking action $a$ in state $s$ based on policy $\pi$ as:
+\begin{align}
+    Q^{\pi}(s,a)=\mathds{E}\bigg[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k} \bigg| s_t = s, a_t=a, \pi\bigg].
+\end{align}
+Both functions are computed with respect to the discount factor $\gamma \in [0,1]$ which controls the trade-off between immediate and long term rewards. The goal of an RL agent is to find a policy $\pi^{*}$ that realizes the optimal expected return:
+\begin{align}
+ V^{*}(s)=\underset{\pi}{\max}\:V^{\pi}(s), \ \text{for all} \ s\in\mathcal{S}
+\end{align}
+and the optimal $Q$ value function:
+\begin{align}
+Q^{*}(s,a)= \underset{\pi}{\max}\:Q^{\pi}(s,a) \ \text{for all} \ s\in\mathcal{S} \ \text{and} \ a \in\mathcal{A}.
+\end{align}
+It is well-known that optimal value functions satisfy the Bellman optimality equation as given by
+\begin{align}
+    V^{*}(s_t) = \underset{a}{\max}\sum_{s_{t+1}}p(s_{t+1} | s_{t}, a) \bigg[\Re (s_{t}, a, s_{t+1}) + \gamma V^{*}(s_{t+1}) \bigg]
+\end{align}
+for the state-value function, and by
+\begin{multline}
+    Q^{*}(s_t,a_t)=\sum_{s_{t+1}}p(s_{t+1} | s_{t}, a_{t})  \bigg[\Re (s_{t}, a_{t}, s_{t+1}) + \gamma \: \underset{a}{\max} \: Q^{*}(s_{t+1}, a) \bigg],
+\end{multline}
+for the state-action value function. Both functions can either be learned via Monte Carlo methods or by Temporal-Difference (TD) learning \cite{sutton1988learning}, with the latter approach being so far the most popular choice among model-free RL algorithms \cite{watkins1992q, rummery1994line, hasselt2010double}. %We now present into detail some of the methods that have obtained state of the art performance on one of the most popular DRL benchmarks: the Atari Arcade Learning (ALE) \cite{bellemare2013arcade} environment.
+
+\section{Related Work}
+%While RL algorithms have been successfully combined with shallow neural networks for over two decades \cite{tesauro1994td}, the use of these algorithms with deeper architectures is more recent. 
+The contribution which has established the potential of DRL can certainly be identified with the Deep-Q-Network (DQN), the first algorithm which uses a convolutional neural network for successfully learning an approximation of the $Q$ function from high dimensional inputs \cite{mnih2015human}. This approximation is learned by reshaping the popular Q-Learning algorithm \cite{watkins1992q} to an objective function which can be minimized by gradient descent. The original Q-Learning algorithm learns the state-action value function as follows
+\begin{multline}
+Q(s_{t}, a_{t}) := Q(s_{t}, a_{t}) + \alpha \big[r_{t} + \gamma \max_{a \in \cal A} Q(s_{t+1}, a) - Q(s_{t}, a_{t})\big]
+\label{eq:q_learning}
+\end{multline}
+where $\alpha$ corresponds to the learning rate. The DQN algorithm adapts this update rule to a differentiable loss function which can be used for training a neural network that is parametrized by $\theta$. This objective function comes in the following form: 
+\begin{multline}
+L(\theta) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}) - Q(s_{t}, a_{t}; \theta)\big)^{2}\bigg].
+\label{eq:dqn}
+\end{multline}
+Within this loss there are two components which ensure stable training. The first one is the Experience-Replay memory buffer ($D$), a buffer coming in the form of a queue which stores RL experiences $\langle s_{t},a_{t},r_{t},s_{t+1}\rangle$. When it comes to the popular Atari Arcade Learning (ALE) \cite{bellemare2013arcade} benchmark, the DQN algorithm uniformly samples mini-batches of 32 experiences for minimizing Eq. \ref{eq:dqn}, a procedure which starts as soon as at least 50.000 experiences are stored within the queue.
+Furthermore, there is a second component which ensures stable training denoted as the target-network. DQN learns an approximation of the $Q$ function via TD-Learning, meaning that the approximated Q-function is regressed towards TD-targets which are computed by the approximated $Q$ function itself. The TD-target, defined as $y^{DQN}_{t}$, is expressed as follows:
+\begin{equation}
+    y^{DQN}_{t} = r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}), 
+\label{eq:dqn_td}
+\end{equation}{}
+and is computed by the target network $\theta^{-}$ instead from the online Q-network $\theta$. 
+The online network, and its target counterpart, have the exact same structure, with the main difference being that the parameters of the latter do not get optimized each time a mini-batch of experiences is sampled from the memory buffer. On the contrary its weights are temporally frozen and are only periodically updated with the $\theta$ weights (as defined by an appropriate hyperparameter). Given a training iteration $i$, differentiating the objective function of Eq. \ref{eq:dqn} with respect to $\theta$ gives the following gradient: 
+\begin{multline}
+\nabla_{\theta_{i}}y^{DQN}_{t}(\theta_{i}) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}_{i-1}) \\ - Q(s_{t}, a_{t}; \theta_{i})\big)\nabla_{\theta_{i}} Q(s_{t}, a_{t}; \theta_{i})\bigg].
+\label{eq:dqn_gradient}
+\end{multline}
+Despite yielding super-human performance on most games coming from the ALE, DQN has shown to be suffering from the same issues which characterize the Q-Learning algorithm \cite{hasselt2010double}. Among these issues we mention the overestimation bias of the Q-function \cite{hasselt2010double}.
+In short, DQN is prone to learn overestimated Q-values because the same values are used both for selecting an action ($\underset{a\in \mathcal{A}}{\max}$) and for evaluating it ($Q(s_{t+1},a;\theta^{-})$). As originally presented in \cite{van2016deep} this becomes clearer when re-writing Eq. \ref{eq:dqn_td} as:
+\begin{equation}
+    y^{DQN}_{t} = r_{t} + \gamma \: Q(s_{t+1}, \underset{a\in \mathcal{A}}{\argmax}\: Q(s_{t+1}, a; \theta); \theta^{-}). 
+\end{equation}{}
+
+As a result, DQN tends to approximate the expected maximum value of a state, instead of its maximum expected value. To solve this problem the DDQN algorithm untangles the selection of an action from its evaluation by taking advantage of the target network $\theta^{-}$. DDQN's target is the same as DQN's with the main difference being that the selection of an action, given by the online Q-network $\theta$, and the evaluation of the resulting policy, given by $\theta^{-}$, can get unbiased by symmetrically updating the two sets of weights ($\theta$ and $\theta^{-}$). This can be achieved by regularly switching their roles during training.
+
+Several extensions of DQN and DDQN have been proposed over the years, to make these algorithms learn faster and more data-efficient. We refer the reader to \cite{li2017deep} for a more in-depth review of these contributions. Within this paper, we are only interested in synchronous DRL algorithms which learn an approximation of a value function. This is achieved by following the same experimental setups that have been used for DQN and DDQN, and that will be reviewed in Sec. \ref{sec:global_evaluation} of this paper. Therefore, in this contribution, we will aim at comparing our novel DRL algorithms to DQN and DDQN only, while leaving their potential integration within more sophisticated DRL techniques as future work.
+
+\section{DQV and DQV-Max Learning}
+\label{sec:dqv_family}
+
+Just as much as DQN and DDQN are based on two tabular RL algorithms, so are the main contributions presented in this work. More specifically we extend two RL algorithms which were introduced in \cite{wiering2005qv} and \cite{wiering2009qv} to the use of deep neural networks that serve as function approximators. Training these algorithms robustly is done by taking advantage of some of the techniques which have been reviewed in the previous section.
+
+\subsection{DQV-Learning}
+Our first contribution is the Deep Quality-Value (DQV) Learning algorithm, a novel DRL algorithm which aims at jointly approximating the $V$ function alongside the $Q$ function in an \textit{on-policy} learning setting. This algorithm is based on the QV($\lambda$) algorithm \cite{wiering2005qv}, a tabular RL algorithm which learns the $V$ function via the simplest form of TD-Learning \cite{sutton1988learning}, and uses the estimates that are learned by this value function to update the $Q$ function in a Q-Learning resembling way. We take inspiration from this specific learning dynamic and aim at learning an approximation of both the $V$ function, and the $Q$ function, with two neural networks that are respectively parametrized by $\Phi$ and $\theta$. The objective function which is used by DQV for learning the state-value function is given by the following equation:
+\begin{multline}
+L(\Phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \Phi^{-}) - V(s_{t}; \Phi)\big)^{2}\bigg],
+\label{eq:dqv_v_update}
+\end{multline}
+while the following loss is minimized for learning the $Q$ function:
+\begin{multline}
+    L(\theta) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \Phi^{-}) - Q(s_{t}, a_{t}; \theta)\big)^{2}\bigg],
+\label{eq:dqv_q_update}
+\end{multline}
+where $D$ is again the Experience-Replay memory buffer, used for uniformly sampling batches of RL trajectories $\langle s_{t},a_{t},r_{t},s_{t+1}\rangle$, and $\Phi^{-}$ is the target-network used for the construction of the TD-errors. Please note that the role of this target network is different from its role within the DQN algorithm. In DQV this network corresponds to a copy of the network which approximates the state-value function and not the state-action value function. It is also worth noting that both networks learn from the same TD-target which comes in the following form:
+\begin{equation}
+y_{t}^{DQV} = r_{t} + \gamma V(s_{t+1}; \Phi^{-}). 
+\end{equation}
+The gradient with respect to both loss functions can be easily expressed similarly as done in Eq. \ref{eq:dqn_gradient} for the DQN algorithm.
+
+\subsection{DQV-Max Learning}
+Our second contribution is the Deep Quality-Value-Max algorithm, a novel DRL algorithm which reshapes some of the ideas that characterize DQV. Similarly as done for DQV, we still aim at jointly learning an approximation of the $V$ function and the $Q$ function, but in this case, the goal is to do this with an \textit{off-policy} learning scheme. To construct this algorithm we take inspiration from the QV-Max RL algorithm introduced in \cite{wiering2009qv}. The key component of QV-Max is the use of the $\underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a)$ operator, which makes RL algorithms learn \textit{off-policy}. We use this operator when approximating the $V$ function and for computing TD-errors which correspond to the ones that are also used by the DQN algorithm. However, within DQV-Max, these TD-errors are used by the state-value network and not by the state-action value network. This results in the following loss which is used for learning the $V$ function:
+\begin{multline}
+L(\Phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}) - V(s_{t}; \Phi)\big)^{2}\bigg].
+\label{eq:dqv_max_v}
+\end{multline}
+In this case the target network $\theta^{-}$ corresponds to the same target network that is used by DQN. The TD-error $r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-})$ is however only used for learning the $V$ function. When it comes to the $Q$ function we use the same update rule that is presented in Eq. \ref{eq:dqv_q_update} with the only difference being that in this case no $\Phi^{-}$ target network is used. Despite requiring the computation of two different targets for learning, we noticed that DQV-Max did not benefit from using two distinct target networks, therefore its loss function for approximating the $Q$ function is simply:
+\begin{multline}
+    L(\theta) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \Phi) - Q(s_{t}, a_{t}; \theta)\big)^{2}\bigg].
+    \label{eq:dqv_max_q}
+\end{multline}
+
+The pseudocode of both DQV and DQV-Max is presented at the end of this paper in Algorithm \ref{alg: dqv_algorithms}. The pseudocode is an adaptation of a standard DRL training loop which corresponds to what is usually presented within the literature \cite{mnih2015human}. We just make explicit use of the hyperparameters \texttt{total\_a} and \texttt{c} which ensure that enough actions have been performed by the agent before updating the weights of the target network. We also ensure via the hyperparameter \texttt{total\_e}, that enough episodes are stored within the memory buffer (which has capacity $\mathcal{N}$) before starting to optimize the neural networks. 
+
+%----------------------------------------------------------------------------------------
+\section{Table}
+\input{Tables/example_table.tex}
