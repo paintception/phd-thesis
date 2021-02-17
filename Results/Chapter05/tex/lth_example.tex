@@ -1,4 +1,4 @@
-\begin{figure}[ht]
+\begin{figure}[ht!]
   \centering
   \begin{tikzpicture}[scale = 0.5]
 
@@ -27,7 +27,7 @@
 ]
 
 	\addlegendentry{Baseline}
-	\addlegendentry{Winning Ticket $f(x;m\odot\theta_k)$}
+	\addlegendentry{Winning Ticket $f(x;m\odot\theta_0)$}
 	\addlegendentry{Random Ticket $f(x;m\odot\theta_r)$}
 
 \addplot [thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter05/logs/mnist_example.txt};
@@ -73,6 +73,6 @@
     \end{tikzpicture}
 
 
-   \caption{}
+    \caption{A visual representation of the performance of lottery winners that replicate the findings first presented by \citet{frankle2018lottery}. In the first plot we consider a multilayer perceptron that gets trained on the MNIST dataset. After the network gets trained from scratch it obtains a final accuracy of $\approx 97\%$ as reported by the black line. We can observe that winning tickets $f(x;m\odot\theta_0)$ only start performing worse than the network they have been extracted from once a large fraction of their weights gets pruned. We can also observe how crucial it is to re-initialize the weights of the pruned models with the same weights that were used when initializing the unpruned model from scratch ($\theta_0$). If random weights are used instead ($\theta_r$), the pruned masks appear to be less robust to pruning (orange curve). In the second plot we show how important it is for a pruned model to come in the form of $f(x;\odot\theta_k)$ after training a ResNet-50 architecture on the CIFAR-10 dataset, since we show that it is not possible to simply extract any random subset of weights from a deep convolutional network and obtain a performance that is robust to pruning after randomly initializing the parameters of the model (red curve).}
     \label{fig:original_lth_results}
 \end{figure} 
