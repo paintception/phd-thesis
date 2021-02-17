@@ -1,0 +1,97 @@
+\begin{figure}[ht!]
+\centering
+	\begin{tikzpicture}[scale = 0.45]
+
+\begin{axis}[
+	name=ax1,
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Fraction of Weights Pruned,
+  	ylabel= Accuracy ($\%$),
+	title=Artist Classification 1,
+	%width=1,
+	xtick=data,
+	label style={font=\scriptsize},
+	xticklabels = {0.0,0.2,0.36,0.488,0.59,0.672,0.738,0.79,0.832,0.866,0.893,0.914,0.931,0.945,0.956,0.965,0.972,0.977,0.982,0.986,0.988,0.991,0.993,0.994,0.995,0.996,0.997,0.998,0.998,0.998,0.999},
+	x=4.5mm,
+	ymin=0,
+    	ymax=90,
+	scale only axis,
+	xticklabel style={rotate=90},
+        %log ticks with fixed point,
+        scaled ticks=true,
+	/pgf/number format/fixed,
+        %log ticks with fixed point,
+  	legend pos= north east,
+	%legend style={font=\small, at={(-0.8,-0.2,-0.2)},anchor=north west, legend columns = 1}
+	]
+
+	\addlegendentry{Baseline}
+	\addlegendentry{Winning Ticket $f(x;m\odot\theta_k)$}
+	\addlegendentry{CIFAR-10}
+	\addlegendentry{CIFAR-100}
+	\addlegendentry{Fashion-MNIST}
+	\addlegendentry{Related Ticket}
+
+
+\addplot [thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter05/logs/from_lba_to_lba.txt};
+\addplot [thick, blue, mark=x] table [x expr=\coordindex, y=winning_ticket]{./Results/Chapter05/logs/from_lba_to_lba.txt};
+\addplot [thick, green, mark=x] table [x expr=\coordindex, y=cifar10]{./Results/Chapter05/logs/from_lba_to_lba.txt};
+\addplot [thick, red, mark=x] table [x expr=\coordindex, y=cifar100]{./Results/Chapter05/logs/from_lba_to_lba.txt};
+\addplot [thick, purple, mark=x] table [x expr=\coordindex, y=fahion_mnist]{./Results/Chapter05/logs/from_lba_to_lba.txt};
+\addplot [thick, cyan, mark=x] table [x expr=\coordindex, y=similar_source]{./Results/Chapter05/logs/from_lba_to_lba.txt};
+
+
+\legend{}
+\end{axis}
+\begin{axis}[
+	at={(ax1.south east)},
+	xshift=2cm,
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Fraction of Weights Pruned,
+  	ylabel= Accuracy ($\%$),
+	title=Type Classification,
+	%width=1,
+	xtick=data,
+	label style={font=\scriptsize},
+	xticklabels = {0.0,0.2,0.36,0.488,0.59,0.672,0.738,0.79,0.832,0.866,0.893,0.914,0.931,0.945,0.956,0.965,0.972,0.977,0.982,0.986,0.988,0.991,0.993,0.994,0.995,0.996,0.997,0.998,0.998,0.998,0.999},
+	x=4.5mm,
+	ymin=0,
+    	ymax=80,
+	scale only axis,
+	xticklabel style={rotate=90},
+        %log ticks with fixed point,
+        scaled ticks=true,
+	/pgf/number format/fixed,
+        %log ticks with fixed point,
+  	legend p= north east,
+	legend style={font=\Large, at={(-0.8,-0.2,-0.2)},anchor=north west, legend columns = 2}
+	]
+	
+	\addlegendentry{Baseline}
+	\addlegendentry{Winning Ticket $f(x;m\odot\theta_k)$}
+	\addlegendentry{CIFAR-10}
+	\addlegendentry{CIFAR-100}
+	\addlegendentry{Fashion-MNIST}
+	\addlegendentry{Related Ticket}
+
+
+	\addplot [thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter05/logs/from_artist_to_artist.txt};
+	\addplot [thick, blue, mark=x] table [x expr=\coordindex, y=winning_ticket]{./Results/Chapter05/logs/from_artist_to_artist.txt};	
+	\addplot [thick, green, mark=x] table [x expr=\coordindex, y=cifar10]{./Results/Chapter05/logs/from_artist_to_artist.txt};
+	\addplot [thick, red, mark=x] table [x expr=\coordindex, y=cifar100]{./Results/Chapter05/logs/from_artist_to_artist.txt};
+	\addplot [thick, purple, mark=x] table [x expr=\coordindex, y=fahion_mnist]{./Results/Chapter05/logs/from_artist_to_artist.txt};
+	\addplot [thick, cyan, mark=x] table [x expr=\coordindex, y=similar_source]{./Results/Chapter05/logs/from_artist_to_artist.txt};
+
+\end{axis} 
+
+
+    \end{tikzpicture}
+
+
+    \caption{}
+    \label{fig:from_similar_source_transfer}
+\end{figure} 
