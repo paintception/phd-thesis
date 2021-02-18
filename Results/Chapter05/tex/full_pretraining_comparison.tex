@@ -9,7 +9,7 @@
 	tick style=black,
   	xlabel=Fraction of Weights Pruned,
   	ylabel= Accuracy ($\%$),
-	title=Artist Classification 1,
+	title=Human-LBA,
 	%width=1,
 	xtick=data,
 	label style={font=\scriptsize},
@@ -46,7 +46,7 @@
 	tick style=black,
   	xlabel=Fraction of Weights Pruned,
   	ylabel= Accuracy ($\%$),
-	title=Type Classification,
+	title=Human-LBA,
 	%width=1,
 	xtick=data,
 	label style={font=\scriptsize},
@@ -78,6 +78,6 @@
     \end{tikzpicture}
 
 
-    \caption{}
+    \caption{Our results showing the advantages of transferring lottery winners over pruned models that are fully fine-tuned on natural datasets (CIFAR-10/100). We can observe that their performance is overall inferior to the one of lottery tickets and that these models are significantly less robust to pruning. We believe that the reason behind their poor performance revolves around the fact that, once completely trained on a specific source task, and after having gone through the pruning stage, these models lose the necessary flexibility that is required for them to adapt to a new task.}
     \label{fig:full_fine_tuning_comparison}
 \end{figure} 

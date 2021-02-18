@@ -9,7 +9,7 @@
 	tick style=black,
   	xlabel=Fraction of Weights Pruned,
   	ylabel= Accuracy ($\%$),
-	title=Artist Classification 1,
+	title=Lung-Tissues,
 	%width=1,
 	xtick=data,
 	label style={font=\scriptsize},
@@ -50,7 +50,7 @@
 	tick style=black,
   	xlabel=Fraction of Weights Pruned,
   	ylabel= Accuracy ($\%$),
-	title=Type Classification,
+	title=Human-LBA,
 	%width=1,
 	xtick=data,
 	label style={font=\scriptsize},
@@ -88,6 +88,6 @@
     \end{tikzpicture}
 
 
-    \caption{}
+    \caption{Our study showing that the robustness to large pruning rates of lottery winners does not depend from the size of the training dataset. We can observe that even when lottery tickets after are trained on only $25\%$ of the dataset their performance remains stable with respect to the fraction of pruned weights. These results suggest that the less stable performance of \texttt{Bone-Marrow} lottery tickets observed in Fig. \ref{fig:tl_learning_with_lottery_tickets_results} does not depend from the small training set.}
     \label{fig:training_data_study}
 \end{figure} 
