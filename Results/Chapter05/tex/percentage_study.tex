@@ -7,7 +7,8 @@
 	grid style={dashed,gray},
 	grid = both, 
 	tick style=black,
-  	xlabel=Fraction of Weights Pruned,
+  	x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+	xlabel=Fraction of Weights Pruned,
   	ylabel= Accuracy ($\%$),
 	title=Lung-Tissues,
 	%width=1,
@@ -48,6 +49,8 @@
 	grid style={dashed,gray},
 	grid = both, 
 	tick style=black,
+	x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+	y label style={font=\Large},
   	xlabel=Fraction of Weights Pruned,
   	ylabel= Accuracy ($\%$),
 	title=Human-LBA,
@@ -65,7 +68,7 @@
 	/pgf/number format/fixed,
         %log ticks with fixed point,
   	legend p= north east,
-	legend style={font=\Large, at={(-0.8,-0.2,-0.2)},anchor=north west, legend columns = 3}
+	legend style={font=\Large, at={(-0.8,-0.35,-0.2)},anchor=north west, legend columns = 3}
 	]
 	
 	\addlegendentry{Baseline}
