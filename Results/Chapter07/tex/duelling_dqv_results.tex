@@ -38,7 +38,7 @@
         xlabel=Episodes,
         ylabel= Reward,
 	legend columns=4, 
-        legend style={font=\Large, at={(-0.65,-0.3,-0.4)},anchor=north west,legend columns=4},
+        legend style={font=\Large, at={(-1.4,-0.3,-0.4)},anchor=north west,legend columns=4},
       ]
 
       \addlegendentry{DQV}
@@ -46,11 +46,10 @@
       \addlegendentry{Duelling-DQV-2nd}
       \addlegendentry{Duelling-DQV-3rd}
 
-      {./Results/Chapter07/logs/duelling_enduro_results.txt};
       \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
       {./Results/Chapter07/logs/duelling_enduro_results.txt};
       \addplot [ultra thick, green, mark=.] table [y=Duelling-DQV-1st, x=episodes]{./Results/Chapter07/logs/duelling_enduro_results.txt}; 
-      \addplot [ultra thick, purple, mark=.] table [y=Duelling-DQV-2nd, x=episodes]{./Results/Chapter07/logs/duelling_pong_results.txt};
+      \addplot [ultra thick, purple, mark=.] table [y=Duelling-DQV-2nd, x=episodes]{./Results/Chapter07/logs/duelling_enduro_results.txt};
       \addplot [ultra thick, cyan, mark=.] table [y=Duelling-DQV-3rd, x=episodes]{./Results/Chapter07/logs/duelling_enduro_results.txt};
      
  
