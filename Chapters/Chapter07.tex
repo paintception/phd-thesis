@@ -111,6 +111,7 @@ y_{t}^{DQV} = r_{t} + \gamma V(s_{t+1}; \Phi^{-}).
 \end{equation}
 The gradient with respect to both loss functions can be easily expressed similarly as done in Eq. \ref{eq:dqn_gradient} for the DQN algorithm.
 
+\subsection{DQV-Learning with Multilayer Perceptrons}
 \input{./Results/Chapter07/tex/dqv_mlp_results.tex}
 
 \subsection{DQV-Max Learning}
@@ -127,6 +128,8 @@ In this case the target network $\theta^{-}$ corresponds to the same target netw
 
 The pseudocode of both DQV and DQV-Max is presented at the end of this paper in Algorithm \ref{alg: dqv_algorithms}. The pseudocode is an adaptation of a standard DRL training loop which corresponds to what is usually presented within the literature \cite{mnih2015human}. We just make explicit use of the hyperparameters \texttt{total\_a} and \texttt{c} which ensure that enough actions have been performed by the agent before updating the weights of the target network. We also ensure via the hyperparameter \texttt{total\_e}, that enough episodes are stored within the memory buffer (which has capacity $\mathcal{N}$) before starting to optimize the neural networks. 
 
+\section{Results}
+\label{sec:results}
 
 \subsection{Global Evaluation}
 \label{sec:global_evaluation}
@@ -144,7 +147,7 @@ While DRL algorithms have certainly obtained impressive results on the \texttt{A
 
 We use two self-implemented versions of DQN and DDQN for comparing the convergence time that is required during training by all the tested algorithms on three increasingly complex \texttt{Atari} games: \texttt{Boxing, Pong} and \texttt{Enduro}. Our results, reported in Fig. \ref{fig:convergence}, show that DQV and DQV-Max converge significantly faster than DQN and DDQN, and highlight the benefits of jointly approximating two value functions instead of one when it comes to the overall convergence time that is required by the algorithms. Even though, as presented in Table \ref{tab:results}, DQV and DQV-Max do not always significantly outperform DQN and DDQN in terms of the final cumulative reward which is obtained, it is worth noting that these algorithms require significantly less training episodes to converge on all tested games. This benefit makes our two novel algorithms faster alternatives within model-free DRL.
 
-% add convergence time results
+\input{./Results/Chapter07/tex/dqv_family_cnn_convergence_results.tex}
 
 \subsection{Quality of the Learned Value Functions}
 \label{sec:quality_of_value_functions}
@@ -174,6 +177,11 @@ The studied DQV's extensions are the following:
 \end{enumerate}
 
 The results obtained by these alternative versions of DQV are presented in Fig. \ref{fig:additional_studies} where we report the learning curves obtained by the tested algorithms on six different \texttt{Atari} games. Each DQV extension is directly compared to the original DQV algorithm. We can observe that all the extensions of DQV, which aim at reducing the number of trainable parameters of the algorithm, fail in performing as well as the original DQV algorithm. We can observe that \textit{Hard-DQV} does not only yield significantly lower rewards (see the results obtained on \texttt{Boxing}) but also presents extremely unstable training (as highlighted by the results obtained on the \texttt{Pong} environment). Lower rewards and unstable training also characterize the \textit{Tiny-DQV} algorithm (see results on \texttt{BankHeist} and \texttt{CrazyClimber}). Overall the most promising extensions of DQV are its \textit{Dueling} counterparts, we have observed in particular that the best performing architecture over most of our experiments was the \textit{Dueling-DQV-3rd} one. As can be seen by the results obtained on the \texttt{Pong} environment we can observe that \textit{Dueling-DQV-3rd} has comparable performance to DQV, even though it converges slower. Unfortunately, \textit{Dueling-DQV-3rd} still shows some limitations, in particular when tested on more complicated environments such as \texttt{Enduro}, we can observe that it under-performs DQV with $\approx$ 200 points. It is also worth mentioning that the idea of approximating the $V$ function before the $Q$ function explored by \textit{Dueling-DQV-1st} and \textit{Dueling-DQV-2nd} yielded negative results.
+
+\input{./Results/Chapter07/tex/hard_dqv_results.tex}
+%\input{./Results/Chapter07/tex/duelling_dqv_results.tex}
+\input{./Results/Chapter07/tex/tiny_dqv_results.tex}
+
 
 
 \section{Discussion and Conclusion}
