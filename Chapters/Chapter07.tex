@@ -111,6 +111,8 @@ y_{t}^{DQV} = r_{t} + \gamma V(s_{t+1}; \Phi^{-}).
 \end{equation}
 The gradient with respect to both loss functions can be easily expressed similarly as done in Eq. \ref{eq:dqn_gradient} for the DQN algorithm.
 
+\input{./Results/Chapter07/tex/dqv_mlp_results.tex}
+
 \subsection{DQV-Max Learning}
 Our second contribution is the Deep Quality-Value-Max algorithm, a novel DRL algorithm which reshapes some of the ideas that characterize DQV. Similarly as done for DQV, we still aim at jointly learning an approximation of the $V$ function and the $Q$ function, but in this case, the goal is to do this with an \textit{off-policy} learning scheme. To construct this algorithm we take inspiration from the QV-Max RL algorithm introduced in \cite{wiering2009qv}. The key component of QV-Max is the use of the $\underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a)$ operator, which makes RL algorithms learn \textit{off-policy}. We use this operator when approximating the $V$ function and for computing TD-errors which correspond to the ones that are also used by the DQN algorithm. However, within DQV-Max, these TD-errors are used by the state-value network and not by the state-action value network. This results in the following loss which is used for learning the $V$ function:
 \begin{multline}
