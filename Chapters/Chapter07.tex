@@ -162,7 +162,10 @@ It is well-known that the combination of RL algorithms with function approximato
 \citet{van2018deep} have shown that the \textit{`Deadly Triad'} is responsible for enhancing one of the most popular biases that characterize the Q-Learning algorithm: the overestimation bias of the $Q$ function \cite{hasselt2010double}. It is therefore natural to study how DQV and DQV-Max relate to the \textit{`Deadly Triad'} of DRL, and to investigate up to what extent these algorithms suffer from the overestimation bias of the $Q$ function. To do this we monitor the estimates that are given by the network that is responsible for approximating the $Q$ function. More specifically, at training time, we compute the averaged $\underset{a \in \cal A}{\max}\:Q(s_{t+1}, a)$ over a set ($n$) of full evaluation episodes as defined by $\frac{1}{n}\sum_{t=1}^{n}\underset{a \in \cal A}{\max}\:Q(s_{t+1}, a;\theta).$ As suggested in \cite{van2016deep} these estimates can then be compared to the averaged discounted return of all visited states that comes from an agent that has already concluded training. By analyzing whether the $Q$ values which are estimated while training differ from the ones which should be predicted by the end of it, it is possible to quantitatively characterize the level of divergence of DRL algorithms. We report our results in Fig. \ref{fig:over_estimations}, where the full lines correspond to the value estimates that come from each algorithm at training time, while the dashed lines correspond to the actual averaged discounted return that is given by an already trained agent.
 
 % add overestimation bias results
-\input{./Results/Chapter07/tex/pong_overestimation.tex}
+\input{./Results/Chapter07/tex/dqn_overestimation.tex}
+\input{./Results/Chapter07/tex/ddqn_overestimation.tex}
+\input{./Results/Chapter07/tex/dqv_overestimation.tex}
+\input{./Results/Chapter07/tex/dqv_max_overestimation.tex}
 
 
 \section{Additional Studies}
