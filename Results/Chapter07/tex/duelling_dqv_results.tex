@@ -12,9 +12,9 @@
 
 
       \addlegendentry{DQV}
-      \addlegendentry{Duelling-DQV-1st}
-      \addlegendentry{Duelling-DQV-2nd}
-      \addlegendentry{Duelling-DQV-3rd}
+      \addlegendentry{Dueling-DQV-1st}
+      \addlegendentry{Dueling-DQV-2nd}
+      \addlegendentry{Dueling-DQV-3rd}
 
       \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
       {./Results/Chapter07/logs/duelling_pong_results.txt};
@@ -42,9 +42,9 @@
       ]
 
       \addlegendentry{DQV}
-      \addlegendentry{Duelling-DQV-1st}
-      \addlegendentry{Duelling-DQV-2nd}
-      \addlegendentry{Duelling-DQV-3rd}
+      \addlegendentry{Dueling-DQV-1st}
+      \addlegendentry{Dueling-DQV-2nd}
+      \addlegendentry{Dueling-DQV-3rd}
 
       \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
       {./Results/Chapter07/logs/duelling_enduro_results.txt};
@@ -55,7 +55,7 @@
  
       \end{axis}
 	\end{tikzpicture}
-	\caption{}
+	\caption{Our extensions of DQV that aim to reduce the amount of trainable parameters of the algorithm by following an approach similar to the one presented by \citet{wang2016dueling} when ``Dueling Networks" for DRL have been introduced. We can observe that among all the three Dueling-DQV extensions, only the Dueling-DQV-3rd one yielded good performance, but as highlighted by the results obtained on the \texttt{Enduro} environment, its performance is still inferior when compared to the one of the original DQV algorithm.}
 	\label{fig:duelling_dqv_results} 
 \end{figure}
 
