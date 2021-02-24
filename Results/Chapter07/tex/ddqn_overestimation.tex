@@ -45,7 +45,7 @@
  
       \end{axis}
 	\end{tikzpicture}
-	\caption{}
+	\caption{Results investigating the extent to which the DDQN algorithm suffers from the overestimation bias of the $Q$ function. We can observe that compared to the analysis presented in Fig. \ref{fig:overestimation_bias_results_dqn}, the DDQN algorithm prevents its Q-Network from diverging since on both \texttt{Atari} environments the $\underset{a \in \cal A}{\max}\:Q(s_{t+1}, a)$ estimates do not diverge from the observed real return of a trained agent. Results that replicate the findings reported by \citet{van2018deep}.}
 	\label{fig:overestimation_bias_results_ddqn} 
 \end{figure}
 

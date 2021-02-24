@@ -44,7 +44,7 @@
  
       \end{axis}
 	\end{tikzpicture}
-	\caption{}
-	\label{fig:overestimation_bias_results} 
+	\caption{Results investigating the extent to which the DQN algorithm suffers from the overestimation bias of the $Q$ function. We can observe that on the \texttt{Pong} environment during the early stages of training, the $\underset{a \in \cal A}{\max}\:Q(s_{t+1}, a)$ estimates quickly grow, while on the \texttt{Enduro} game the values estimated by the $Q$ network keep indefinitely growing, therefore making the algorithm significantly diverge from the real return that is obtained by a trained agent.}
+	\label{fig:overestimation_bias_results_dqn} 
 \end{figure}
 

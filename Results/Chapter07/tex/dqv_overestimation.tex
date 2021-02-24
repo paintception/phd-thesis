@@ -44,7 +44,7 @@
  
       \end{axis}
 	\end{tikzpicture}
-	\caption{}
-	\label{fig:overestimation_bias_results_ddqn} 
+	\caption{Results investigating the extent to which the DQV algorithm suffers from the overestimation bias of the $Q$ function. We can observe that the performance of the algorithm is similar to the one observed in Fig. \ref{fig:overestimation_bias_results_ddqn} for the DDQN algorithm. On both environments the estimated cumulative reward does not diverge from the real return that is obtained by the end of training, therefore suggesting that DQV-Learning does not suffer from the overestimation bias of the $Q$ function. It is also worth noting the difference between the real return obtained by the DQN and the DDQN algorithms on the \texttt{Enduro} environment, and the one obtained by DQV. As can be seen by the black line, the real return obtained by a DQV agent is higher than DQN and DDQN's one, a result which shows that DQV converges to a better policy than DQN and DDQN.}
+	\label{fig:overestimation_bias_results_dqv} 
 \end{figure}
 

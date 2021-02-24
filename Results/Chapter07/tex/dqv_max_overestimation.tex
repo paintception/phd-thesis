@@ -44,7 +44,7 @@
  
       \end{axis}
 	\end{tikzpicture}
-	\caption{}
-	\label{fig:overestimation_bias_results_ddqn} 
+	\caption{Results investigating the extent to which the DQV-Max algorithm suffers from the overestimation bias of the $Q$ function. We can observe that on the \texttt{Pong} environment the value estimates of the algorithm are comparable to the ones of DDQN and DQV, therefore showing the DQV-Max also diverges significantly less than DQN. On the \texttt{Enduro} environment we can observe that the algorithm does diverge, although, differently from what is reported in Fig. \ref{fig:overestimation_bias_results_dqn}, the $\underset{a \in \cal A}{\max}\:Q(s_{t+1}, a)$ estimates seem to converge towards an upper bound ($\approx 15$). Similarly to what is reported in Fig.\ref{fig:overestimation_bias_results_dqv} we can again observe that the real return obtained by a trained agent is higher compared to the one obtain by DQN, DDQN and DQV, therefore confirming the results presented in Table \ref{tab:ch07_results} which see the DQV-Max algorithm as the best performing algorithm on the \texttt{Enduro} game.}
+	\label{fig:overestimation_bias_results_dqv_max} 
 \end{figure}
 
