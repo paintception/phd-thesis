@@ -5,17 +5,22 @@
 
 
 \begin{remark}{Contributions and Outline}
-	In the first part of this thesis we have thoroughly studied the level of transferability of deep neural networks that get trained in a supervised learning fashion. From the results of our studies we concluded that significant benefits can come from using pre-trained models over networks that get trained from scratch, and that transfer learning can be a valuable machine learning paradigm for studying the generalization properties of neural networks. So far we have always considered the setting in which, before getting trained on a new task, a model could rely on some \textbf{fixed} knowledge it had learned on a separate but related task. In this chapter however, we take a different approach: we develop a novel family of Deep Reinforcement Learning (DRL) algorithms, that instead of learning on top of on what a model has learned in the past, rely on what is \textbf{simultaneously} being learned by a different, yet related model. The information that is being learned by one model can be transferred and used by a second one in a very dynamical fashion, which within the DRL context yields faster, more robust and better performance.        
-	
+	In the first part of this thesis we have thoroughly studied the level of transferability of deep neural networks that get trained in a supervised learning fashion. From the results of our studies we concluded that significant benefits can come from using pre-trained models over networks that get trained from scratch, and that transfer learning can be a valuable machine learning paradigm for studying the generalization properties of neural networks. So far we have always considered the setting in which, before getting trained on a new task, a model could rely on some \textbf{fixed} knowledge it had learned on a separate but related task. In this chapter however, we take a different approach: we develop a novel family of Deep Reinforcement Learning (DRL) algorithms, that instead of learning on top of on what a model has learned in the past, rely on what is \textbf{simultaneously} being learned by a different, yet related model. The information that is being learned by one model can be transferred and used by a second one in a very dynamical fashion, which within the DRL context yields faster, more robust and better performance. 
+
+	The structure of this chapter is the following: in Sec. \ref{sec:ijcnn_introduction} and Sec. \ref{sec:ijcnn_preliminaries} we provide the reader with some background information about the field of DRL and present the necessary mathematical notation that will be used throughout this chapter. In Sec. \ref{sec:dqv_family} we introduce the main algorithmic contributions of our research, the performance of which is studied from different perspectives in Sec. \ref{sec:ijcnn_results}. The chapter ends with Sec. \ref{sec:ijcnn_additional_studies} and Sec. \ref{sec:ijcnn_discussion} which provide a set of additional studies that characterize the performance of our newly introduced algorithms even further, while providing insights about potential possible future work. 
 \vspace{5mm}
 
 This chapter is based on the following two publications: \citet{sabatelli2018deepqv} and \citet{sabatelli2020deep}
 \end{remark}
 
-\section{Introduction}               
+\section{Introduction}
+\label{sec:ijcnn_introduction}
+
 In value-based Reinforcement Learning (RL) the aim is to construct algorithms which learn \textit{value functions} that are either able to estimate how good or bad it is for an agent to be in a particular state, or how good it is for an agent to perform a particular action in a given state. Such functions are respectively denoted as the state-value function $V(s)$, and the state-action value function $Q(s,a)$ \cite{sutton2018reinforcement}. In Deep Reinforcement Learning (DRL) the aim is to approximate these value functions with e.g. deep convolutional neural networks \cite{lecun2015deep}, which can serve as universal function approximators and powerful feature extractors. Classic model-free RL algorithms like Q-Learning \cite{watkins1992q}, Double Q-Learning \cite{hasselt2010double} and SARSA \cite{rummery1994line} have all led to the development of a ``deep" version of themselves in which the original RL update rules are expressed as objective functions that can be minimized by gradient descent \cite{mnih2015human, van2016deep, zhao2016deep}. Despite their successful applications \cite{li2017deep}, the aforementioned algorithms only aim at approximating the $Q$ function, while completely ignoring the $V$ function. This approach, however, is prone to issues that go back to standard RL literature. As shown by \citet{van2016deep} the DQN algorithm \cite{mnih2015human} is known to overestimate the values of the $Q$ function and requires an additional target network to not diverge (which role, as shown by \citet{achiam2019towards}, is not yet fully understood). These overestimations can partially be corrected by the DDQN \cite{van2016deep} algorithm, which, despite yielding stability improvements, does not always prevent its $Q$ networks from diverging \cite{van2018deep} and sometimes even underestimating the $Q$ function. Furthermore, DRL algorithms are also extremely slow to train. In what follows, we introduce a new family of DRL algorithms based on the key idea of simultaneously learning the $V$ function alongside the $Q$ function with two separate neural networks. Our main insight is that by jointly approximating the $V$ function and the $Q$ function, the task of learning one of these value functions can be sped up if the model that is responsible for learning it, can rely on what is being learned by the model responsible for learning the remaining value function. We show that this simple, yet effective idea yields faster, more robust and better model-free Deep Reinforcement Learning.
 
 \section{Preliminaries}
+\label{sec:ijcnn_preliminaries}
+
 We formally define the RL setting as a Markov Decision Process (MDP) where the main components are a finite set of states $\mathcal{S}$ $=\{s^{1}, s^{2},...,s^{n}\}$, a finite set of actions $\mathcal{A}$ and a time-counter variable $t$. In each state $s_{t}\in \mathcal{S}$, the RL agent can perform an action $a_{t} \in$ $\mathcal{A}(s_t)$ and transit to the next state as defined by a transition probability distribution $p(s_{t+1} | s_{t}, a_{t})$.
  When moving from $s_t$ to a successor state $s_{t+1}$ the agent receives a reward signal $r_t$ coming from the reward function $\Re (s_{t}, a_{t}, s_{t+1})$. The actions of the agent are selected based on its policy $\pi:\mathcal{S} \rightarrow \mathcal{A}$ that maps each state to a particular action. For every state $s \in \mathcal{S}$, under policy $\pi$ its \textit{value function} $V^{\pi}$ is defined as:
 \begin{align}
@@ -44,6 +49,8 @@ for the state-value function, and by
 for the state-action value function. Both functions can either be learned via Monte Carlo methods or by Temporal-Difference (TD) learning \cite{sutton1988learning}, with the latter approach being so far the most popular choice among model-free RL algorithms \cite{watkins1992q, rummery1994line, hasselt2010double}. %We now present into detail some of the methods that have obtained state of the art performance on one of the most popular DRL benchmarks: the Atari Arcade Learning (ALE) \cite{bellemare2013arcade} environment.
 
 \section{Related Work}
+\label{sec:ijcnn_related_work}
+
 While RL algorithms have been successfully combined with shallow neural networks for over two decades \cite{tesauro1994td}, the use of these algorithms with deeper architectures is more recent. 
 The contribution which has established the potential of DRL can certainly be identified with the Deep-Q-Network (DQN), the first algorithm which uses a convolutional neural network for successfully learning an approximation of the $Q$ function from high dimensional inputs \cite{mnih2015human}. This approximation is learned by reshaping the popular Q-Learning algorithm introduced by \citet{watkins1992q} to an objective function which can be minimized by gradient descent. The original Q-Learning algorithm learns the state-action value function as follows
 \begin{multline}
@@ -135,7 +142,7 @@ In this case the target network $\theta^{-}$ corresponds to the same target netw
 The pseudocode of both DQV and DQV-Max is presented at the end of this thesis in Algorithm \ref{alg: dqv_algorithms} which can be found in Appendix. The pseudocode is an adaptation of a standard DRL training loop which corresponds to what is usually presented within the literature \cite{mnih2015human}. We just make explicit use of the hyperparameters \texttt{total\_a} and \texttt{c} which ensure that enough actions have been performed by the agent before updating the weights of the target network. We also ensure via the hyperparameter \texttt{total\_e}, that enough episodes are stored within the memory buffer (which has capacity $\mathcal{N}$) before starting to optimize the neural networks. 
 
 \section{Results}
-\label{sec:results}
+\label{sec:ijcnn_results}
 
 \subsection{Global Evaluation}
 \label{sec:global_evaluation}
@@ -184,6 +191,8 @@ We can start by observing that the values denoting the averaged discounted retur
 
 
 \section{Additional Studies}
+\label{sec:ijcnn_additional_studies}
+
 As introduced in Sec. \ref{sec:dqv_family} DQV and DQV-Max use two separate neural networks for approximating the $Q$ function and the $V$ function. To verify whether two different architectures are needed for making both algorithms perform well, we have experimented with a series of variants of the DQV-Learning algorithm. The aim of these experiments is that of reducing the number of trainable parameters that are required by the original version of DQV, and investigate whether its performance could get harmed when reducing the capacity of the algorithm.
 The studied DQV's extensions are the following:
 
@@ -203,6 +212,8 @@ The results obtained by these alternative versions of DQV are presented in Figs.
 
 
 \section{Discussion and Conclusion}
+\label{sec:ijcnn_discussion}
+
 We have presented two novel model-free DRL algorithms which in addition to learning an approximation of the $Q$ function also aim at learning an approximation of the $V$ function. We have compared DQV and DQV-Max Learning to DRL algorithms which only learn an approximation of the $Q$ function, and showed the benefits which come from jointly approximating two value functions over one. Our newly introduced algorithms learn significantly faster than DQN and DDQN and show that approximating both the $V$ function and the $Q$ function can yield significant benefits both in an \textit{on-policy} learning setting as in an \textit{off-policy} learning one. This specific training dynamic allows for a better learned $Q$ function which makes DQV and DQV-Max less prone to estimate unrealistically large $Q$ values. All these benefits come however at a price: to successfully learn two value functions, two separate neural networks with enough capacity are required. 
 
 We identify several directions for further research that focus on the following points: an integration of the algorithms of the DQV-family with all the extensions which have improved the DQN algorithm over the years; an integration of DQV and DQV-Max within an Actor-Critic framework which will allow us to tackle continuous-control problems, and lastly, a study of how the algorithms of the DQV-family will perform in a Batch-DRL setting. It has been shown that DRL algorithms fail when learning from a fixed data set of trajectories instead of dynamically interacting with the environment \cite{fujimoto2019benchmarking}. This is due to a phenomenon known as extrapolation error. We will investigate to what extent jointly learning two value functions instead of one will cope with this additional DRL bias.

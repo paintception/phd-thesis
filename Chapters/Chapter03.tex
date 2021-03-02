@@ -2,7 +2,9 @@
 \label{ch:tl_natural_to_non_natural}
 
 \begin{remark}{Contributions and Outline} 
-	This chapter contributes to the field of (Deep) Transfer Learning (TL) by investigating whether popular neural networks that come as pre-trained on datasets containing natural images can perform equally well once they are used on non-natural datasets. Specifically, we explore whether these models can be used for tackling three different art classification problems. Furthermore, assuming this is the case, we also explore whether it is possible to improve on such performance. The chapter is structured as follows: we start by providing the reader with some background information in Section \ref{sec:introduction}. In Section \ref{sec:methods} we present a brief theoretical reminder of the field of TL, a description of the datasets that we have used and the methodological details about the experiments that we have performed. In Section \ref{sec:results} we present and discuss our results. A summary of the main contributions of this work ends the chapter in Section \ref{sec:conclusion}.
+	This chapter contributes to the field of (Deep) Transfer Learning (TL) by investigating whether popular neural networks that come as pre-trained on datasets containing natural images can perform equally well once they are used on non-natural datasets. Specifically, we explore whether these models can be used for tackling three different art classification problems. Furthermore, assuming this is the case, we also explore whether it is possible to improve on such performance. 
+
+	The chapter is structured as follows: we start by providing the reader with some background information in Sec. \ref{sec:introduction}. In Sec. \ref{sec:methods} we present a brief theoretical reminder of the field of TL, a description of the datasets that we have used and the methodological details about the experiments that we have performed. In Sec. \ref{sec:results} we present and discuss our results. A summary of the main contributions of this work ends the chapter in Sec. \ref{sec:conclusion}.
 
 \vspace{5mm}
 
@@ -80,9 +82,8 @@ Our second approach is generally known as fine tuning and differs from the previ
 \minipage{0.3\textwidth}%
   \includegraphics[width=\linewidth]{./Images/Chapter03/random_net.pdf}
 \endminipage
-
-\label{fig:network_training_approaches}
 \caption{A simplified visual representation of the different training paradigms that are considered in this chapter. The first plot represents a model that comes as pre-trained on a source task but which is not allowed to update most of its weights during training (represented in gray): the only trainable parameters of this network are the ones that parametrize the final layer of the network and that are represented in green. In the second plot we visually represent a model that is parametrized with weights that have been learned on a certain source task, and that when training the model on the target task get ``unfrozen'', therefore making the model fully trainable. Lastly we visualize a model that does not come as pre-trained on any source task at all but that is initialized with random weights instead (represented by the various colours).}
+\label{fig:network_training_approaches}
 \end{figure*}
 
 
