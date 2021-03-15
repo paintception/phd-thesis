@@ -18,7 +18,7 @@ We start by introducing the following elements:
 \begin{itemize}
 	\item A set of possible states $\mathcal{S}$, that can be visited by an agent while it is interacting with the MDP, where $s_t \in \mathcal{S}$ denotes the state being visited at time-step $t$.
 	\item A set of possible actions $\mathcal{A}$ that are available to the agent when it is in a certain state, where $a_t \in \mathcal{A}(s_t)$ denotes the action that is performed by the agent in state $s$ at time-step $t$.
-\item A transition function $\mathcal{P}:\matchal{S}\times\matchal{A}\times\matchal{S}\Rightarrow [0,1]$ that defines the probability for an agent to visit state $s_{t+1}$, based on its current state and the action which will be performed thereafter. This probability is then defined as $p(s_{t+1}|s_t, a_t)$.
+\item A transition function $\mathcal{P}:\matchal{S}\times\matchal{A}\times\matchal{S}\Rightarrow [0,1]$ that defines the probability for an agent to visit state $s_{t+1}$, based on its current state and the action which will be performed thereafter.
 \item A reward function $\mathcal{R}:\matchal{S}\times\matchal{A}\times\matchal{S}\Rightarrow \mathbb{R}$ which returns a reward signal $r_{t+1}$ when an agent performs action $a_t$ in state $s_t$ and transits to $s_{t+1}$.
 \item A discount factor denoted as $\gamma \in [0,1]$.
 
@@ -39,9 +39,9 @@ The elements of a MDP allow us to properly model the dynamics of an agent intera
   \label{fig:rl_loop}
 \end{figure}
 
-Each interaction of the agent with the environment is defined as an \textbf{episode}, which consists of one, or several trajectories $\tau$ that come in the form of the following sequence:
+Each interaction of the agent with the environment is defined as an \textbf{episode}, which consists of one, or several trajectories $\tau$, that come in the form of the following sequence:
 \begin{align}
-	\langle(s_t,a_t,r_t,s_{t+1})\rangle,t=0,\dotsb,T-1
+	\langle(s_t,a_t,r_t,s_{t+1})\rangle,t=0,\ldots,T-1
 \end{align}
 where $T$ is a random variable representing the length of the episode.
 
@@ -51,24 +51,31 @@ A key property of the environment is that it fulfills the Markov property which 
 \end{definition}
 This implies that the only information that is necessary for predicting to which state an agent will step next are $s_t$ and $a_t$, which can be expressed formally as:
 \begin{align}
-	p(s_{t+1}|s_t, a_t, s_{t-1}, a_{t-1}, \dotsb) = p(s_{t+1} | s_t, a_t).
+	p(s_{t+1}|s_t, a_t, s_{t-1}, a_{t-1}, \ldots) = p(s_{t+1} | s_t, a_t).
 \end{align}
 Interestingly, a similar conclusion also holds for the reward that the agent will get, meaning that the reward that is obtained by an agent is only determined by its previous action, and not by the history of all previously taken actions, as defined by:
 \begin{align}
-	(r_t| s_t, a_t, \dotsb, s_1, a_1) = p(r_t|s_t,a_t).
+	(r_t| s_t, a_t, \ldots, s_1, a_1) = p(r_t|s_t,a_t).
 \end{align}
 
 \section{Goals and Returns}
 So far we have defined all the elements that model the interaction of an agent with an environment, whilst introducing some key properties that are key for the development of RL algorithms. While it is true that we have defined how the agent-environment interaction works, we yet do not know what the purpose of this interaction is. In RL the goal of an agent is defined with respect to the reward signal $r_t$ that is returned by the reward function $\mathcal{R}$. Informally, the goal of an agent is that of maximizing the total amount of reward it receives while interacting with the environment. In the simplest case we can define this as:
 \begin{align}
-	G_t = r_t, r_{t+1}, r_{t+2}, \dotsb, r_{T}.
+	G_t = r_t, r_{t+1}, r_{t+2}, \ldots, r_{T}.
 \label{eq:goal}
 \end{align}
-While simple and intuitive this formulation has one major drawback: it treats each reward signal equally since it does not distinguish rewards that are obtained in the near future, i.e. $r_t$, from the ones that will be obtained in the distant future, i.e. $r_{T-1}$. To deal with such issue we need an additional concept known as \textbf{discounting}, which is governed by the discount rate parameter $\gamma$ also known as the discount factor. $\gamma$ allows us to weight the different reward signals an agent receives based on how close or distant in the future these rewards are received by the agent. By introducing $\gamma$ in Eq. \ref{eq:goal} we can define the expected discounted return as:
+While simple and intuitive this formulation has one major drawback: it treats each reward signal equally since it does not distinguish rewards that are obtained in the near future, i.e. $r_t$, from the ones that will be obtained in the more distant future, i.e. $r_{T-1}$. To deal with such issue we need an additional concept known as \textbf{discounting}, which can be governed by the discount rate parameter $\gamma$, also known as the discount factor. $\gamma$ allows us to weight the different reward signals based on how close or distant in the future these rewards are received by the agent. By introducing $\gamma$ in Eq. \ref{eq:goal} we can now define the expected discounted return as:
 \begin{align}
 G_t = r_t+\gamma r_{t+1}, \gamma^{2} r_{t+2} + ... \\
 = \sum_{k-0}^{\infty}\gamma^{k} r_{t+k+1}.
+\label{eq:discounted_return}
 \end{align}
+The role of $\gamma$ can be interpreted as follows: a reward obtained $k$ time steps in the future is only worth $\gamma^{k-1}$ times what it would be worth if received immediately. It is easy to see how different $\gamma$ values can result into different agent's behaviors. If $\gamma=0$ an agent will only take into account immediate rewards, therefore aiming to maximize $r_{t+1}$ only and resulting into having a ``myopic" behavior. If $\gamma$ approaches $1$ the agent will become more ``far-sighted", it will take future rewards into account more strongly and will therefore increase its chances of accessing future rewards that will result into a higher cumulative return. 
+Please note that by defining $\gamma \seq 1$ we can make the infinite sum presented in Eq. \ref{eq:discounted_return} finite as long as the sequence of rewards $r_k$ is bounded.   
+
+While the role of $\gamma$ is often taken for granted within the RL literature it is worth noting that as mentioned by \citet{van2011insights} and \citet{schmidhuber2019reinforcement}, $\gamma$ is an artificial concept which is not present in fields such as traditional control theory or engineering. The reason of this is that $\gamma$ corresponds to a concept that is not actually present in the real world, and that in practice distorts the real value of $r_t$ in an exponentially shrinking fashion. Even if it is considered common practice to include a discount factor in the development of RL algorithms, it is worth noting that making $\gamma$ part of the RL framework corresponds to including a form of ``inductive bias"" within the resulting algorithms. It is common knowledge that low discount factors result into poor performance, and that it is therefore as beneficial as possible to set $\gamma$ as close to $1$, yet choosing an appropriate $\gamma$ parameter can be more challenging than expected especially when RL algorithms are combined with function approximators. \citet{wiering2009qv} show that different algorithms prefer different discount factors, while \citet{franccois2015discount} show the relationship between low discount factors and the values of the learning rate. Finally \citet{van2019using} introduce a method that allows the use of low discount factors for approximate RL algorithms, while at the same time highlighting that the common perception of the role of $\gamma$ might need revision from the RL community.             
+
+
 
 \section{Value Functions}
 
