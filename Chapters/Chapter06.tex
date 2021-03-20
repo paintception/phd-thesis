@@ -28,7 +28,7 @@ Based on these concepts a MDP is then defined by the following tuple $<\mathcal{
 \begin{equation}
 	\pi(a|s) = \text{Pr}\; \{A_t = a | S_t = s\}, \; \text{for all}\; s \in \mathcal{S}\; \text{and}\; a\ \in \mathcal{A}. 
 \end{equation}
-A policy can be deterministic if $\forall s:\pi(s,a) = 1$ for exactly one $a \in \mathcal{A}(s)$ and $\pi(s,b)=0$ for all other $b \in \mathcal{A}(s)$, while it is stationary if it does not change over time. In both cases the goal of a policy is to map each state to an action $\pi:\mathcal{S}\Rightarrow\mathcal{A}$.
+A policy can be deterministic if $\forall s:\pi(s,a) = 1$ for exactly one $a \in \mathcal{A}(s)$ and $\pi(s,b)=0$ for all other $b \in \mathcal{A}(s)$, while it is stationary if it does not change over time. In both cases the goal of a policy is to map each state to an action and is defined as: $\pi:\mathcal{S}\Rightarrow\mathcal{A}$.
 
 The elements of a MDP allow us to properly model the dynamics of an agent interacting with its environment, an interaction which can be summarized as follows: at each time-step $t$ the environment provides the agent with a certain state $s_t$, the agent then performs action $a_t$ which results into the reward signal $r_{t+1}$. After performing such action the agent will enter into a new state $s_{t+1}$. This continuous interaction with the environment is also known as the Reinforcement Learning loop, and can technically be infinite. This is however never the case in practice, since an agent will eventually visit a state which only transits to itself (denoted as terminal), which will therefore stop the agent-environment interaction. We visually represent the Reinforcement Learning loop in Fig. \ref{fig:rl_loop}.
 
@@ -57,6 +57,7 @@ Interestingly, a similar conclusion also holds for the reward that the agent wil
 \begin{align}
 	(r_t| s_t, a_t, \ldots, s_1, a_1) = p(r_t|s_t,a_t).
 \end{align}
+
 
 \section{Goals and Returns}
 So far we have defined all the elements that model the interaction of an agent with an environment, whilst introducing some key properties that are key for the development of RL algorithms. While it is true that we have defined how the agent-environment interaction works, we yet do not know what the purpose of this interaction is. In RL the goal of an agent is defined with respect to the reward signal $r_t$ that is returned by the reward function $\Re$. Informally, the goal of an agent is that of maximizing the total amount of reward it receives while interacting with the environment. In the simplest case we can define this as:
@@ -87,7 +88,20 @@ $V^{\pi}(s)$ is also known as the \textit{state-value function} and intuitively 
  \end{align}
 Both value functions are very powerful since they allow us to characterize the behavior of an agent by quantitatively assessing its interaction with the environment. They can be seen as the knowledge of the agent and represent its desirability of being in a specific state.   
 
-When it comes to sequential decision making, we are interested in maximizing the value of each state or of each state-action pair, since by doing so we will be finding an optimal policy $\pi^{*}$ that realizes the optimal expected return defined as:
+A key property of $V^{\pi}(s)$ and $Q^{\pi}(s,a)$ is that both value functions satisfy a consistency condition that allows us to define both functions recursively. For example let us consider the state-value function $V^{\pi}(s)$ presented in Eq. \ref{eq:state_value_function}, we can rewrite it as:
+\begin{align}
+ V^{\pi}(s) & =\mathds{E}\big[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k}\big| s_t = s, \pi \big] \\ 
+ & =\mathds{E}\big[r_{t+1}+\gamma r_{t+2}+\gamma^{2}r_{t+3}+\ldots \big| s_t =s , \pi \big] \\ 
+ & =\mathds{E}\big[r_{t+1}+\gamma(r_{t+2}+r_{t+3}+\ldots)\big| s_t =s , \pi \big] \\
+ & =\mathds{E}\big[r_{t+1}+\gamma V^{\pi}(s_{t+1}) \big| s_t =s , \pi \big] \\
+ & =\sum_a \pi(s,a) \sum_{s+1} p(s_{t+1}|s,a)\big[\Re(s_t, a, s_{t+1}) + \gamma V^{\pi}(s_{t+1}) \big].
+\end{align}
+Similar steps can be followed when considering $Q^{\pi}(s,a)$ which can be recursively defined as:
+\begin{align}
+	Q^{\pi}(s,a) = \sum_{s_{t+1}} p(s_{t+1}|s,a)\big(\Re(s_t, a, s_{t+1}) + \\ \gamma \sum_{a_{t+1}} \pi(s_{t+1},a_{t+1}) Q^{\pi}(s_{t+1}, a_{t+1}) \big).
+\end{align}
+
+When it comes to sequential decision making, we are interested in maximizing the value of each state or of each state-action pair, since by doing so we will be finding an \textcolor{RoyalBlue}{optimal policy} $\pi^{*}$ that realizes the optimal expected return defined as:
 \begin{align}
  V^{*}(s)=\underset{\pi}{\max}\:V^{\pi}(s), \ \text{for all} \ s\in\mathcal{S}
 \end{align}
@@ -96,19 +110,7 @@ and the optimal $Q$ value function:
 Q^{*}(s,a)= \underset{\pi}{\max}\:Q^{\pi}(s,a) \ \text{for all} \ s\in\mathcal{S} \ \text{and} \ a \in\mathcal{    A}.
 \end{align}
 
-A key property of $V^{\pi}(s)$ and $Q^{\pi}(s,a)$ is that both value functions satisfy a consistency condition that allows us to define both functions recursively. For example let us consider the state-value function $V^{\pi}(s)$ presented in Eq. \ref{eq:state_value_function}, we can rewrite it as:
-\begin{align}
- V^{\pi}(s) & =\mathds{E}\big[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k}\big| s_t = s, \pi \big] \\ 
- & =\mathds{E}\big[r_{t+1}+\gamma r_{t+2}+\gamma^{2}r_{t+3}+\ldots \big| s_t =s , \pi \big] \\ 
- & =\mathds{E}\big[r_{t+1}+\gamma(r_{t+2}+r_{t+3}+\ldots)\big| s_t =s , \pi \big] \\
- & =\mathds{E}\big[r_{t+1}+\gamma V^{\pi}(s_{t+1}) \big| s_t =s , \pi \big] \\
- & =\mathds{E}\sum_a \pi(s,a) \sum_{s+1} p(s_{t+1}|s,a)\big[\Re(s_t, a, s_{t+1}) + \gamma V^{\pi}(s_{t+1}) \big].
-\end{align}
-Similar steps can be followed when considering $Q^{\pi}(s,a)$ which can be recursively defined as:
-\begin{align}
-	Q^{\pi}(s,a) = \sum_{s_{t+1}} p(s_{t+1}|s,a)\big(\Re(s_t, a, s_{t+1}) + \\ \gamma \sum_{a_{t+1}} \pi(s_{t+1},a_{t+1}) Q^{\pi}(s_{t+1}, a_{t+1}) \big).
-\end{align}
-When we recursively define the optimal \textit{state-value} and \textit{state-action} value functions we obtain:
+When we recursively define both optimal value functions we obtain:
 \begin{align}
     V^{*}(s_t) = \underset{a}{\max}\sum_{s_{t+1}}p(s_{t+1} | s_{t}, a) \bigg[\Re (s_{t}, a, s_{t+1}) + \gamma V^{*}(s_{t+1}) \bigg]
     \label{eq:optimal_v}
@@ -118,15 +120,27 @@ and
     Q^{*}(s_t,a_t)=\sum_{s_{t+1}}p(s_{t+1} | s_{t}, a_{t})  \bigg[\Re (s_{t}, a_{t}, s_{t+1}) + \gamma \: \underset{a}{\max} \: Q^{*}(s_{t+1}, a) \bigg],
     \label{eq:optimal_q}
 \end{multline}
-which are well known to correspond to the Bellman \textcolor{RoyalBlue}{optimality} equations \cite{bellman1966dynamic}. 
+which are well known to correspond to the Bellman \textcolor{RoyalBlue}{optimality} equations \cite{bellman1966dynamic}. It is not hard to see that both optimal value functions are strongly interconnected which comes from the fact that the values of $\pi^{*}$ are related to $Q^{*}(s,a)$ via:
+\begin{align}
+	V^{*}(s) = \underset{a\in\mathcal{A}}{\max} \ Q^{*}(s,a) \ \text{for all} \ s \in \mathcal{S}
+\end{align}
+since $V^{*}(s) \leq \max_{a\in\mathcal{A}} \ \text{for all} \ s\in\mathcal{S}$. Furthermore it is also worth noting that all the knowledge that is necessary for an agent to derive an optimal policy is contained within $Q^{*}(s,a)$ since $\pi^{*}$ can simply be expressed as:
+\begin{equation}
+	\pi^{*}(s) = \underset{a\in\mathcal{A}}{\argmax} \ Q^{*}(s,a) \ \text{for all} \ s \in \mathcal{S}.
+\end{equation}
+
 
 \section{Learning Value Functions}
-The $V$ function and the $Q$ function play a crucial role when it comes to the development of optimal decision making algorithms, and over the years several methods have been introduced to learn them. While the ultimate goal of all these algorithms is that of learning a value function that satisfies the Bellman optimality equality,
-there exists cases for which learning these value functions are easier than others. The complexity of learning a value function depends from how many components of the MDP are known to the agent. If the agent has access to all five of the components of the MDP that we introduced in Sec. , these algorithms are part of a collection of methods that comes with the name of \textcolor{RoyalBlue}{Dynamic Programming} (DP). DP algorithms such as \textit{value-iteration} or \textit{policy-iteration} learn an optimal value function and optimal policy respectively by exploiting the fact that the transition function $\matchcal{P}$, and the reward function $\Re$ of the MDP are known. While both algorithms can be considered as the progenitors of many RL algorithms we will not discuss them here since throughout this thesis we will be interested in scenarios for which $\matchal{P}$ and $\Re$ are unknown. Specifically, we will introduce novel methods that aim to learn an optimal value function without requiring to learn an approximation of the transition and reward functions ($\widehat{\matchal{P}}$ and $\widehat{\mathcal{\Re}}$) as well. Therefore placing our contributions within the \textcolor{RoyalBlue}{model-free} RL literature. 
-
-
+The $V$ function and the $Q$ function play a crucial role when it comes to the development of optimal decision making algorithms, and over the years several methods have been introduced to learn them. While the ultimate goal of all these algorithms is that of yielding an optimal policy, there exists cases for which learning these value functions are easier than others. The complexity of learning a value function depends from how many components of the MDP are known to the agent. If the agent has access to all five of the components of the MDP that we introduced in Sec. , these algorithms are part of a collection of methods that comes with the name of \textcolor{RoyalBlue}{Dynamic Programming} (DP). DP algorithms such as \textit{value-iteration} or \textit{policy-iteration} learn an optimal value function and optimal policy respectively by exploiting the fact that the transition function $\matchcal{P}$, and the reward function $\Re$ of the MDP are known. While both algorithms can be considered as the progenitors of many RL algorithms we will not discuss them here since throughout this thesis we will be interested in scenarios for which $\matchal{P}$ and $\Re$ are unknown. Specifically, we will introduce novel methods that aim to learn an optimal value function without requiring to learn an approximation of the transition and reward functions ($\widehat{\matchal{P}}$ and $\widehat{\mathcal{\Re}}$) neither, therefore placing all contributions of this thesis within the \textcolor{RoyalBlue}{model-free} RL literature. 
 
 \subsection{Monte Carlo Methods}
+The first family of methods that is able of learning optimal value functions when no complete knowledge of the environment is available comes with the name of Monte Carlo (MC) methods. MC algorithms only require RL trajectories in order to discover an optimal policy and achieve this by sampling and averaging the rewards that are obtained while the agent is interacting with the environment. While MC methods can be used both for learning $V^{*}(s)$ and for learning $Q^{*}(s,a)$, in this section we only present how one can learn the state-value function. The algorithm comes in two steps: the first step consists in computing the actual sum of discounted rewards that an agent has obtained at the end of an episode as defined by Eq. \ref{eq:goal}. This value can then be used for updating the current value of each state with the following update rule: 
+\begin{equation}
+	V(s_t) := V(s_t) + \alpha \big[G_t - V(s_t) \big]
+\end{equation}
+where $\alpha \in [0,1]$ is the learning rate controlling how much we want to change the value estimate of a state based on $G_t$. Since $G_t$ can only be computed once the agent reaches a terminal state, which makes the agent-environment interaction possibly result into different trajectories $\tau$, it might be possible that the same state could be visited by an agent more than once. If that happens, one must decide which kind of value to assign to $V(s_t)$. While it is technically possible to ignore the fact that a state is visited multiple times, therefore  
+a better option is to average over   
+
 \subsection{Temporal Difference Learning}
 
 \section{Function Approximators}
