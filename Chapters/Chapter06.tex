@@ -173,23 +173,32 @@ When dealing with MC learning it can however be possible that a certain state is
 While several successful applications of MC methods exist, a well known issue from this family of algorithms is that they suffer from highly biased updates. In fact one needs to compute the sum presented in Eq. \ref{eq:goal} over all visited states, which can result into returns with considerable variance. It is easy to see how this can become an issue especially when the length of the episodes increases since the larger the length of the episode, the larger the variance of the updates will be. Furthermore, an additional drawback of MC methods is that one must wait until the agent visits a terminal state before being able to perform an update that is based on Eq. \ref{eq:mc_update}, the latter drawback can result into slow learning and is addressed by the methods which will be presented hereafter.   
 
 \subsection{Temporal Difference Learning}
-Temporal Difference (TD) Learning is a learning paradigm that allows to overcome the aforementioned issues that characterize MC learning based methods. The key idea of TD-Learning is to update the value of each state with respect to a single MC update, therefore overcoming the hurdle of having to wait for the end of an episode before being able to update e.g. the value of a state. Just as MC methods TD-Learning algorithms also learn an optimal value function based on the experience that is collected by the agent, however these algorithms only base their updates on the value of a single consecutive state rather than on the real discounted return that is dependent from the entire sequence of visited states. Updating the value of a state with respect to the value of its successor state only is a technique which comes with the name of \textcolor{RoyalBlue}{bootstrapping}, and is very effective for reducing the variance in the updates. Bootstrapping can be used both for learning the $V$ function and the $Q$ function and is at the core of the most popular model-free RL algorithms. The fist and simplest form of TD-Learning was introduced by for learning the state-value function which updates the value of a state based on the following learning rule:
+Temporal Difference (TD) Learning is a learning paradigm that allows to overcome the aforementioned issues that characterize MC learning based methods. The key idea of TD-Learning is to update the value of each state with respect to a single MC update, therefore overcoming the hurdle of having to wait for the end of an episode before being able to update the value of a state. Just as MC methods TD-Learning algorithms also learn an optimal value function simply based on the experience that is collected by the agent, however these algorithms base their updates only on the value of a single consecutive state rather than on the real discounted return that is dependent from the entire sequence of visited states. Updating the value of a state with respect to the value of its successor state only is a technique which comes with the name of \textcolor{RoyalBlue}{bootstrapping}, and is a very effective design choice that reduces the variance in the updates. Bootstrapping can be used both for learning the $V$ function and the $Q$ function and is at the core of the most popular model-free RL algorithms. The fist and simplest form of TD-Learning was introduced by for learning the state-value function an algorithm which updates the value of a state based on the following learning rule:
 \begin{equation}
 	V(s_t):= V(s_t) + \alpha \big[r_t + \gamma V(s_{t+1}) - V(s_t)\big].
+	\label{eq:td_learning_v}
 \end{equation}
 We can now clearly see that differently from what happens in the MC update presented in Eq. \ref{eq:mc_update} the update of a state now only depends from the reward and the value of the next state. This quantity is denoted as the TD-error $\delta_t$ and is defined as:
 \begin{equation}
 	\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t).
 \end{equation}
-TD-Learning is a very effective strategy for building algorithms that can learn in an online, fully incremental fashion, since one only needs to wait a single time-step before being able to update the considered value function. Due to its striking simplicity TD-Learning has been widely adopted by RL algorithms that aim at learning the $Q$ function. We will present some of these algorithms hereafter. 
+where $r_t + \gamma V(s_{t+1})$ is also known as the TD-target.
+If we again consider the simple MDP represented in Fig. \ref{fig:mdp} and assume that the value of each state of the process is set to $0$ while the discount factor $\gamma$ is again set to $0.5$, a TD update for $V(s_0)$ based on action $a_3$ will result into the new value estimate of $1.5$. 
+TD-Learning is a very effective strategy for building algorithms that can learn in an online, fully incremental fashion, since one only needs to wait a single time-step before being able to update the considered value function. Due to its striking simplicity TD-Learning has been widely adopted by RL practitioners developing algorithms for learning the $Q$ function. We will present some of these algorithms hereafter. 
 
-\paragraph{Q-Learning:}
+\paragraph{Q-Learning:} introduced by is arguably the most popular model-free RL algorithm. It works by keeping track of an estimate of the state-action value function $Q: \mathcal{S} \times \mathcal{A} \rightarrow \Re$ and updates each visited state-action pair with the following update rule:
+\begin{equation}
+Q(s_t,a_t):=Q(s_t,a_t) + \alpha\big[r_t + \gamma \underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t) \big].
+\end{equation}
+The key component of Q-Learning's update rule is the $\max$ operator which characterizes its TD-error and that is necessary for constructing the TD-target. Since there are as many Q values as there are actions available to the agent, one must choose which Q value to use as a reference when updating the value of the state-action pair that is currently being visited by the agent. The $\max$ operator simply chooses the state-action pair with the largest Q value, a simple design choice that has the appealing property of making Q-Learning converge to $Q^{*}(s,a)$ with probability 1 as long as all state-action pairs are visited infinitely often. Interestingly this guarantees holds even if a random policy is followed by the agent. The $\max$ operator also defines Q-Learning as an \textcolor{RoyalBlue}{off-policy} learning algorithm, since the Q values chosen for the construction of the TD-target might not correspond to the ones that are associated to the state that will be visited by the agent after having updated its $Q$ function.
 
 \paragraph{SARSA:}
 
+\paragraph{Double Q-Learning:}
+
+
 \paragraph{QV($\lambda$)-Learning:}
 
-\paragraph{Double Q-Learning:}
 
 \section{Function Approximators}
 \subsection{Linear Functions}
