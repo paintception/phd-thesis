@@ -82,11 +82,11 @@ We are now ready to introduce the arguably most important concept that underlies
     V^{\pi}(s)=\mathds{E}\bigg[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k}\bigg| s_t = s, \pi \bigg].
     \label{eq:state_value_function}
 \end{align}
-$V^{\pi}(s)$ is also known as the \textit{state-value function} and intuitively tells us how good or how bad it is for an agent to be in a certain state. While this function is only conditioned on the state that is being visited by the agent, we can also condition it on the actions that are taken by the agent, which will measure how good or bad it is for the agent to take a certain action $a$ in a certain state. This function comes with the name of \textit{state-action value function} and is defined as follows:
+$V^{\pi}(s)$ is also known as the \textit{state-value function} and intuitively tells us how good or how bad it is for an agent to be in a certain state. While this function is only conditioned on the state that is being visited by the agent, we can also condition it on the actions that are taken by the agent, which will quantify how good or bad it is for the agent to take a certain action $a$ in a certain state. This function comes with the name of \textit{state-action value function} and is defined as follows:
 \begin{align}
      Q^{\pi}(s,a)=\mathds{E}\bigg[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k} \bigg| s_t = s, a_t=a, \pi\bigg].
  \end{align}
-Both value functions are very powerful since they allow us to characterize the behavior of an agent by quantitatively assessing its interaction with the environment. They can be seen as the knowledge of the agent and represent its desirability of being in a specific state.   
+Both value functions are very powerful since they allow us to characterize the behavior of an agent by quantitatively assessing its interaction with the environment. They can be seen as the knowledge of the agent and represent its desirability of being in a specific state. As we will see in the coming sections, accurately modeling these value functions is one of the major goals of RL.  
 
 A key property of $V^{\pi}(s)$ and $Q^{\pi}(s,a)$ is that both value functions satisfy a consistency condition that allows us to define both functions recursively. For example let us consider the state-value function $V^{\pi}(s)$ presented in Eq. \ref{eq:state_value_function}, we can rewrite it as:
 \begin{align}
@@ -96,12 +96,12 @@ A key property of $V^{\pi}(s)$ and $Q^{\pi}(s,a)$ is that both value functions s
  & =\mathds{E}\big[r_{t+1}+\gamma V^{\pi}(s_{t+1}) \big| s_t =s , \pi \big] \\
  & =\sum_a \pi(s,a) \sum_{s+1} p(s_{t+1}|s,a)\big[\Re(s_t, a, s_{t+1}) + \gamma V^{\pi}(s_{t+1}) \big].
 \end{align}
-Similar steps can be followed when considering $Q^{\pi}(s,a)$ which can be recursively defined as:
+Similar steps can be followed when considering $Q^{\pi}(s,a)$ which can then be recursively defined as:
 \begin{align}
 	Q^{\pi}(s,a) = \sum_{s_{t+1}} p(s_{t+1}|s,a)\big(\Re(s_t, a, s_{t+1}) + \\ \gamma \sum_{a_{t+1}} \pi(s_{t+1},a_{t+1}) Q^{\pi}(s_{t+1}, a_{t+1}) \big).
 \end{align}
 
-When it comes to sequential decision making, we are interested in maximizing the value of each state or of each state-action pair, since by doing so we will be finding an \textcolor{RoyalBlue}{optimal policy} $\pi^{*}$ that realizes the optimal expected return defined as:
+When it comes to sequential decision making, we are interested in maximizing the value of each state or of each state-action pair, since by doing so we will be finding a policy $\pi$ that is optimal. The \textcolor{RoyalBlue}{optimal policy} $\pi^{*}$ is a policy that realizes the optimal expected return defined as:
 \begin{align}
  V^{*}(s)=\underset{\pi}{\max}\:V^{\pi}(s), \ \text{for all} \ s\in\mathcal{S}
 \end{align}
@@ -109,7 +109,7 @@ and the optimal $Q$ value function:
 \begin{align}
 Q^{*}(s,a)= \underset{\pi}{\max}\:Q^{\pi}(s,a) \ \text{for all} \ s\in\mathcal{S} \ \text{and} \ a \in\mathcal{    A}.
 \end{align}
-When we recursively define both optimal value functions we obtain:
+When we recursively define both optimal value functions as we did for Eq. \ref{eq:state_value_function} we obtain:
 \begin{align}
     V^{*}(s_t) = \underset{a}{\max}\sum_{s_{t+1}}p(s_{t+1} | s_{t}, a) \bigg[\Re (s_{t}, a, s_{t+1}) + \gamma V^{*}(s_{t+1}) \bigg]
     \label{eq:optimal_v}
@@ -119,14 +119,18 @@ and
     Q^{*}(s_t,a_t)=\sum_{s_{t+1}}p(s_{t+1} | s_{t}, a_{t})  \bigg[\Re (s_{t}, a_{t}, s_{t+1}) + \gamma \: \underset{a}{\max} \: Q^{*}(s_{t+1}, a) \bigg],
     \label{eq:optimal_q}
 \end{multline}
-which are well known to correspond to the Bellman \textcolor{RoyalBlue}{optimality} equations \cite{bellman1966dynamic}. It is not hard to see that both optimal value functions are strongly interconnected which comes from the fact that the values of $\pi^{*}$ are related to $Q^{*}(s,a)$ via:
-\begin{align}
-	V^{*}(s) = \underset{a\in\mathcal{A}}{\max} \ Q^{*}(s,a) \ \text{for all} \ s \in \mathcal{S}
-\end{align}
-since $V^{*}(s) \leq \max_{a\in\mathcal{A}} \ \text{for all} \ s\in\mathcal{S}$. Furthermore it is also worth noting that all the knowledge that is necessary for an agent to derive an optimal policy is contained within $Q^{*}(s,a)$ since $\pi^{*}$ can simply be expressed as:
+which are well known to correspond to the Bellman \textcolor{RoyalBlue}{optimality} equations \cite{bellman1966dynamic}. 
+
+If the optimal $Q$ function is learned it becomes as straightforward task to derive an optimal policy since one only needs to select the action which has the highest value in each state as defined by:
 \begin{equation}
 	\pi^{*}(s) = \underset{a\in\mathcal{A}}{\argmax} \ Q^{*}(s,a) \ \text{for all} \ s \in \mathcal{S}.
 \end{equation}
+
+It is also worth noting that the $Q$ function and the $V$ function satisfy the following equality
+\begin{align}
+	V^{*}(s) = \underset{a\in\mathcal{A}}{\max} \ Q^{*}(s,a) \ \text{for all} \ s \in \mathcal{S}
+\end{align}
+which comes from the fact $V^{*}(s) \leq \max_{a\in\mathcal{A}} \ \text{for all} \ s\in\mathcal{S}$. As we will later see throughout this thesis this equality is particularly important for the development of many RL algorithms.
 
 
 \section{Learning Value Functions}
@@ -138,7 +142,9 @@ The first family of methods that is able of learning optimal value functions whe
 	V(s_t) := V(s_t) + \alpha \big[G_t - V(s_t) \big]
 \label{eq:mc_update}
 \end{equation}
-where $\alpha \in [0,1]$ is the learning rate controlling how much we want to change the value estimate of a state based on $G_t$. As a practical example let us consider the MDP represented in Fig. \ref{fig:mdp}. Let us assume that the starting state of the environment is $s_0$ while the terminal state of the environment is $s_2$, and that the agent follows a policy $\pi$ that results into actions $a_1, a_2$ and $a_3$. The rewards associated to each action are: $-1, +2$ and $+3$ respectively. If we set the discount factor to $0.99$ we know that the real discounted return that is obtained at the end of the agent-environment interaction when starting in state $s_0$ is $\sum_{k=0}^{\infty}\gamma^{k} r_{t+k+1} = -1+\gamma2+\gamma^{2}3 \approx 3.92$. When dealing with MC learning it can be possible that a certain state is visited more than once before a terminal state is reached, as is the case for $s_0$ in Fig. \ref{fig:mdp}. If that happens one must decide when to update $V(s)$ and which value to use as $G_t$ since different state visits result into different $G_t$ values. There are two typical ways to deal with this, one can either update $V(s)$ only once, in which case we refer to , or one can update $V(s)$ each time the state is visited by simply using as $G_t$ the average of all the different discounted returns.
+where $\alpha \in [0,1]$ is the learning rate controlling how much we want to change the value estimate of a state based on $G_t$. As a practical example let us consider the MDP represented in Fig. \ref{fig:mdp}. Let us assume that the starting state of the environment is $s_0$ while the terminal state of the environment is $s_2$, and that the agent follows a policy $\pi$ that results into actions $a_1, a_2$ and $a_3$. The rewards associated to each action are: $-1, +2$ and $+3$ respectively. If we set the discount factor to $0.99$ we know that the real discounted return that is obtained at the end of the agent-environment interaction when starting in state $s_0$ is $\sum_{k=0}^{\infty}\gamma^{k} r_{t+k+1} = -1+\gamma2+\gamma^{2}3 \approx 3.92$. If we assume that the current value of $s_0$ before is $0$, and that we set $\alpha=0.5$, the result of one MC update for $s_0$ will be $\approx 1.96$.    
+
+When dealing with MC learning it can however be possible that a certain state is visited more than once before a terminal state is reached. This is the case for $s_0$ for the MDP represented in Fig. \ref{fig:mdp}. If that happens one must decide when to update $V(s)$ and which value to use as $G_t$ since different state visits result into different $G_t$ values. There are two typical ways to deal with this, one can either update $V(s)$ only once, or one can update $V(s)$ each time the state is visited by simply using as $G_t$ the average of all the different discounted returns. The first update strategy comes with the name of , while the latter is denoted as .
 
 \begin{figure}[ht]
 	\centering
@@ -164,22 +170,26 @@ where $\alpha \in [0,1]$ is the learning rate controlling how much we want to ch
 \label{fig:mdp}
 \end{figure}
 
-While several successful applications of MC methods exist, a well known issue from this family of algorithms is that they suffer from highly biased updates. In fact one needs to compute the sum presented in Eq. \ref{eq:goal} over all visited states, which can result into returns with considerable variance. It is easy to see how this can become an issue especially when the length of the episodes increases since the larger the length of the episode, the larger the variance of the updates will be. Furthermore, an additional drawback of MC methods is that one must wait until the agent visits a terminal state before being able to perform an update based on Eq. \ref{eq:mc_update}, a drawback which can result into slow learning.   
+While several successful applications of MC methods exist, a well known issue from this family of algorithms is that they suffer from highly biased updates. In fact one needs to compute the sum presented in Eq. \ref{eq:goal} over all visited states, which can result into returns with considerable variance. It is easy to see how this can become an issue especially when the length of the episodes increases since the larger the length of the episode, the larger the variance of the updates will be. Furthermore, an additional drawback of MC methods is that one must wait until the agent visits a terminal state before being able to perform an update that is based on Eq. \ref{eq:mc_update}, the latter drawback can result into slow learning and is addressed by the methods which will be presented hereafter.   
 
 \subsection{Temporal Difference Learning}
-Temporal Difference (TD) Learning allows us to overcome some of the aforementioned issues that characterize MC learning based methods. The key idea of TD-Learning is to update the value of each state with respect to a single MC update, therefore overcoming the hurdle of having to wait for the end of an episode. Just as MC methods TD-Learning algorithms also learn an optimal value function based on the experience that is collected by the agent, however these algorithms only base their updates on the value of a single consecutive state rather than on the real discounted return that as we have seen earlier depends from the entire sequence of visited states. Updating the value of a state with respect to the value of its successor state only is a technique which comes with the name of \textcolor{RoyalBlue}{bootstrapping}, and is very effective for reducing the variance in the updates. Bootstrapping can be used both for learning the $V$ function and the $Q$ function and is at the core of many popular model-free RL algorithms. The fist and simplest form of TD-Learning was introduced by for learning the state-value function which updates the value of a state based on the following update rule:
-
+Temporal Difference (TD) Learning is a learning paradigm that allows to overcome the aforementioned issues that characterize MC learning based methods. The key idea of TD-Learning is to update the value of each state with respect to a single MC update, therefore overcoming the hurdle of having to wait for the end of an episode before being able to update e.g. the value of a state. Just as MC methods TD-Learning algorithms also learn an optimal value function based on the experience that is collected by the agent, however these algorithms only base their updates on the value of a single consecutive state rather than on the real discounted return that is dependent from the entire sequence of visited states. Updating the value of a state with respect to the value of its successor state only is a technique which comes with the name of \textcolor{RoyalBlue}{bootstrapping}, and is very effective for reducing the variance in the updates. Bootstrapping can be used both for learning the $V$ function and the $Q$ function and is at the core of the most popular model-free RL algorithms. The fist and simplest form of TD-Learning was introduced by for learning the state-value function which updates the value of a state based on the following learning rule:
 \begin{equation}
 	V(s_t):= V(s_t) + \alpha \big[r_t + \gamma V(s_{t+1}) - V(s_t)\big].
 \end{equation}
-
 We can now clearly see that differently from what happens in the MC update presented in Eq. \ref{eq:mc_update} the update of a state now only depends from the reward and the value of the next state. This quantity is denoted as the TD-error $\delta_t$ and is defined as:
 \begin{equation}
-	\delta_t = r_t + \gamma V(s_{t+1} - V(s_t)).
+	\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t).
 \end{equation}
+TD-Learning is a very effective strategy for building algorithms that can learn in an online, fully incremental fashion, since one only needs to wait a single time-step before being able to update the considered value function. Due to its striking simplicity TD-Learning has been widely adopted by RL algorithms that aim at learning the $Q$ function. We will present some of these algorithms hereafter. 
 
+\paragraph{Q-Learning:}
 
+\paragraph{SARSA:}
 
+\paragraph{QV($\lambda$)-Learning:}
+
+\paragraph{Double Q-Learning:}
 
 \section{Function Approximators}
 \subsection{Linear Functions}
