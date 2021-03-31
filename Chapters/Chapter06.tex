@@ -1,6 +1,7 @@
 \chapter{Reinforcement Learning and Deep Neural Networks}
 \label{ch:reinforcement_learning}
 
+
 \begin{remark}{Outline}
 
 \end{remark}
@@ -184,19 +185,19 @@ We can now clearly see that differently from what happens in the MC update prese
 \end{equation}
 where $r_t + \gamma V(s_{t+1})$ is also known as the TD-target.
 If we again consider the simple MDP represented in Fig. \ref{fig:mdp} and assume that the value of each state of the process is set to $0$ while the discount factor $\gamma$ is again set to $0.5$, a TD update for $V(s_0)$ based on action $a_3$ will result into the new value estimate of $1.5$. 
-TD-Learning is a very effective strategy for building algorithms that can learn in an online, fully incremental fashion, since one only needs to wait a single time-step before being able to update the considered value function. Due to its striking simplicity TD-Learning has been widely adopted by RL practitioners developing algorithms for learning the $Q$ function. We will present some of these algorithms hereafter. 
+TD-Learning is a very effective strategy for building algorithms that can learn in an online, fully incremental fashion, since one only needs to wait a single time-step before being able to update the considered value function. Due to its striking simplicity TD-Learning has been widely adopted by RL practitioners developing algorithms for learning the $Q$ function. We will present some of the most important algorithms hereafter. 
 
 \paragraph{Q-Learning:} introduced by is arguably the most popular model-free RL algorithm. It works by keeping track of an estimate of the state-action value function $Q: \mathcal{S} \times \mathcal{A} \rightarrow \Re$ and updates each visited state-action pair with the following update rule:
 \begin{equation}
 Q(s_t,a_t):=Q(s_t,a_t) + \alpha\big[r_t + \gamma \underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t) \big].
 \end{equation}
-The key component of Q-Learning's update rule is the $\max$ operator which characterizes its TD-error and that is necessary for constructing the TD-target. Since there are as many Q values as there are actions available to the agent, one must choose which Q value to use as a reference when updating the value of the state-action pair that is currently being visited by the agent. The $\max$ operator simply chooses the state-action pair with the largest Q value, a simple design choice that has the appealing property of making Q-Learning converge to $Q^{*}(s,a)$ with probability 1 as long as all state-action pairs are visited infinitely often. Interestingly this guarantees holds even if a random policy is followed by the agent. The $\max$ operator also defines Q-Learning as an \textcolor{RoyalBlue}{off-policy} learning algorithm, since the Q values chosen for the construction of the TD-target might not correspond to the ones that are associated to the state that will be visited by the agent after having updated its $Q$ function.
+The key component of Q-Learning's update rule is the $\max$ operator which characterizes its TD-error and that is necessary for constructing the TD-target. Since there are as many Q values as there are actions available to the agent, one must choose which Q value to use as a reference when updating the value of the state-action pair that is currently being visited by the agent. The $\max$ operator simply chooses the state-action pair with the largest Q value, a simple design choice that has the appealing property of making Q-Learning converge to $Q^{*}(s,a)$ with probability 1 as long as all state-action pairs are visited infinitely often. Interestingly this guarantee holds even if a random policy is followed by the agent. The $\max$ operator also defines Q-Learning as an \textcolor{RoyalBlue}{off-policy} learning algorithm, since the Q values chosen for the construction of the TD-target might not correspond to the ones that are associated to the state that will be visited by the agent after having updated its $Q$ function.
 
 \paragraph{SARSA:} also known as can be seen as the most straightforward extension of the TD-Learning method presented in Eq. \ref{eq:td_learning_v} and similarly to Q-Learning is an algorithms that aims at learning the state-action value function $Q$. The key idea of SARSA is to update a state-action value with respect to the Q value that is associated to the state that will be visited by the agent after a certain action is performed. SARSA does therefore not use the $\max$ operator within its TD-error and constructs TD-targets that are representative of the policy that is being followed by the agent, a characteristic that defines SARSA as an \textcolor{RoyalBlue}{on-policy} RL algorithm. The way SARSA learns the $Q$ function is given by the following update rule
 \begin{equation}
 	Q(s_t,a_t):=Q(s_t,a_t) + \alpha\big[r_t + \gamma Q(s_{t+1},a_{t+1}) - Q(s_t, a_t) \big], 
 \end{equation}
-where we can clearly see how the algorithm uses all the elements of the quintuple of events $(s_t, a_t, r_t, s_{t+1}, a_{t+1})$ a property that gives rise to the name SARSA. Not using the $\max$ operator in the update rule results into an algorithm that differently from Q-Learning does not directly learn the optimal function anymore, but rather learns to estimate $Q^{\pi}(s,a)$. This has the drawback of not guaranteeing convergence to $Q^{*}(s,a)$ for any random policy anymore. To overcome this SARSA needs an exploration policy that is greedy in the limit of infinite exploration. This can be achieved with the popular $\epsilon-\text{greedy}$ selection policy which defines the action that is taken by the agent as:
+where we can clearly see how the algorithm uses all the elements of the quintuple of events $(s_t, a_t, r_t, s_{t+1}, a_{t+1})$ a property that gives rise to the name SARSA. Not using the $\max$ operator in the update rule results into an algorithm that differently from Q-Learning does not directly learn the optimal $Q$ function anymore, but rather learns to estimate $Q^{\pi}(s,a)$. This has the drawback of not guaranteeing convergence to $Q^{*}(s,a)$ for any random policy anymore. To overcome this SARSA needs an exploration policy that is greedy in the limit of infinite exploration. This can be achieved with the popular $\epsilon-\text{greedy}$ selection policy which defines the action that is taken by the agent as:
 \begin{equation}
 a_t = \begin{cases}
 \underset{a\in\mathcal{A}}{\argmax} \ Q(s_t,a) &\text{with probability $1-\epsilon$}\\
@@ -204,13 +205,23 @@ a \sim \mathcal{U}(\mathcal{A}) &\text{with probability $\epsilon$}
 \end{cases}
 \label{eq:e_greedy}
 \end{equation}
-where $\epsilon$ is a hyperparameter that is changes while training progresses. During early training iterations its value is close to $1$, while it approaches $0$ by the end of training. This allows the agent to take actions that are representative of a large set of policies when the learned $Q$ function does not yet correspond to $Q^{*}(s,a)$, while it will favor greedy actions at the end of training. This is a simple, yet effective strategy to deal with the \textcolor{RoyalBlue}{exploration-exploitation} dilemma and it is worth noting that its use is not limited to on-policy RL algorithms only. Furthermore the method presented in Eq. \ref{eq:e_greedy} represents only one possible way of balancing exploration and exploitation, and although it is arguably the most popular of such methods it is not the only existing one. We refer the reader to chapter 5 of for a thorough analysis of different exploration algorithms.
+where $\epsilon$ is a hyperparameter that changes while training progresses. During early training iterations its value is close to $1$, while it approaches $0$ by the end of training. This allows the agent to take actions that are representative of a large set of policies when the learned $Q$ function does not yet correspond to $Q^{*}(s,a)$, while it will favor greedy actions at the end of training. This is a simple, yet effective strategy to deal with the \textcolor{RoyalBlue}{exploration-exploitation} dilemma and it is worth noting that its use is not limited to on-policy RL algorithms only. Furthermore the method presented in Eq. \ref{eq:e_greedy} represents only one possible way of balancing exploration and exploitation, and although it is arguably the most popular of such methods it is not the only existing one. We refer the reader to chapter 5 of for a thorough analysis of different exploration algorithms.
 
 
 \paragraph{Double Q-Learning:}
 
 
-\paragraph{QV($\lambda$)-Learning:}
+\paragraph{QV($\lambda$)-Learning:} introduced by is an on-policy RL algorithm which differently from the previously introduced methods keeps track of an estimate of the state-value function $V:\mathcal{S}\rightarrow\Re$ alongside the usual estimate of the state-action value function $Q:\mathcal{S}\times\mathcal{A}\rightarrow\Re$. Since the goal is that of jointly learning two value functions, QV($\lambda$)-Learning requires two separate update rules. The $V$ function is learned via the same form of TD-Learning that we introduced in Eq. \ref{eq:td_learning_v}, with the only difference being the addition of the eligibility traces $e_t(s)$ at the end of the update rule (a RL technique that we will not discuss in this dissertation). QV($\lambda$)-Learning therefore learns the $V$ function with the following update rule:
+\begin{equation}
+V(s):= V(s) + \alpha \big[ r_{t} + \gamma V(s_{t+1}) - V(s_t) \big] e_{t}(s).
+\label{eq:qv_lambda_v_update}
+\end{equation}
+Since as discussed earlier only learning the $V$ function is not sufficient for deriving an optimal policy one needs to learn the $Q$ function as well. In QV($\lambda$)-Learning this is done as follows:
+\begin{equation}
+Q(s_{t}, a_{t}):= Q(s_{t}, a_{t}) + \alpha \big[r_{t} + \gamma V(s_{t+1}) - Q(s_{t}, a_{t}) \big].
+\label{eq:qv_lambda_q_update}
+\end{equation}
+An interesting property of the algorithm is that it uses the same TD-target ($r_t + \gamma V(s_{t+1})$) for defining the two different TD-errors that are required for learning the state-value and the state-action value functions. Among the main insights which motivate learning two value functions over one ** mentions the possibility that the $V$ function, since it does not depend from the actions that are taken by the agent, might converge faster than the $Q$ function. In fact the $V$ function learns only with respect to the state space of the MDP which by definition is smaller than the state-action space. For a more in-depth and formal presentation of the conditions that show the benefits of jointly learning the $V$ function alongside the $Q$ function we refer the reader to chapter 5 of .
 
 
 \section{Function Approximators}
@@ -218,4 +229,11 @@ where $\epsilon$ is a hyperparameter that is changes while training progresses. 
 
 \subsection{Deep Neural Networks}
 
-\section{}
+\section{Deep Reinforcement Learning Challenges}
+
+\begin{remark}{Conclusion}
+
+\end{remark}
+
+
+
