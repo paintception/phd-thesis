@@ -192,7 +192,20 @@ Q(s_t,a_t):=Q(s_t,a_t) + \alpha\big[r_t + \gamma \underset{a\in \mathcal{A}}{\ma
 \end{equation}
 The key component of Q-Learning's update rule is the $\max$ operator which characterizes its TD-error and that is necessary for constructing the TD-target. Since there are as many Q values as there are actions available to the agent, one must choose which Q value to use as a reference when updating the value of the state-action pair that is currently being visited by the agent. The $\max$ operator simply chooses the state-action pair with the largest Q value, a simple design choice that has the appealing property of making Q-Learning converge to $Q^{*}(s,a)$ with probability 1 as long as all state-action pairs are visited infinitely often. Interestingly this guarantees holds even if a random policy is followed by the agent. The $\max$ operator also defines Q-Learning as an \textcolor{RoyalBlue}{off-policy} learning algorithm, since the Q values chosen for the construction of the TD-target might not correspond to the ones that are associated to the state that will be visited by the agent after having updated its $Q$ function.
 
-\paragraph{SARSA:}
+\paragraph{SARSA:} also known as can be seen as the most straightforward extension of the TD-Learning method presented in Eq. \ref{eq:td_learning_v} and similarly to Q-Learning is an algorithms that aims at learning the state-action value function $Q$. The key idea of SARSA is to update a state-action value with respect to the Q value that is associated to the state that will be visited by the agent after a certain action is performed. SARSA does therefore not use the $\max$ operator within its TD-error and constructs TD-targets that are representative of the policy that is being followed by the agent, a characteristic that defines SARSA as an \textcolor{RoyalBlue}{on-policy} RL algorithm. The way SARSA learns the $Q$ function is given by the following update rule
+\begin{equation}
+	Q(s_t,a_t):=Q(s_t,a_t) + \alpha\big[r_t + \gamma Q(s_{t+1},a_{t+1}) - Q(s_t, a_t) \big], 
+\end{equation}
+where we can clearly see how the algorithm uses all the elements of the quintuple of events $(s_t, a_t, r_t, s_{t+1}, a_{t+1})$ a property that gives rise to the name SARSA. Not using the $\max$ operator in the update rule results into an algorithm that differently from Q-Learning does not directly learn the optimal function anymore, but rather learns to estimate $Q^{\pi}(s,a)$. This has the drawback of not guaranteeing convergence to $Q^{*}(s,a)$ for any random policy anymore. To overcome this SARSA needs an exploration policy that is greedy in the limit of infinite exploration. This can be achieved with the popular $\epsilon-\text{greedy}$ selection policy which defines the action that is taken by the agent as:
+\begin{equation}
+a_t = \begin{cases}
+\underset{a\in\mathcal{A}}{\argmax} \ Q(s_t,a) &\text{with probability $1-\epsilon$}\\
+a \sim \mathcal{U}(\mathcal{A}) &\text{with probability $\epsilon$}
+\end{cases}
+\label{eq:e_greedy}
+\end{equation}
+where $\epsilon$ is a hyperparameter that is changes while training progresses. During early training iterations its value is close to $1$, while it approaches $0$ by the end of training. This allows the agent to take actions that are representative of a large set of policies when the learned $Q$ function does not yet correspond to $Q^{*}(s,a)$, while it will favor greedy actions at the end of training. This is a simple, yet effective strategy to deal with the \textcolor{RoyalBlue}{exploration-exploitation} dilemma and it is worth noting that its use is not limited to on-policy RL algorithms only. Furthermore the method presented in Eq. \ref{eq:e_greedy} represents only one possible way of balancing exploration and exploitation, and although it is arguably the most popular of such methods it is not the only existing one. We refer the reader to chapter 5 of for a thorough analysis of different exploration algorithms.
+
 
 \paragraph{Double Q-Learning:}
 
