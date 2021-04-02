@@ -174,6 +174,7 @@ When dealing with MC learning it can however be possible that a certain state is
 While several successful applications of MC methods exist \cite{jaakkola1995reinforcement,liu1998sequential,lazaric2007reinforcement}, a well known issue from this family of algorithms is that they suffer from highly biased updates. In fact one needs to compute the sum presented in Eq. \ref{eq:goal} over all visited states, which can result into returns with considerable variance. It is easy to see how this can become an issue especially when the length of the episodes increases since the larger the length of the episode, the larger the variance of the updates will be. Furthermore, an additional drawback of MC methods is that one must wait until the agent visits a terminal state before being able to perform an update that is based on Eq. \ref{eq:mc_update}, the latter drawback can result into slow learning and is addressed by the methods which will be presented hereafter.   
 
 \subsection{Temporal Difference Learning}
+\label{sec:td_learning}
 Temporal Difference (TD) Learning \cite{sutton1984temporal,sutton1988learning} is a learning paradigm that allows to overcome the aforementioned issues that characterize MC learning based methods. The key idea of TD-Learning is to update the value of each state with respect to a single MC update, therefore overcoming the hurdle of having to wait for the end of an episode before being able to update the value of a state. Just as MC methods TD-Learning algorithms also learn an optimal value function simply based on the experience that is collected by the agent, however these algorithms base their updates only on the value of a single consecutive state rather than on the real discounted return that is dependent from the entire sequence of visited states. Updating the value of a state with respect to the value of its successor state only is a technique which comes with the name of \textcolor{RoyalBlue}{bootstrapping}, and is a very effective design choice that reduces the variance in the updates. Bootstrapping can be used both for learning the $V$ function and the $Q$ function and is at the core of the most popular model-free RL algorithms. The fist and simplest form of TD-Learning was introduced by \citet{sutton1988learning} for learning the state-value function with an algorithm that updates the value of a state based on the following learning rule:
 \begin{equation}
 	V(s_t):= V(s_t) + \alpha \big[r_t + \gamma V(s_{t+1}) - V(s_t)\big].
@@ -190,6 +191,7 @@ TD-Learning is a very effective strategy for building algorithms that can learn 
 \paragraph{Q-Learning:} introduced by \citet{watkins1992q} is arguably the most popular model-free RL algorithm. It works by keeping track of an estimate of the state-action value function $Q: \mathcal{S} \times \mathcal{A} \rightarrow \Re$ and updates each visited state-action pair with the following update rule:
 \begin{equation}
 Q(s_t,a_t):=Q(s_t,a_t) + \alpha\big[r_t + \gamma \underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t) \big].
+\label{eq:dqn}
 \end{equation}
 The key component of Q-Learning's update rule is the $\max$ operator which characterizes its TD-error and that is necessary for constructing the TD-target. Since there are as many Q values as there are actions available to the agent, one must choose which Q value to use as a reference when updating the value of the state-action pair that is currently being visited by the agent. The $\max$ operator simply chooses the state-action pair with the largest Q value, a simple design choice that has the appealing property of making Q-Learning converge to $Q^{*}(s,a)$ with probability 1 as long as all state-action pairs are visited infinitely often. Interestingly this guarantee holds even if a random policy is followed by the agent. The $\max$ operator also defines Q-Learning as an \textcolor{RoyalBlue}{off-policy} learning algorithm, since the Q values chosen for the construction of the TD-target might not correspond to the ones that are associated to the state that will be visited by the agent after having updated its $Q$ function.
 
@@ -222,15 +224,45 @@ Since as discussed earlier only learning the $V$ function is not sufficient for 
 Q(s_{t}, a_{t}):= Q(s_{t}, a_{t}) + \alpha \big[r_{t} + \gamma V(s_{t+1}) - Q(s_{t}, a_{t}) \big].
 \label{eq:qv_lambda_q_update}
 \end{equation}
-An interesting property of the algorithm is that it uses the same TD-target ($r_t + \gamma V(s_{t+1})$) for defining the two different TD-errors that are required for learning the state-value and the state-action value functions. Among the main insights which motivate learning two value functions over one ** mentions the possibility that the $V$ function, since it does not depend from the actions that are taken by the agent, might converge faster than the $Q$ function. In fact the $V$ function learns only with respect to the state space of the MDP which by definition is smaller than the state-action space. For a more in-depth and formal presentation of the conditions that show the benefits of jointly learning the $V$ function alongside the $Q$ function we refer the reader to chapter 5 of \cite{van2011insights}.
+An interesting property of the algorithm is that it uses the same TD-target ($r_t + \gamma V(s_{t+1})$) for defining the two different TD-errors that are required for learning the state-value and the state-action value functions. Among the main insights which motivate learning two value functions over one \cite{wiering2005qv} mentions the possibility that the $V$ function, since it does not depend from the actions that are taken by the agent, might converge faster than the $Q$ function. In fact as described earlier, the $V$ function only depends from the state space of the MDP which by definition is smaller than the state-action space. For a more in-depth and formal presentation of the conditions that show the benefits of jointly learning the $V$ function alongside the $Q$ function we refer the reader to chapter 5 of \cite{van2011insights}.
 
 
 \section{Function Approximators}
+If it is true that model-free RL algorithms are very powerful methods for learning an optimal policy when parts of the MDP are unknown, it is also true that all the aforementioned algorithms suffer from the \textcolor{RoyalBlue}{curse of dimensionality}. Model-free algorithms are typically implemented in a tabular fashion, meaning that the state values, or state-action values, are stored within a table of sizes $|\matchal{S}|$ and $|\mathcal{S}\times\mathcal{A}|$ respectively. Albeit straightforward and easy to implement such an approach presents severe limitations. The first major drawback of the tabular representation approach is that it does not scale well with respect to the complexity of the MDP. If the state and action spaces of the environment become very large, storing a table quickly becomes unfeasible in terms of storage space. Furthermore tabular representations are also unable to deal with states that are continuous. A natural solution to this problem consists in discretizing the state space, which unfortunately, when done thoroughly, results into the same aforementioned storage space issues. A common solution that makes it possible to use RL techniques even when the state space of the MDP is large is based on parametrized function approximation. In this context the goal is to not learn the exact value function anymore, but to rather replace its tabular representation with a parametrized function. The parameters of this function can then be adjusted based on the RL algorithms that we introduced in Sec. \ref{sec:td_learning}. 
+
+
 \subsection{Linear Functions}
+The most straightforward type of function approximator one can use is a linear function. Given a state-action tuple that gets represented as a feature vector $\vec{x}=[f_1(s,a), f_2(s,a), ..., f_i(s,a)] \in \mathds{R}^2$, and a function parametrized by a vector of parameters $\theta$, we can redefine the value of a state-action pair as:
+\begin{equation}
+	Q(s,a) = \sum_i \theta_{i,a} \vec{x}_i(s).
+\end{equation}
+Given a trajectory $\langle s_t,a_t,r_t,s_{t+1}\rangle$ the Q-Learning algorithm presented in Eq. \ref{eq:dqn} can now be used for updating the parameters $\theta$ for all $i$ with the following update rule:
+\begin{equation}
+	\theta_{i,a_t} := \theta_{i,a_t} + \alpha(r_t +\gamma\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t)\vec{x}_i(s_t).
+\end{equation}
+We can observe that this update rule is equivalent to update the parameter vector $\theta$ such that it minimizes the mean squared error loss between a given state-action tuple and Q-Learning's TD-target since  
+\begin{align}
+	& \mathcal{L}(\theta) = \frac{1}{2}\big(y_t - Q(s_t, a_t)\big)^2 \\ 
+	& \frac{\partial\mathcal{L}}{\partial \theta_{i,a_t}}=-\bi(y_t - Q(s_t, a_t)\big)\vec{x}_i(s_t)  \\ 
+ 	& \theta_{i,a_t} := \theta_{i,a_t} + \alpha(r_t +\gamma\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t)\vec{x}_i(s_t).
+\end{align}
+
+Similar steps can be used for all the previously introduced algorithms. 
+
 
 \subsection{Deep Neural Networks}
 
+
+\paragraph{Deep Q-Learning (DQN)}
+\paragraph{Double Deep Q-Learning (DDQN)}
+\paragraph{Prioritized Experience Replay}
+\paragraph{Dueling Networks}
+\paragraph{Rainbow}
+
+
 \section{Deep Reinforcement Learning Challenges}
+non stationarity
+
 
 \begin{remark}{Conclusion}
 
