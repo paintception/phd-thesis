@@ -247,10 +247,15 @@ We can observe that this update rule is equivalent to update the parameter vecto
  	& \theta_{i,a_t} := \theta_{i,a_t} + \alpha(r_t +\gamma\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t)\vec{x}_i(s_t).
 \end{align}
 
-Similar steps can be used for all the previously introduced algorithms. 
-
+Similar steps can be used for adapting all the RL algorithms that we introduced in the previous section. As a representative example for the on-policy learning case let us consider the SARSA algorithm, which can be used for minimizing the parameters of a linear function as:
+\begin{equation}
+	\theta_{i,a_t} := \theta_{i,a_t} + \alpha(r_t +\gamma Q(s_{t+1},a_{t+1}) - Q(s_t, a_t)\vec{x}_i(s_t).
+\end{equation}
+Among the different functions one can use there are CMACs , radial basis functions (RBFs), linear neural networks and linear support vector machines (SVMs). Although these techniques can be successfully used for dealing with the aforementioned curse of dimensionality problem, \textcolor{RoyalBlue}{non-linear} functions are in this respect even more powerful methods. Throughout this dissertation we are interested in non-linear functions that come in the form of deep neural networks. As discussed in the previous chapter these methods have large representation power, a benefit that however makes these model also particularly challenging to train when it comes to RL problems. We will now describe how one can successfully deal with some of the challenges that characterize the use of deep neural networks in RL by presenting some of the most important algorithms that have been introduced over the years.    
 
 \subsection{Deep Neural Networks}
+
+We are interested in finding 
 
 
 \paragraph{Deep Q-Learning (DQN)}
