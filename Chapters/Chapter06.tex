@@ -191,7 +191,7 @@ TD-Learning is a very effective strategy for building algorithms that can learn 
 \paragraph{Q-Learning:} introduced by \citet{watkins1992q} is arguably the most popular model-free RL algorithm. It works by keeping track of an estimate of the state-action value function $Q: \mathcal{S} \times \mathcal{A} \rightarrow \Re$ and updates each visited state-action pair with the following update rule:
 \begin{equation}
 Q(s_t,a_t):=Q(s_t,a_t) + \alpha\big[r_t + \gamma \underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t) \big].
-\label{eq:dqn}
+\label{eq:q_learning}
 \end{equation}
 The key component of Q-Learning's update rule is the $\max$ operator which characterizes its TD-error and that is necessary for constructing the TD-target. Since there are as many Q values as there are actions available to the agent, one must choose which Q value to use as a reference when updating the value of the state-action pair that is currently being visited by the agent. The $\max$ operator simply chooses the state-action pair with the largest Q value, a simple design choice that has the appealing property of making Q-Learning converge to $Q^{*}(s,a)$ with probability 1 as long as all state-action pairs are visited infinitely often. Interestingly this guarantee holds even if a random policy is followed by the agent. The $\max$ operator also defines Q-Learning as an \textcolor{RoyalBlue}{off-policy} learning algorithm, since the Q values chosen for the construction of the TD-target might not correspond to the ones that are associated to the state that will be visited by the agent after having updated its $Q$ function.
 
@@ -232,15 +232,18 @@ If it is true that model-free RL algorithms are very powerful methods for learni
 
 
 \subsection{Linear Functions}
-The most straightforward type of function approximator one can use is a linear function. Given a state-action tuple that gets represented as a feature vector $\vec{x}=[f_1(s,a), f_2(s,a), ..., f_i(s,a)] \in \mathds{R}^2$, and a function parametrized by a vector of parameters $\theta$, we can redefine the value of a state-action pair as:
+\label{sec:linear_functions}
+
+The most straightforward type of function approximator one can use is a linear function. Given a state-action tuple that gets represented as a feature vector $\vec{x}=[f_1(s,a), f_2(s,a), ..., f_i(s,a)] \in \mathds{R}^2$, and a function parametrized by a vector of parameters $\theta$, as shown in \cite{wiering2004convergence} we can redefine the value of a state-action pair as:
 \begin{equation}
 	Q(s,a) = \sum_i \theta_{i,a} \vec{x}_i(s).
 \end{equation}
 Given a trajectory $\langle s_t,a_t,r_t,s_{t+1}\rangle$ the Q-Learning algorithm presented in Eq. \ref{eq:dqn} can now be used for updating the parameters $\theta$ for all $i$ with the following update rule:
 \begin{equation}
 	\theta_{i,a_t} := \theta_{i,a_t} + \alpha(r_t +\gamma\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t)\vec{x}_i(s_t).
+	\label{eq:q_learning_fa}
 \end{equation}
-We can observe that this update rule is equivalent to update the parameter vector $\theta$ such that it minimizes the mean squared error loss between a given state-action tuple and Q-Learning's TD-target since  
+We can observe that this update rule is equivalent to updating the parameter vector $\theta$ for minimizing the mean squared error loss between a given state-action tuple and Q-Learning's TD-target since  
 \begin{align}
 	& \mathcal{L}(\theta) = \frac{1}{2}\big(y_t - Q(s_t, a_t)\big)^2 \\ 
 	& \frac{\partial\mathcal{L}}{\partial \theta_{i,a_t}}=-\bi(y_t - Q(s_t, a_t)\big)\vec{x}_i(s_t)  \\ 
@@ -251,14 +254,53 @@ Similar steps can be used for adapting all the RL algorithms that we introduced 
 \begin{equation}
 	\theta_{i,a_t} := \theta_{i,a_t} + \alpha(r_t +\gamma Q(s_{t+1},a_{t+1}) - Q(s_t, a_t)\vec{x}_i(s_t).
 \end{equation}
-Among the different functions one can use there are CMACs , radial basis functions (RBFs), linear neural networks and linear support vector machines (SVMs). Although these techniques can be successfully used for dealing with the aforementioned curse of dimensionality problem, \textcolor{RoyalBlue}{non-linear} functions are in this respect even more powerful methods. Throughout this dissertation we are interested in non-linear functions that come in the form of deep neural networks. As discussed in the previous chapter these methods have large representation power, a benefit that however makes these model also particularly challenging to train when it comes to RL problems. We will now describe how one can successfully deal with some of the challenges that characterize the use of deep neural networks in RL by presenting some of the most important algorithms that have been introduced over the years.    
+Among the different functions one can use there are CMACs \cite{lane1992theory}, radial basis functions (RBFs) \cite{park1993approximation}, linear neural networks \cite{mcculloch1943logical} and linear support vector machines (SVMs). Although these techniques can be successfully used for dealing with the aforementioned curse of dimensionality problem, \textcolor{RoyalBlue}{non-linear} functions are usually preferred since their representational power is much larger than the one of linear methods. Throughout this dissertation we are interested in non-linear functions that come in the form of deep neural networks, which despite being able of learning rich representations from their inputs, are also particularly challenging to train when it comes to RL problems. We will now describe how one can successfully deal with some of the challenges that characterize the use of deep neural networks in RL by presenting some of the most important algorithms that have been introduced over the years.    
 
 \subsection{Deep Neural Networks}
+Before looking into how RL algorithms should be integrated within deep neural networks, it is important to mention that RL techniques have been successfully used in combination with (less powerful) neural networks for over three decades. In fact, the field known as \textcolor{RoyalBlue}{Connectionist Reinforcement Learning} (CRL) gave born to the very first algorithms that managed to outperform human experts on certain tasks. Among the possible multiple examples of this family of techniques we mention the TD-Gammon program introduced by \citet{tesauro1994td}. TD-Gammon successfully learns an approximation of the evaluation function of the popular Backgammon board-game through the same TD-Learning methods that we presented in Sec. \ref{sec:td_learning} and achieved a level of play which was comparable to the one of the top human Backgammon players of its time. For a more detailed presentation about the successful applications of CRL algorithms we refer the reader to \cite{bucsoniu2011approximate}.  
 
-We are interested in finding 
+While certainly successful for a certain set of problems (see for example chapter $1$ of \cite{sabatelli2017learning}), CRL techniques also present severe limitations. Since they only use multi-layer perceptrons as function approximators, these algorithms cannot be used for tackling problems where the state representation of the MDP is highly dimensional. To overcome this, more complicated and powerful networks are required. \textcolor{RoyalBlue}{Deep Reinforcement Learning} (DRL) \cite{arulkumaran2017deep, li2017deep, franccois2018introduction} is a research field that combines RL algorithms with deeper and more complex neural architectures. In value based model-free DRL we are interested in learning an approximation of an optimal value function with a deep neural network that comes with parameters $\theta$
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}XX@{}}
+\begin{equation}
+	  V(s;\theta)\approx V^{*}(s)
+	  \label{eq:v_approx}
+  \end{equation}
+&
+\begin{equation}  
+	Q(s,a;\theta)\approx Q^{*}(s,a)
+	\label{eq:q_approx}
+  \end{equation}
+\end{tabularx}
+and that usually comes in the form of a convolutional neural network. 
+
+\paragraph{Deep Q-Learning (DQN):} just like Q-Learning is arguably the most important tabular model-free RL algorithm, so is DQN when it comes to DRL. First introduced by \citet{mnih2013playing} and then made popular by the work presented in \cite{mnih2015human} this algorithm can certainly be considered as the very first successful example of a neural network that is able to learn an approximation of the optimal state-action value function just from high sensory inputs such as images. As the name suggests, DQN is based upon the Q-Learning algorithm, and aims at learning an approximation of the optimal state-action value function $Q$. This is done by reshaping Q-Learning's update rule, presented in Eq. \ref{eq:q_learning}, into a differentiable loss function that can be used for training a convolutional network with the following objective function:
+\begin{multline}
+	\mathcal{L}(\theta) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}) \\ - Q(s_{t}, a_{t}; \theta)\big)^{2}\bigg].
+\label{eq:dqn}
+\end{multline}
+
+We can start by observing that the general principles that characterize the algorithm are the same ones which made it possible to generalize Q-Learning to the use of linear function approximators, although it is worth noting that differently from when a linear function is used the mapping between input and feature spaces now is not preserved anymore. Similarly to what we presented in Sec. \ref{sec:linear_functions}, we can see from Eq. \ref{eq:dqn} that learning $Q(s,a,\theta)$ is again achieved by minimizing the squared error loss between the $Q(s_t,a_t;\theta)$ estimates and the off-policy TD-target
+\begin{equation}
+    y^{DQN}_{t} = r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}).
+\label{eq:dqn_td}
+\end{equation}
+Despite this similarity DQN requires some additional algorithmic design choices without which it would result impossible to successfully train a neural network with Eq. \ref{eq:dqn}. These additions, which significantly make DQN differ from the algorithm presented in Eq. \ref{eq:q_learning_fa} are the following:
+\begin{itemize}
+	\item Experience Replay: a memory buffer, $D$, represented as a queue which stores RL trajectories of the form $\langle s_{t}$, $a_{t}$, $r_{t}$, $s_{t+1} \rangle$. Once this memory buffer is filled with a large set of these quadruples, DQN uniformly samples batches of trajectories for training its network. This makes it possible to exploit past trajectories multiple times by reusing them while training, which makes the overall algorithm more sample efficient. Furthermore, using a memory buffer also improves the stability of the training procedure. Recall that each trajectory is representative of a certain episode, by repeatedly randomly sampling a different $\tau$ from the memory buffer, a resulting mini-batch of trajectories will be representative of different episodes and of different policies. As a consequence the correlation between trajectories within a mini-batch will be small. Although made popular by the DQN algorithm, the use of an experience replay buffer for tackling optimal decision making problems was already presented by \citet{lin1992self}.
+		
+	\item Target Network:
+\end{itemize}
+
+Given a training iteration $i$, differentiating the objective function of Eq. \ref{eq:dqn} with respect to $\theta$ gives the following gradient: 
+\begin{multline}
+\nabla_{\theta_{i}}y^{DQN}_{t}(\theta_{i}) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \\ \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}_{i-1})  - Q(s_{t}, a_{t}; \theta_{i})\big)\nabla_{\theta_{i}} Q(s_{t}, a_{t}; \theta_{i})\bigg].
+\label{eq:dqn_gradient}
+\end{multline}
 
 
-\paragraph{Deep Q-Learning (DQN)}
+
 \paragraph{Double Deep Q-Learning (DDQN)}
 \paragraph{Prioritized Experience Replay}
 \paragraph{Dueling Networks}
