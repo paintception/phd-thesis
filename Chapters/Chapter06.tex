@@ -93,14 +93,14 @@ A key property of $V^{\pi}(s)$ and $Q^{\pi}(s,a)$ is that both value functions s
 \begin{align}
  V^{\pi}(s) & =\mathds{E}\big[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k}\big| s_t = s, \pi \big] \\ 
  & =\mathds{E}\big[r_{t+1}+\gamma r_{t+2}+\gamma^{2}r_{t+3}+\ldots \big| s_t =s , \pi \big] \\ 
- & =\mathds{E}\big[r_{t+1}+\gamma(r_{t+2}+r_{t+3}+\ldots)\big| s_t =s , \pi \big] \\
+ & =\mathds{E}\big[r_{t+1}+\gamma(r_{t+2}+\gamma r_{t+3}+\ldots)\big| s_t =s , \pi \big] \\
  & =\mathds{E}\big[r_{t+1}+\gamma V^{\pi}(s_{t+1}) \big| s_t =s , \pi \big] \\
  & =\sum_a \pi(s,a) \sum_{s+1} p(s_{t+1}|s,a)\big[\Re(s_t, a, s_{t+1}) + \gamma V^{\pi}(s_{t+1}) \big].
 \end{align}
 Similar steps can be followed when considering $Q^{\pi}(s,a)$ which can then be recursively defined as:
-\begin{align}
+\begin{equation}
 	Q^{\pi}(s,a) = \sum_{s_{t+1}} p(s_{t+1}|s,a)\big(\Re(s_t, a, s_{t+1}) + \\ \gamma \sum_{a_{t+1}} \pi(s_{t+1},a_{t+1}) Q^{\pi}(s_{t+1}, a_{t+1}) \big).
-\end{align}
+\end{equation}
 
 When it comes to sequential decision making, we are interested in maximizing the value of each state or of each state-action pair, since by doing so we will be finding a policy $\pi$ that is optimal. The \textcolor{RoyalBlue}{optimal policy} $\pi^{*}$ is a policy that realizes the optimal expected return defined as:
 \begin{align}
@@ -224,7 +224,7 @@ Since as discussed earlier only learning the $V$ function is not sufficient for 
 Q(s_{t}, a_{t}):= Q(s_{t}, a_{t}) + \alpha \big[r_{t} + \gamma V(s_{t+1}) - Q(s_{t}, a_{t}) \big].
 \label{eq:qv_lambda_q_update}
 \end{equation}
-An interesting property of the algorithm is that it uses the same TD-target ($r_t + \gamma V(s_{t+1})$) for defining the two different TD-errors that are required for learning the state-value and the state-action value functions. Among the main insights which motivate learning two value functions over one \cite{wiering2005qv} mentions the possibility that the $V$ function, since it does not depend from the actions that are taken by the agent, might converge faster than the $Q$ function. In fact as described earlier, the $V$ function only depends from the state space of the MDP which by definition is smaller than the state-action space. For a more in-depth and formal presentation of the conditions that show the benefits of jointly learning the $V$ function alongside the $Q$ function we refer the reader to chapter 5 of \cite{van2011insights}.
+An interesting property of the algorithm is that it uses the same TD-target ($r_t + \gamma V(s_{t+1})$) for defining the two different TD-errors that are required for learning the state-value and the state-action value functions. Among the main insights which motivate learning two value functions over one \citet{wiering2005qv} mentions the possibility that the $V$ function, since it does not depend from the actions that are taken by the agent, might converge faster than the $Q$ function. In fact as described earlier, the $V$ function only depends from the state space of the MDP which by definition is smaller than the state-action space. For a more in-depth and formal presentation of the conditions that show the benefits of jointly learning the $V$ function alongside the $Q$ function we refer the reader to chapter 5 of \cite{van2011insights}.
 
 
 \section{Function Approximators}
@@ -246,7 +246,7 @@ Given a trajectory $\langle s_t,a_t,r_t,s_{t+1}\rangle$ the Q-Learning algorithm
 We can observe that this update rule is equivalent to updating the parameter vector $\theta$ for minimizing the mean squared error loss between a given state-action tuple and Q-Learning's TD-target since  
 \begin{align}
 	& \mathcal{L}(\theta) = \frac{1}{2}\big(y_t - Q(s_t, a_t)\big)^2 \\ 
-	& \frac{\partial\mathcal{L}}{\partial \theta_{i,a_t}}=-\bi(y_t - Q(s_t, a_t)\big)\vec{x}_i(s_t)  \\ 
+	& \frac{\partial\mathcal{L}}{\partial \theta_{i,a_t}}=-\big(y_t - Q(s_t, a_t)\big)\vec{x}_i(s_t)  \\ 
  	& \theta_{i,a_t} := \theta_{i,a_t} + \alpha(r_t +\gamma\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t)\vec{x}_i(s_t).
 \end{align}
 
@@ -281,24 +281,34 @@ and that usually comes in the form of a convolutional neural network.
 \label{eq:dqn}
 \end{multline}
 
-We can start by observing that the general principles that characterize the algorithm are the same ones which made it possible to generalize Q-Learning to the use of linear function approximators, although it is worth noting that differently from when a linear function is used the mapping between input and feature spaces now is not preserved anymore. Similarly to what we presented in Sec. \ref{sec:linear_functions}, we can see from Eq. \ref{eq:dqn} that learning $Q(s,a,\theta)$ is again achieved by minimizing the squared error loss between the $Q(s_t,a_t;\theta)$ estimates and the off-policy TD-target
+We can start by observing that the general principles that characterize the algorithm are the same ones which made it possible to generalize Q-Learning to the use of linear function approximators, although it is worth noting that differently from when a linear function is used the mapping between input and feature spaces is now not preserved anymore. Similarly to what we presented in Sec. \ref{sec:linear_functions}, we can see from Eq. \ref{eq:dqn} that learning $Q(s,a,\theta)$ is again achieved by minimizing the squared error loss between the $Q(s_t,a_t;\theta)$ estimates and the off-policy TD-target
 \begin{equation}
     y^{DQN}_{t} = r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}).
 \label{eq:dqn_td}
 \end{equation}
-Despite this similarity DQN requires some additional algorithmic design choices without which it would result impossible to successfully train a neural network with Eq. \ref{eq:dqn}. These additions, which significantly make DQN differ from the algorithm presented in Eq. \ref{eq:q_learning_fa} are the following:
+Despite this similarity DQN requires some additional algorithmic design choices, without which, it would result impossible to successfully train a neural network with Eq. \ref{eq:dqn}. These additions, which significantly make DQN differ from the algorithm presented in Eq. \ref{eq:q_learning_fa} are the following:
 \begin{itemize}
 	\item Experience Replay: a memory buffer, $D$, represented as a queue which stores RL trajectories of the form $\langle s_{t}$, $a_{t}$, $r_{t}$, $s_{t+1} \rangle$. Once this memory buffer is filled with a large set of these quadruples, DQN uniformly samples batches of trajectories for training its network. This makes it possible to exploit past trajectories multiple times by reusing them while training, which makes the overall algorithm more sample efficient. Furthermore, using a memory buffer also improves the stability of the training procedure. Recall that each trajectory is representative of a certain episode, by repeatedly randomly sampling a different $\tau$ from the memory buffer, a resulting mini-batch of trajectories will be representative of different episodes and of different policies. As a consequence the correlation between trajectories within a mini-batch will be small. Although made popular by the DQN algorithm, the use of an experience replay buffer for tackling optimal decision making problems was already presented by \citet{lin1992self}.
 		
-	\item Target Network:
+	\item Target Network: We can observe from Eq. \ref{eq:dqn_td} that the TD-target used by DQN for bootstrapping is not computed by the $Q$ network that is being optimized ($\theta$), but rather from a second separate network that is parameterized with $\theta^{-}$. This second network has the same structure as the main $Q$ network, but its weights do not change each time RL experiences are sampled from $D$. On the contrary, its weights are temporally frozen, and only periodically get updated with the parameters of the main network $\theta$ as defined by an appropriate hyperparameter. Note that this is a design choice that is not motivated by the TD-Learning paradigm that we presented in Sec. \ref{sec:td_learning}, where we have seen that TD-Learning based methods learn in a fully online fashion by updating their value estimates based on their own future estimates. With a target-network, although the $\theta$ network still learns via the methods of temporal differences, it now requires an auxiliary, external model if it wants to successfully learn $\approx Q^{*}(s,a;\theta)$. Several research has studied the role of the target network with the aim of understanding why this design choice appears to be necessary for DRL, yet the role of $\theta^{-}$ is not fully understood by the DRL community. For more about this topic we refer the reader to .
+
 \end{itemize}
 
-Given a training iteration $i$, differentiating the objective function of Eq. \ref{eq:dqn} with respect to $\theta$ gives the following gradient: 
+Now that all components of Eq. \ref{eq:dqn} are introduced we can show that given a training iteration $i$, differentiating this objective function with respect to $\theta$ gives the following gradient: 
 \begin{multline}
 \nabla_{\theta_{i}}y^{DQN}_{t}(\theta_{i}) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \\ \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}_{i-1})  - Q(s_{t}, a_{t}; \theta_{i})\big)\nabla_{\theta_{i}} Q(s_{t}, a_{t}; \theta_{i})\bigg].
 \label{eq:dqn_gradient}
 \end{multline}
 
+The DQN algorithm showed its potential in \cite{mnih2015human} where it was shown how the same neural network, trained with Eq. \ref{eq:dqn}, could learn how to successfully play most of the \texttt{Atari} games that were part of the popular Atari Arcade Learning Environment (ALE) \cite{bellemare2013arcade}. The goal of the ALE platform is to provide a benchmark for testing the performance of DRL algorithms. This is done by measuring how well a DRL algorithm learns to play $57$ different emulations of \texttt{Atari} games that are specifically designed within a simulator. See Fig. \ref{fig:atari_games} for a visualization of some of the games that are part of the ALE suite. Remarkably DQN learned how to play most of the games of the platform by only using as input for the network the images representing an \texttt{Atari} game, therefore learning just from its own experience in a pure model-free RL fashion. Since then, DQN has been successfully used for a large variety of applications ranging from, to and .
+However, despite all these remarkable applications the algorithm still comes with some drawbacks, some of which were solved by the follow-up algorithms presented below.
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=10cm]{./Images/Chapter02/atari_games}
+  \caption{A visual representation of some of the \texttt{Atari} games that are part of the Arcade Learning Environment (ALE) \cite{bellemare2013arcade}. From left to right \texttt{Breakout, Seaquest, Pong, MsPacman, Qbert, Kungfu-Master, Enduro} and \texttt{Space Invaders}. Most of these games will be of interest and used in chapters . Image courtesy of .}
+  \label{fig:atari_games}
+\end{figure}
 
 
 \paragraph{Double Deep Q-Learning (DDQN)}
