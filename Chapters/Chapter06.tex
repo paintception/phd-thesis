@@ -309,7 +309,7 @@ The DQN algorithm showcased its entire potential in \cite{mnih2015human} where M
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=10cm]{./Images/Chapter02/atari_games}
-  \caption{A visual representation of some of the \texttt{Atari} games that are part of the Arcade Learning Environment (ALE) \cite{bellemare2013arcade}. From left to right \texttt{Breakout, Seaquest, Pong, MsPacman, Qbert, KungFu-Master, Enduro} and \texttt{Space Invaders}. Most of these games will be of interest in chapters \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}. Image courtesy of .}
+  \caption{A visual representation of some of the \texttt{Atari} games that are part of the Arcade Learning Environment (ALE) \cite{bellemare2013arcade}. From left to right \texttt{Breakout, Seaquest, Qbert, Pong, MsPacman, KungFu-Master, Enduro} and \texttt{Space Invaders}. Most of these games will be of interest in chapters \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}. Image courtesy of .}
   \label{fig:atari_games}
 \end{figure}
 
@@ -325,24 +325,29 @@ As a result, DQN tends to approximate the expected maximum value of a state, ins
 \begin{equation}
 	P(\tau)=\frac{p_{\tau}^{\alpha}}{\sum_k p_{k}^{\alpha}}
 \end{equation}
-where $p_{\tau}$ is $|\delta_\tau + \epsilon|$ with $\epsilon$ being a small positive number ensuring that the probability of sampling a trajectory remains positive even in the edge case where the TD-error is $0$. Although simple and intuitive implementing a PER buffer is not that straightforward and still presents some algorithmic caveats that need to be taken into account. Yet, if done correctly it dramatically improves the sample efficiency of Deep Q-Networks.
+where $p_{\tau}$ is $|\delta_\tau + \epsilon|$ with $\epsilon$ being a small positive number ensuring that the probability of sampling a trajectory remains positive even in the edge case where the TD-error is $0$. Although simple and intuitive implementing a PER buffer is not that straightforward and still presents some algorithmic caveats that need to be taken into account. Yet, if done correctly it dramatically improves the sample efficiency of Deep Q-Networks \cite{narasimhan2015language}.
 
 \paragraph{Dueling Networks:} while the DDQN algorithm directly tackles a fundamental algorithmic bias which characterizes the way DQN learns the $Q$ function, and PER addresses the inefficiency of its memory buffer, the contribution presented by \citet{wang2016dueling} is of slightly different nature. Their work in fact consists in a novel type of neural architecture, called the Dueling Network. This is a contribution which resembles more the kind of progress that is made by the supervised learning community, which, as we discussed in the previous chapter, has put a lot of effort in developing novel neural architectures for tackling computer vision tasks. Nevertheless Wang's work is a perfect example which showcases how in DRL, carefully designing the function approximator is just as important as properly defining its objective function. A Dueling network is a network that after having performed a series of convolutions, instead of directly outputting the state-action values for a specific state as DQN and DDQN do, adds some intermediate computations. The idea is to estimate the value of a state together with the advantages for each action before outputting the final $Q$ values. The state values are computed based on Eq. \ref{eq:state_value_function}, while the advantage function $A$ is simply the difference between the $Q$ function and the $V$ function:
 \begin{equation}
 	A^{\pi}(s,a) = Q^{\pi}(s,a) - V^{\pi}(s).
 \end{equation}
-In order to successfully estimate state values, advantages and state-action values the network requires a specific architectures that consists of three separate streams. Each stream is responsible for estimating one of the three value functions and is initialized with its own parameters. The final $Q$ function of the model is then given by combining what is learned by each stream as follows:
+In order to successfully estimate state values, advantages and state-action values the network requires a specific architectures that consists of three separate streams. Each stream is responsible for estimating one of the three value functions and is initialized with its own parameters $\theta^{(\cdot)}$. The final $Q$ function of the model is then obtained by combining what is learned by each stream as follows:
 \begin{multline}
 	Q(s,a;\theta^{(1)},\theta^{(2)},\theta^{(3)}) = V\bigl(s;\theta^{(1)},\theta^{(3)}\bigr) + \\
 	\bigl(A(s,a;\theta^{(1)},\theta^{(2)}) - \underset{a_{t+1}\in \mathcal{A}}{\max}\: A(s, a_{t+1};\theta^{(1)},\theta^{(2)}) \bigr).
 	\label{eq:dueling}
 \end{multline}
-Building a network with different task specific streams, is a design choice that resembles the way models are built when tackling multitask classification tasks. Yet note that the output of each stream that either estimates the state values or the advantage function gets aggregated when constructing the final $Q$ function. Minimizing the objective function presented in Eq. \ref{eq:dueling} is done by following the same principles that are also used by DQN and DDQN. The idea of taking into account the $V$ function when learning the $Q$ function is a concept which will come back, in a different flavor, in chapters \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}.
+Building a network with different task specific streams, is a design choice that resembles the way models are built when tackling multitask classification tasks. Yet note that the output of each stream that either estimates the state values or the advantage function gets aggregated in a final layer that estimates the state-action values. Minimizing the objective function presented in Eq. \ref{eq:dueling} is done by following the same principles that are also used by DQN and DDQN. The idea of taking into account the $V$ function when learning the $Q$ function is a concept which will come back, in a different flavor, in chapters \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}.
+
+\paragraph{Policy Gradient Methods:} so far we have only considered algorithms that are part of the action-value family of methods, which as explained in Sec. \ref{sec:} are algorithms that derive an optimal policy from a learned $Q$ function. Yet, there is a collection of algorithms that is able to directly learn a policy which bypasses the requirement of having to consult state-action values when it comes to action selection. These methods, which have contributed to the development of DRL just as much action-value methods, come with the name of Policy Gradients. They directly parametrize a policy at time-step $t$ as $\pi(a|s;\theta)=\text{Pr}{A_t = a, S_t=s};\theta_t=\theta$ and seek to optimize the parameters $\theta$ such that the performance of the policy is maximized. Note that this is drastically different from all the methods which we have seen so far, where the aim in fact was to minimize the TD-error, which was then done through gradient descent optimization. Since policy gradients aim to maximize their performance, they learn via gradient ascent and therefore update their parameters as follows
+\begin{equation}
+	\theta \leftarrow \theta + \alpha \nabla \xi(\theta).
+\end{equation}
+Here $\alpha$ is again the learning rate and $\xi$ is a measure that quantifies the performance of the policy. Similarly to action-value based methods one can parametrize a policy either with a linear function or with a deep neural network. When 
+
 
 \paragraph{Rainbow:} from the examples above it is clear that a lot of fast progress has been achieved in creating algorithms capable of learning faster and better. Explaining all the individual value-based contributions that have made DRL the popular research field it is nowadays \cite{henderson2018deep}, is beyond the scope of this chapter, yet, if there is one algorithm that encapsulates most of the progress that has been achieved by the DRL community over the last years, that is Rainbow \cite{hessel2018rainbow}. Rainbow is a single, almighty agent that integrates within the same algorithm most of the important breakthroughs that DRL researchers have introduced over the last decade, ranging from the previously mentioned DDQN algorithm and PER system, to other techniques such as distributional DRL \cite{bellemare2017distributional}, multi-step learning, distributed training \cite{mnih2016asynchronous} and noisy networks \cite{fortunato2017noisy} for better exploration.
 
-
-\paragraph{Policy Gradient Methods}
 
 \section{Deep Reinforcement Learning Challenges}
 non stationarity
