@@ -36,10 +36,10 @@ we can define it as follows:
 \end{definition}
 The elements of the MDP allow us to properly model the dynamics of an agent interacting with its environment, an interaction which can be summarized as follows: at each time-step $t$ the environment provides the agent with a certain state $s_t$, the agent then performs action $a_t$ which results into the reward signal $r_{t+1}$. After performing such action the agent will enter into a new state $s_{t+1}$. This continuous interaction with the environment is also known as the Reinforcement Learning loop, and can technically be infinite. This is however never the case in practice, since an agent will eventually visit a state which only transits to itself (denoted as terminal), which will therefore stop the agent-environment interaction. We visually represent the Reinforcement Learning loop in Fig. \ref{fig:rl_loop}.
 
-\begin{figure}[ht!]
-\centering
-  \includegraphics[width=10cm]{./Images/Chapter06/rl_loop.png}
-  \caption{A visual representation of how an agent interacts with an environment as modeled by a Markov decision process. Figure taken from page 48 of the \citet{sutton2018reinforcement} textbook.}
+\begin{figure}[htb!]
+	\centering
+	\input{Images/Chapter06/rl_loop.tex}
+\caption{A visual representation of how an agent interacts with an environment as modeled by a Markov decision process. Figure inspired from page 48 of the \citet{sutton2018reinforcement} textbook.}
   \label{fig:rl_loop}
 \end{figure}
 
@@ -149,29 +149,14 @@ The first family of methods that is able of learning optimal value functions whe
 \end{equation}
 where $\alpha \in [0,1]$ is the learning rate controlling how much we want to change the value estimate of a state based on $G_t$. As a practical example let us consider the MDP represented in Fig. \ref{fig:mdp}. Let us assume that the starting state of the environment is $s_0$ while the terminal state of the environment is $s_2$, and that the agent follows a policy $\pi$ that results into actions $a_1, a_2$ and $a_3$. The rewards associated to each action are: $-1, +2$ and $+3$ respectively. If we set the discount factor to $0.99$ we know that the real discounted return that is obtained at the end of the agent-environment interaction when starting in state $s_0$ is $\sum_{k=0}^{\infty}\gamma^{k} r_{t+k+1} = -1+\gamma2+\gamma^{2}3 \approx 3.92$. If we assume that the current value of $s_0$ before is $0$, and that we set $\alpha=0.5$, the result of one MC update for $s_0$ will be $\approx 1.96$. 
 
-\begin{figure}[ht]
+\begin{figure}
 	\centering
-	\begin{tikzpicture}[auto,node distance=8mm,>=latex,font=\small]
+	\input{Images/Chapter06/mdp.tex}
 
-    \tikzstyle{round}=[thick,draw=black,circle]
-
-    \node[round] (s0) {$s_0$};
-    \node[round,above right=5mm and 20mm of s0] (s1) {$s_1$};
-    \node[round,below right=5mm and 20mm of s0] (s2) {$s_2$};
-
-    \draw[->] (s0) -- node [text width=0.5cm,above] {a1} (s1);
-    \draw[] (s0) -- node [text width=.5cm,below] {\textcolor{Maroon}{-1}} (s1);
-
-    \draw[->] (s0) -- node [text width=0.5cm,above]{a3} (s2);
-    \draw[] (s0) -- node [text width=.5cm,below] {\textcolor{Maroon}{+3}} (s2);
-
-    \draw[->] (s1) -- node [text width=0.5cm,above]{a2} (s0);
-    \draw[] (s1) -- node [text width=.5cm,below] {\textcolor{Maroon}{-2}} (s0);
-
-\end{tikzpicture}
 \caption{A visual representation of a simple MDP.}
 \label{fig:mdp}
 \end{figure}
+
 
 When dealing with MC learning it can be possible that a certain state is visited more than once before a terminal state is reached. This is the case for $s_0$ for the MDP represented in Fig. \ref{fig:mdp}. If that happens one must decide when to update $V(s)$ and which value to use as $G_t$, since different state visits result into different $G_t$ values. There are two typical ways to deal with this, one can either update $V(s)$ only once, or one can update $V(s)$ each time the state is visited by simply using as $G_t$ the average of all the different discounted returns. The first update strategy comes with the name of , while the latter is denoted as .
 While several successful applications of MC methods exist \cite{jaakkola1995reinforcement,liu1998sequential,lazaric2007reinforcement}, a well known issue from this family of algorithms is that they suffer from highly biased updates. In fact one needs to compute the sum presented in Eq. \ref{eq:goal} over all visited states, which can result into returns with considerable variance. It is easy to see how this can become an issue especially when the length of the episodes increases since the larger the length of the episode, the larger the variance of the updates. Furthermore, an additional drawback of MC methods is that one must wait until the agent visits a terminal state before being able to perform an update that is based on Eq. \ref{eq:mc_update}, the latter drawback can result into slow learning and is addressed by the methods are presented hereafter.   
