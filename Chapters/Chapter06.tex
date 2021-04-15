@@ -31,7 +31,7 @@ We start by introducing the following elements:
 
 Based on these concepts a MDP is defined by the following tuple $\langle\mathcal{S}, \mathcal{A}, \mathcal{P}, r, \gamma\rangle$ and is also commonly denoted in the RL literature as the \textcolor{RoyalBlue}{environment}. The way the agent interacts with this environment is given by its \textcolor{RoyalBlue}{policy} $\pi$, defined as a probability distribution over $a \in \mathcal{A}(s)$ for each $s \in \mathcal{S}$:
 \begin{equation}
-	\pi(a|s) = \text{Pr}\; \{A_t = a | S_t = s\}, \; \text{for all}\; s \in \mathcal{S}\; \text{and}\; a\ \in \mathcal{A}. 
+	\pi(a|s) = \text{Pr}\; \{a_t = a | s_t = s\}, \; \text{for all}\; s \in \mathcal{S}\; \text{and}\; a\ \in \mathcal{A}. 
 \end{equation}
 A policy can be deterministic if $\forall s:\pi(s,a) = 1$ for exactly one $a \in \mathcal{A}(s)$ and $\pi(s,b)=0$ for all other $b \in \mathcal{A}(s)$, while it is stationary if it does not change over time. In both cases 
 we can define it as follows:
@@ -336,7 +336,7 @@ In order to successfully estimate state values, advantages and state-action valu
 \end{multline}
 Building a network with different task specific streams, is a design choice that resembles the way models are built when tackling multitask classification tasks. Yet note that the output of each stream that either estimates the state values or the advantage function gets aggregated in a final layer that estimates the state-action values. Minimizing the objective function presented in Eq. \ref{eq:dueling} is done by following the same principles that are also used by DQN and DDQN. The idea of taking into account the $V$ function when learning the $Q$ function is a concept which will come back, in a different flavor, in chapters \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}.
 
-\paragraph{Policy Gradient Methods:} so far we have only considered algorithms that are part of the action-value family of methods, which as explained in Sec. \ref{sec:learning_value_functions} are techniques that derive an optimal policy from a learned $Q$ function. Yet, there is a collection of algorithms that is able to directly learn a policy, and that therefore bypasses the requirement of having to consult state-action values when it comes to action selection. These methods, which have contributed to the development of DRL just as much as action-value methods, come with the name of Policy Gradients. They directly parametrize a policy at each time-step as $\pi(a|s;\theta)=\text{Pr}\{A_t = a, S_t=s\;\theta_t=\theta}$ and seek to optimize the parameters $\theta$ such that the performance of the policy is maximized. Note that this is drastically different from all the methods which we have seen so far, where the aim in fact was to minimize the TD-error through gradient descent optimization. Since policy gradients aim to maximize their performance, they learn via gradient ascent and therefore update their parameters as follows
+\paragraph{Policy Gradient Methods:} so far we have only considered algorithms that are part of the action-value family of methods, which as explained in Sec. \ref{sec:learning_value_functions} are techniques that derive an optimal policy from a learned $Q$ function. Yet, there is a collection of algorithms that is able to directly learn a policy, and that therefore bypasses the requirement of having to consult state-action values when it comes to action selection. These methods, which have contributed to the development of DRL just as much as action-value methods, come with the name of Policy Gradients. They directly parametrize a policy at each time-step as $\pi(a|s;\theta)=\text{Pr}\{a_t = a, s_t=s\;\theta_t=\theta}$ and seek to optimize the parameters $\theta$ such that the performance of the policy is maximized. Note that this is drastically different from all the methods which we have seen so far, where the aim in fact was to minimize the TD-error through gradient descent optimization. Since policy gradients aim to maximize their performance, they learn via gradient ascent and therefore update their parameters as follows
 \begin{equation}
 	\theta \leftarrow \theta + \alpha \nabla \xi(\theta).
 \end{equation}
@@ -356,7 +356,29 @@ where $\mu(s)$ is the stationary on-policy distribution under $\pi$. By expressi
 
 \section{Deep Reinforcement Learning Challenges}
 \label{sec:challenges}
-non stationarity
+Similarly to what we did for the field of supervised-learning we now end this chapter by presenting some of the main limitation that, according to us, currently characterize the field of DRL. We briefly describe what we think are some of the most significant challenges that the DRL community needs to focus on, and how they result into a set of challenging research questions that we have tried to address throughout this dissertation.
+
+\paragraph{Non-Convex Loss Functions}
+
+
+\paragraph{Divergence \& `The Deadly Triad"}
+
+
+\citet{} show that divergence occurs when DRL algorithms are combined with three key concepts that we have introduced in this chapter. These concepts are:
+\begin{itemize}
+	\item Bootstrapping (Sec. \ref{sec:td_learning})
+	\item Off-Policy Learning (Sec. \ref{sec:td_learning})
+	\item Function Approximation (Sec. \ref{sec:function_approximators})
+\end{itemize}
+This combination is known as the `Deadly Triad" of DRL and it is well known that if all of these three elements are combined within the same algorithm, divergence cannot be avoided. However, if an agent can bypass the need of relying on either one of these elements, then instability can already be prevented. Several work has addressed the `Deadly Triad" of DRL with the aim of answering the natural question \textit{`which element can be given up when developing DRL algorithms?"} So far the community seems to agree that giving up on function approximators is clearly not possible. As discussed in Sec. \ref{sec:function_approximators} even linear functions can already play a crucial role for the development of algorithms that deal with large and complex MDPs. On the other hand, it is not yet known what to give up between off-policy learning and bootstrapping, what is known however is that also because of the `Deadly Triad", successfully training DRL solutions can be computationally very expensive and requires significantly long training times. We will introduce a solution to this issue in Chapter \ref{ch:dqv_family_of_algorithms}.
+
+
+\paragraph{Computational Resources:} while most of the DRL algorithms presented in this chapter naturally follow from the tabular RL literature and are therefore not particularly hard to implement, successfully training and benchmarking these algorithms is not an equivalently easy task. 
+The two aforementioned mathematical issues reflect themselves in DRL algorithms that work well only if combined with a large range of carefully chosen hyperparameters. If a few of these hyperparameters is not set correctly the algorithms miserably fail in learning even the most simple tasks. Unfortunately the intuition of even the most expert DRL practitioner is not enough for identifying which learning parameters work best. As an example let us consider the previously described Rainbow agent \cite{hessel2018rainbow}. The learning rate which yields successful training is set to $0.0000625$, which is clearly a value that could only be identified after performing an exhaustive grid search over a large set of potential learning rates. If on top of this we also consider that training an agent on the previously mentioned ALE, is a process which can last from taking days, to even weeks \cite{kaiser2019model}, it is clear that the computational resources that are required for successfully evaluating DRL algorithms might not be accessible to all of the DRL community. For an excellent position-paper about this topic we refer the reader to the work of \citet{obando2020revisiting}. It is therefore desirable to develop algorithms that do not require extraordinary computational costs, or that, if they do, can limit this use by learning and converging faster. We address this issue in Chapter \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}.
+
+
+\paragraph{Generalization and Transferability}
+The aforementioned limitation can naturally be addressed by studying whether agents that are trained for solving certain tasks, can generalize to new unseen problems. If this would be the case this could have significant practical benefits. DRL algorithms would not have to be trained from scratch each time they face a new problem, which therefore will limit the aforementioned requirement of large computational costs significantly. Furthermore, as mentioned in the introduction of this dissertation there is arguably nothing more intelligent than learning how to solve a problem, than learning a solution to a problem that is general enough to a larger set of problems. We thoroughly study the degree of transferability of DRL algorithms in Chapter \ref{ch:dqn_transfer} and present how the RL community has already studied the transfer learning properties of RL algorithms in the coming chapter.
 
 
 \begin{remark}{Conclusion}
