@@ -1,12 +1,9 @@
+\chapter{Supervised Learning and Deep Neural Networks}
+\label{ch:supervised_learning}
+
+\begin{remark}{Outline}
+structure ...
+\end{remark}
+
 \section{Introduction}
 
-A supervised learning (SL) problem can be identified by three elements: an input space ${\cal X}_t$, an output space ${\cal Y}_t$, and a probability distribution $p_t(x,y)$ defined over ${\cal X}_t\times {\cal Y}_t$ (where $t$ stands for 'target', as this is the main problem we would like to solve). The goal of SL is then to build a function $f:{\cal X}_t\rightarrow{\cal Y}_t$ that minimizes the expectation over $p_t(x,y)$ of a given loss function $\ell$ assessing the predictions made by $f$:
-\begin{equation}\label{loss}
-  E_{(x,y)\sim p_t(x,y)} \{\ell(y,f(x))\},
-\end{equation}
-when the only information available to build this function is a learning sample of input-output pairs $LS_t=\{(x_i,y_i)|i=1,\ldots,N_t\}$ drawn independently from $p_t(x,y)$. In the general transfer learning setting, one assumes that an additional dataset $LS_s$, called the source data, is available that corresponds to a different, but related, SL problem. More formally, the source SL problem is assumed to be defined through a triplet $({\cal X}_s,{\cal Y}_s,p_s(x,y))$, where at least either ${\cal X}_s\neq {\cal X}_t$, ${\cal Y}_s\neq {\cal Y}_t$, or $p_s\neq p_t$. The goal of TL is then to exploit the source data $LS_s$ together with the target data $LS_t$ to potentially find a better model $f$ in terms of the expected loss (\ref{loss}) than when only $LS_t$ is used for training this model. Transfer learning is especially useful when there is a lot of source data, whereas target data is more scarce.
-
-
-\section{Results}
-\input{Results/example_results.tex}
-\input{Results/example_results_2.tex}
