@@ -1,23 +1,60 @@
 \chapter{Transfer Learning}
 \label{ch:transfer_learnimg}
 
-
 \begin{remark}{Outline}
+	We now present Transfer Learning (TL), a machine learning methodology that aims at creating algorithms that are capable of retaining and reusing previously learned knowledge when getting trained on new, unseen problems. Most of the contributions presented within this dissertation are motivated by TL, therefore, we now introduce the reader to this specific learning paradigm with the goal of providing him/her with all the preliminary knowledge that is necessary for fully understanding the research that will be presented in the coming chapters. We start with a gentle introduction to TL in Sec. \ref{sec:tl_introduction} where we present the main concepts underlying TL and explain why it is desirable to have machine learning models that are transferable. We then show in Sec. \ref{sec:rationale} some practical, high level, examples that visually represent the benefits that come from adopting TL strategies in machine learning. We will then provide more rigorous, mathematical definitions of TL in Sec. \ref{sec:definitions} where we will characterize TL both for supervised learning as for reinforcement learning. In Sec. \ref{sec:literature_review} we will thoroughly review how TL has already been studied by the machine learning community, we will again do this both for supervised learning as for reinforcement learning, with an additional focus on how TL is performed when neural networks are used. We end this chapter with Sec. \ref{sec:relevance} where we summarize the most relevant TL concepts that underpin the contributions that are presented in this dissertation.  
 \end{remark}
 
 \section{Introduction}
+\label{sec:tl_introduction}
+
 
 \section{Rationale of Transfer Learning}
+\label{sec:rationale}
 Desired Outcome plots
 
 
 \section{Mathematical Definitions}
-\subsection{Inductive Transfer Learning}
-\subsection{Transductive Transfer Learning}
-\subsection{Unsupervised Transfer Learning}
+\label{sec:definitions}
 
-\section{Transfer Learning for Supervised Learning}
-\section{Transfer Learning for Reinforcement Learning}
-\section{Deep Transfer Learning}
+\subsection{Supervised Learning}
+
+\begin{definition}
+	A domain $\mathcal{D}$ is the combination between an input space $\mathcal{X}$ and a marginal distribution $P(X)$, $\mathcal{D} = \{\mathcal{X},P(X)\}$ where $X$ denotes an instance set defined as $X=\{\vec{x}|\vec{x_i}\in \mathcal{X}, i =1, \cdots, n \}$.
+\end{definition}
+
+
+\begin{definition}
+A task $\mathcal{T}$ consists of a label space $\mathcal{Y}$ and a decision function $f$, i.e., $\mathcal{T}=\{\mathcal{Y},f\}$. The decision function $f$ is implicit and can only be learned by sampling data from $\mathcal{X}$.
+\end{definition}
+
+
+\begin{definition}
+Given one, or more, observations corresponding to $m^s \in \mathds{N}^{+}$ source domain(s) and tasks(s) (i.e., $\{(\mathcal{D}_{S}_{i}, \mathcal{T}_{S}_{i}|i=1\cdots,m^s)\})$ and some additional observation(s) about $m^T \in \mathds{N}^{+}$ target domain(s) and task(s) (i.e. $\{(\mathcal{D}_{T}_{j},\mathcal{T}_{T}_{j}|j=1,\cdots,m^T)\})$, transfer learning utilizes the knowledge implied in the source domains to improve the performance of the learned decision functions $f^{T}_j(j=1,\cdots,m^T)$ on the target domain(s).
+\end{definition}
+
+\paragraph{Inductive Transfer Learning}
+\paragraph{Transductive Transfer Learning}
+\paragraph{Unsupervised Transfer Learning}
+
+\subsection{Reinforcement Learning}
+
+\begin{definition}
+Other definition
+
+\end{definition}
+
+
+\paragraph{Transfer of Value Functions}
+\paragraph{Transfer of Features}
+\paragraph{Transfer of Policies}
+
+\section{Literature Review}
+\label{sec:literature_review}
+
+\subsection{Transfer Learning in Supervised Learning}
+\subsection{Transfer Learning in Reinforcement Learning}
+\subsection{Deep Transfer Learning}
 
 \section{Relevance for this Dissertation}
+\label{sec:relevance}
