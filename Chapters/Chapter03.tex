@@ -12,6 +12,14 @@
 \section{Rationale of Transfer Learning}
 \label{sec:rationale}
 
+Before mathematically defining TL we start by building some intuition and visually represent how one can observe the benefits of TL in practice. We assume that we would like to solve a certain task, and that we can choose between two different models: a model that has never dealt with any kind of task before, and a second model, which is identical to the first one with the major difference being that it has already seen a similar task in the past. Because of their different nature, we refer to the first model as a `scratch" model, and to the second model as a `pre-trained" model. Ideally, as mentioned in the previous section, we would like the latter model to perform better on the considered task that the first one. Yet, how can we asses if one model is better than the other one? As initially presented by and later we would like the performance of a pre-trained model to result into three possible improvements. If at least one of these improvements is observed while training,  we can then consider the pre-trained model better than the scratch-model. These improvements are the following:
+\begin{itemize}
+	\item \textcolor{RoyalBlue}{Jumpstart Improvements}: this is a scenario where by the end of training there are no significant differences between the performance of a pre-trained model and the performance of a random model. However this changes when considering the very first training iteration. If jumpstart improvements appear we can usually observe that when both models start their training process, the performance of the pre-trained model is much closer to the one that will be obtained by the end of training than the one of the scratch model. We visually report an example of this scenario in the first plot of Fig. \ref{fig:tl_examples}. In this case the goal is to train a model such that by the end of training its performance will be of $\approx -100$. We can clearly see that by the end of training both models are able to successfully achieve this goal, but that at the very first training iteration, the performance of the pre-trained model is significantly closer to the desired final performance ($\approx -250$) than the one of the scratch model ($\approx -450$). 
+	\item \textcolor{RoyalBlue}{Asymptotic Improvements}
+	\item \textcolor{RoyalBlue}{Learning Speed Improvements}
+\end{itemize}
+
+
 \input{./Results/Chapter03/tex/tl_examples.tex}
 
 
