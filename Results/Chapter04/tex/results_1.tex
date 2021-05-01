@@ -1,0 +1,50 @@
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[scale = 0.8]
+
+\begin{axis}[
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+  	ylabel= Accuracy ($\%$),
+	title=Material Classification,
+	%width=1,
+    	xmin=0,
+    	xmax=25,
+    	ymin=0.80,
+    	ymax=0.95,
+  	legend pos=outer north east,
+]
+
+	\addlegendentry{Xception $\theta^{i}$}
+	\addlegendentry{ResNet50 $\theta^{i}$}
+	\addlegendentry{InceptionV3 $\theta^{i}$}
+	\addlegendentry{VGG19 $\theta^{i}$}
+      	\addlegendentry{Scratch-V3 $\theta$}
+      	\addlegendentry{Xception $\theta^{-}$}
+      	\addlegendentry{ResNet50 $\theta^{-}$}
+      	\addlegendentry{InceptionV3 $\theta^{-}$}
+      	\addlegendentry{VGG19 $\theta^{-}$}
+
+
+\addplot [thick, blue, mark=x] table [y=Xception, x=epochs]
+{./Results/Chapter03/logs/res_1.txt};
+\addplot [thick, red, mark=x] table [y=ResNet, x=epochs]{./Results/Chapter04/logs/res_1.txt};
+\addplot [thick, black, mark=x] table [y=V3, x=epochs]{./Results/Chapter04/logs/res_1.txt};
+\addplot [thick, green, mark=x] table [y=VGG19, x=epochs]{./Results/Chapter04/logs/res_1.txt};
+\addplot [ultra thick, orange , solid] table [y=RandomV3, x=epochs]{./Results/Chapter04/logs/res_1.txt};
+
+
+\addplot [ thick, blue, mark=halfcircle] table [y=Xception, x=epochs]{./Results/Chapter04/logs/res_2.txt};
+\addplot [ thick, red, mark=halfcircle] table [y=ResNet, x=epochs]{./Results/Chapter04/logs/res_2.txt};
+\addplot [thick, black, mark=halfcircle] table [y=V3, x=epochs]{./Results/Chapter04/logs/res_2.txt};
+\addplot [thick, green, mark=halfcircle] table [y=VGG19, x=epochs]{./Results/Chapter04/logs/res_2.txt};
+
+
+
+\end{axis}
+    \end{tikzpicture}
+    \caption{Comparison between the fine tuning approach ($\theta^{i}$) versus the off the shelf one ($\theta^{-}$) when classifying the material of the heritage objects of the Rijksmuseum dataset. We can observe that for three out of four neural architectures the first approach leads to significant improvements when compared to the latter one. Furthermore, we can also observe that training a randomly initialized model from scratch (solid orange line) leads to worse results than fine-tuning a network that comes as pre-trained on the ImageNet dataset.}
+    \label{fig:rijks_material}
+\end{figure} 

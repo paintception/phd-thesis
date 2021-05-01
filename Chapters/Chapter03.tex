@@ -11,7 +11,8 @@
 
 \section{Rationale of Transfer Learning}
 \label{sec:rationale}
-Desired Outcome plots
+
+\input{./Results/Chapter03/tex/tl_examples.tex}
 
 
 \section{Mathematical Definitions}
@@ -34,8 +35,28 @@ Given one, or more, observations corresponding to $m^s \in \mathds{N}^{+}$ sourc
 \end{definition}
 
 \paragraph{Inductive Transfer Learning}
+\begin{definition}
+	Given a source domain $\mathcal{D}_S$ and a learning task $\mathcal{T}_S$, and a target domain $\mathcal{D}_T$ and a learning task $\mathcal{T}_T$, inductive transfer learning aims to help improving the target predictive function $f_T(\cdot)$ in $\mathcal{D}_T$ by using the knowledge in $\mathcal{D}_S$ and $\mathcal{T}_S$, where $\mathcal{T}_S \neq \mathcal{T}_T$. 
+\end{definition}
+
+
+
 \paragraph{Transductive Transfer Learning}
+
+\begin{definition}
+	Given a source domain $\mathcal{D}_S$ and a learning task $\mathcal{T}_S$, and a target domain $\mathcal{D}_T$ and a learning task $\mathcal{T}_T$, transductive transfer learning aims to help improving the target predictive function $f_T(\cdot)$ in $\mathcal{D}_T$ by using the knowledge in $\mathcal{D}_S$ and $\mathcal{T}_S$, where $\mathcal{D}_S \neq \mathcal{D}_T$ and $\mathcal{T}_S = \mathcal{T}_T$. 
+\end{definition}
+
+
+
 \paragraph{Unsupervised Transfer Learning}
+
+\begin{definition}
+	Given a source domain $\mathcal{D}_S$ and a learning task $\mathcal{T}_S$, and a target domain $\mathcal{D}_T$ and a learning task $\mathcal{T}_T$, unsupervised transfer learning aims to help improving the target predictive function $f_T(\cdot)$ in $\mathcal{D}_T$ by using the knowledge in $\mathcal{D}_S$ and $\mathcal{T}_S$, where $\mathcal{T}_S \neq \mathcal{T}_T$ and $\mathcal{Y}_S$ and $\mathcal{Y}_T$ are not observable. 
+\end{definition}
+
+
+
 
 \subsection{Reinforcement Learning}
 

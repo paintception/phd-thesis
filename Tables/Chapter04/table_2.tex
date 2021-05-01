@@ -1,0 +1,26 @@
+\begin{table}[ht!]
+    \caption{An overview of the results obtained by the different models on the testing set when classifying the heritage objects of the Rijksmuseum. The overall best performing architecture is reported in a green cell, while the second best performing one is reported in a yellow one. The additional columns ``Params'' and ``$\mathscr{X}$'' report the amount of parameters the networks have to learn and the size of the feature vector that is used as input for the softmax classifier.} 
+    \resizebox{\columnwidth}{!}{%
+    \label{tab:Rijksmuseum_Dataset}
+    \centering
+    \begin{tabular}{c|c|c|c|c|c}
+	    \hline
+     		\textbf{Challenge} &\textbf{DCNN} & \textbf{off the shelf} &  \textbf{fine tuning} & \textbf{Params} & \textbf{$\mathscr{X}$} \\
+		\hline
+		$1$ & Xception  & 87.69\% & 92.13\% & 21K & $2048$\\
+		$1$ & InceptionV3 & \cellcolor{yellow!25} 88.24\%  & 92.10\% & 22K & $2048$ \\
+		$1$ & ResNet50 & 86.81\%  & \cellcolor{green!25}{92.95\%} &  24K & $2048$ \\
+		$1$ & VGG19 & \cellcolor{green!25}{92.12\%} &  \cellcolor{yellow!25} 92.23\%  & 20K & $512$ \\
+        	\hline
+		$2$ & Xception  & \cellcolor{yellow!25}74.80\% &  90.67\% & 23K & $2048$ \\
+		$2$ & InceptionV3  & 72.96\%  & \cellcolor{yellow!25}91.03\%  & 24K & $2048$ \\
+		$2$ & ResNet50 & 71.23\%   & \cellcolor{green!25}{91.30\%} &  25K & $2048$ \\
+		$2$ & VGG19 & \cellcolor{green!25}{77.33\%}   &  90.27\%  & 20K  & $512$ \\
+        	\hline
+		$3$ & Xception  & \cellcolor{yellow!25}10.92\% &   \cellcolor{yellow!25}51.43\% & 23K & $2048$ \\
+		$3$ & InceptionV3  & .07\% & \cellcolor{green!25}{51.73\%}  & 24K & $2048$ \\
+        	$3$ & ResNet50 & .08\% &   46.13\%  &  26K & $2048$ \\
+		$3$ & VGG19 & \cellcolor{green!25}{38.11\%} &   44.98\%  & 20K  & $512$ \\
+        \end{tabular}%
+}
+\end{table}

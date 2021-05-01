@@ -2,9 +2,7 @@
 \label{ch:tl_natural_to_non_natural}
 
 \begin{remark}{Contributions and Outline} 
-	This chapter contributes to the field of (Deep) Transfer Learning (TL) by investigating whether popular neural networks that come as pre-trained on datasets containing natural images can perform equally well once they are used on non-natural datasets. Specifically, we explore whether these models can be used for tackling three different art classification problems. Furthermore, assuming this is the case, we also explore whether it is possible to improve on such performance. 
-
-	The chapter is structured as follows: we start by providing the reader with some background information in Sec. \ref{sec:introduction}. In Sec. \ref{sec:methods} we present a brief theoretical reminder of the field of TL, a description of the datasets that we have used and the methodological details about the experiments that we have performed. In Sec. \ref{sec:results} we present and discuss our results. A summary of the main contributions of this work ends the chapter in Sec. \ref{sec:conclusion}.
+	This chapter contributes to the field of (Deep) Transfer Learning (TL) by investigating whether popular neural networks that come as pre-trained on datasets containing natural images can perform equally well once they are used on non-natural datasets. Specifically, we explore whether these models can be used for tackling three different art classification problems. Furthermore, assuming this is the case, we also explore whether it is possible to improve on such performance. The chapter is structured as follows: we start by providing the reader with some background information in Sec. \ref{sec:introduction}. In Sec. \ref{sec:methods} we present a brief theoretical reminder of the field of TL, a description of the datasets that we have used and the methodological details about the experiments that we have performed. In Sec. \ref{sec:results} we present and discuss our results. A summary of the main contributions of this work ends the chapter in Sec. \ref{sec:conclusion}.
 
 \vspace{5mm}
 
@@ -51,12 +49,12 @@ For our experiments we use two datasets which come from two different heritage c
 Both image datasets come with metadata encoded in the Dublin Core metadata standard \cite{weibel1998dublin}. We selected three well-understood classification challenges: (1) ``material classification'' which consists in identifying the material the different heritage objects are made of (e.g paper, gold, porcelain, ...) ;  (2) ``type classification'' in which the neural networks have to classify in which artistic category the samples fall into (e.g. print, sculpture, drawing, ...), and finally (3) ``artist classification'', where the main goal is to appropriately match each sample of the dataset with its creator (from now on we refer to these classification tasks as challenge 1, 2 and 3 respectively). As reported in Table \ref{table:dataset_overview} we can see that the Rijksmuseum collection is the dataset with the largest amount of samples per challenge ($N_t$) and the highest amount of labels to classify ($Q_t$). Furthermore it is also worth noting that there was no metadata available when it comes to the first classification challenge for the Antwerp dataset (as marked by the $\times$ symbol), and that there are some common labels between the two heritage collections when it comes to challenge 2. A visualization reporting some of the images that are present in both datasets is shown in Figure \ref{fig:datasets}.
 
 
-\input{./Tables/Chapter03/table_1.tex}
+\input{./Tables/Chapter04/table_1.tex}
 
 
 \begin{figure}
 \centering
-  \includegraphics[width=10cm]{./Images/Chapter03/datasets.jpg}\vspace{-1cm}
+  \includegraphics[width=10cm]{./Images/Chapter04/datasets.jpg}\vspace{-1cm}
   \caption{A visualization of the images that are used for our experiments. It is possible to see how the samples range from images representing plates made of porcelain to violins, and from Japanese artworks to a more simple picture of a key.}
   \label{fig:datasets}
 \end{figure}
@@ -74,13 +72,13 @@ Our second approach is generally known as fine tuning and differs from the previ
 
 \begin{figure*}[!htb]
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter03/frozen_net.pdf}
+  \includegraphics[width=\linewidth]{./Images/Chapter04/frozen_net.pdf}
 \endminipage\hfill
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter03/fine_tuning_net.pdf}
+  \includegraphics[width=\linewidth]{./Images/Chapter04/fine_tuning_net.pdf}
 \endminipage\hfill
 \minipage{0.3\textwidth}%
-  \includegraphics[width=\linewidth]{./Images/Chapter03/random_net.pdf}
+  \includegraphics[width=\linewidth]{./Images/Chapter04/random_net.pdf}
 \endminipage
 \caption{A simplified visual representation of the different training paradigms that are considered in this chapter. The first plot represents a model that comes as pre-trained on a source task but which is not allowed to update most of its weights during training (represented in gray): the only trainable parameters of this network are the ones that parametrize the final layer of the network and that are represented in green. In the second plot we visually represent a model that is parametrized with weights that have been learned on a certain source task, and that when training the model on the target task get ``unfrozen'', therefore making the model fully trainable. Lastly we visualize a model that does not come as pre-trained on any source task at all but that is initialized with random weights instead (represented by the various colours).}
 \label{fig:network_training_approaches}
@@ -112,7 +110,7 @@ Comparing the learning curves of the two classification strategies in Figure \re
 
 When comparing the learning curves of the two classification strategies reported in Figure \ref{fig:rijks_material}, we can observe that the fine tuning approach leads to significant improvements when compared to the off the shelf one, for three architectures out of the four tested ones. Note however that, in support of our hypothesis, the off the shelf approach can still reach high accuracy values on this problem and is also competitive with the network that is trained from scratch. This suggests that features extracted from pretrained ImageNet models are relevant for material classification.
 
-\input{Results/Chapter03/tex/results_1.tex}
+\input{Results/Chapter04/tex/results_1.tex}
 
 We can also observe that the ResNet50 architecture is the architecture which, when fine tuned, performs overall best when compared to the other three models. This happens despite it being the network that initially performed worse as a simple feature extractor in the off the shelf experiments. As reported in Table \ref{tab:Rijksmuseum_Dataset} we can see that this kind of behavior reflects itself on the separated testing set as well, where it obtained the highest testing set accuracy when fine tuned ($92.95\%$), and the lowest one when the off the shelf approach was used ($86.81\%$). It is worth noting that the performance between the different neural architectures do not strongly differ between each other once they are fine tuned, with all models performing around $\approx 92\%$ on the final testing set. Furthermore, special attention needs to be given to the VGG19 architecture, which does not seem to benefit from the fine tuning approach as much as the other architectures do. In fact, its off the shelf performance on the testing set ($92.12\%$) is very similar to its fine tuned one ($92.23\%$). This suggests that this neural architecture is the only one which, in this task, and when pre-trained on ImageNet, can successfully be used as a simple feature extractor without having to rely on complete retraining. 
 
@@ -121,11 +119,11 @@ When analyzing the performance of the different neural architectures on the ``ty
 If the classification challenges that we have analyzed so far have highlighted the significant benefits of the fine tuning approach over the off the shelf one, it is also important to note that the latter approach is still able to lead to satisfying results. In fact, a final accuracy of $92.12\%$ has been obtained when using the VGG19 architecture on the first challenge and a classification rate of $77.33\%$ was reached by the same architecture on the second challenge. Despite the latter accuracy being very far in terms of performance from the one obtained when fine tuning the network ($90.27\%$), these results still show that models pre-trained on ImageNet do learn particular features that can also be used for classifying the ``material'' and the ``type'' of heritage objects. However, when analyzing the results from the ``artist'' challenge, we can see that this is partially not the case anymore.
 
 
-\input{Results/Chapter03/tex/results_2.tex}
+\input{Results/Chapter04/tex/results_2.tex}
 
 When considering the third classification challenge we can observe that the Xception, ResNet50, and Inception-V3 architectures all perform extremely poorly if not fine tuned, with the latter two models not being able to even reach a $10\%$ classification rate. Better results are obtained when using the VGG19 architecture, which reaches a final accuracy of $38.11\%$. Most importantly, the performance of each model are again significantly improved when the networks are fine tuned. As already observed in the previous experiments, ResNet50 outperforms the other architectures on the validation set. However, on the test set (see Table \ref{tab:Rijksmuseum_Dataset}), the overall best performing network is Inception-V3 (with a final accuracy of $51.73\%$), which suggests that ResNet50 suffered from overfitting. It is important to state two major important points about this set of experiments. The first one relates to the final classification accuracy that is obtained by all models, and that at first sight might seem disappointing. While it is true that these classification rates are significantly lower when compared to the ones obtained in the previous two experiments, it is important to highlight how a large set of artists present in the dataset are associated to an extremely limited amount of samples. This reflects a lack of appropriate training data which does not allow the models to learn all the features that are necessary for successfully dealing with this particular classification challenge. In order to do so, we believe that more training data is required. Moreover, it is worth pointing out that despite performing very poorly when used as off the shelf feature extractors, ImageNet pre-trained models do still perform better once they are fine tuned than a model that is trained from scratch. This suggests that these networks do learn potentially representative features when it comes the classification of artists, but in order to properly classify them, the model need to be fine tuned.
 
-\input{Tables/Chapter03/table_2.tex}
+\input{Tables/Chapter04/table_2.tex}
 
 \subsection{Discussion}
 \label{subsec: RijksDiscussion}
@@ -138,7 +136,7 @@ In the previous section, we have investigated whether four different architectur
 Table \ref{tab:Antwerpen_dataset} compares the results that we obtained on the Antwerp dataset when using ImageNet pre-trained models ($\theta^{i}$) versus the same architectures that were fine tuned on the Rijksmuseum dataset ($\theta^{r}$). While looking at the performance of the different neural architectures two interesting results can be highlighted. First, models which have been fine tuned on the Rijksmuseum dataset outperform the ones pre-trained on ImageNet in both classification challenges. This happens to be the case both when the networks are used as simple feature extractors and when they are fine tuned. On the ``type'' classification challenge, this result is not surprising since, as discussed in Section \ref{subsec:datasets}, the types corresponding to the heritage objects of the two collections partially overlap. This is more surprising on the ``artist'' classification challenge however, since there is no overlap at all between the artists of the Rijksmuseum and the ones from the Antwerp dataset.
 A second interesting result, which is consistent with the results presented in the previous section, revolves around the observation that it is always beneficial to fine tune the networks over just using them as off the shelf feature extractors. Once the models get fine tuned on the Antwerp dataset, these DCNNs, which have also been fine tuned on the Rijksmuseum dataset, outperform the architectures that were pre-trained on ImageNet only. This happened to be the case for both classification challenges and for all considered architectures, as reported in Table \ref{tab:Antwerpen_dataset}. This demonstrates how beneficial it is for the models to have been trained on a similar source task and how this can lead to significant improvements both when the networks are used as feature extractors and when they are fine tuned. 
 
-\input{Tables/Chapter03/table_3.tex}
+\input{Tables/Chapter04/table_3.tex}
 
 \subsection{Selective Attention}
 
@@ -149,23 +147,23 @@ The results that we have obtained provide interesting insights about how fine tu
 \begin{figure*}[!htb]
 \centering
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter03/example_1.jpg}
+  \includegraphics[width=\linewidth]{./Images/Chapter04/example_1.jpg}
 \endminipage
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter03/imagenet_saliencies_1.jpeg}
+  \includegraphics[width=\linewidth]{./Images/Chapter04/imagenet_saliencies_1.jpeg}
 \endminipage
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter03/rijksnet_saliencies_1.jpeg}
+  \includegraphics[width=\linewidth]{./Images/Chapter04/rijksnet_saliencies_1.jpeg}
 \endminipage
 
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter03/example_2.jpg}
+  \includegraphics[width=\linewidth]{./Images/Chapter04/example_2.jpg}
 \endminipage
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter03/imagenet_saliencies_2.jpeg}
+  \includegraphics[width=\linewidth]{./Images/Chapter04/imagenet_saliencies_2.jpeg}
 \endminipage
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter03/rijksnet_saliencies_2.jpeg}
+  \includegraphics[width=\linewidth]{./Images/Chapter04/rijksnet_saliencies_2.jpeg}
 \endminipage
 
 \caption{Add caption}
