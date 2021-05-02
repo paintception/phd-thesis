@@ -5,19 +5,19 @@
       	grid style={dashed,gray},
       	grid = both, 
       	tick style=black,
-	title=Jumpstart Improvements,
+	title=Learning Speed Improvements,
         xlabel=Training Iterations,
         ylabel=Performance,
       ]
 
 
-      \addlegendentry{Transferred Model} 
-      \addlegendentry{Random Model}  
+      \addlegendentry{Pre-trained Model} 
+      \addlegendentry{Scratch Model}  
       
-      \addplot [ultra thick, black, mark=.] table [y=Transfer, x=episodes]
-      {./Results/Chapter03/logs/jumpstart_improvements.txt};
-       \addplot [ultra thick, blue, mark=.] table [y=No-Transfer, x=episodes]
-      {./Results/Chapter03/logs/jumpstart_improvements.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=Transfer, x=episodes]
+      {./Results/Chapter03/logs/speed_improvements.txt};
+       \addplot [ultra thick, orange, mark=.] table [y=No-Transfer, x=episodes]
+      {./Results/Chapter03/logs/speed_improvements.txt};
      
       \legend{}
 
@@ -29,20 +29,20 @@
 	grid style={dashed,gray},
       	grid = both, 
       	tick style=black,
-	title=Asymptotic Improvements,
+	title=Jumpstart Improvements,
         xlabel=Training Iterations,
         ylabel=Performance,
       ]
 
 
 
-      \addlegendentry{Transferred Model} 
-      \addlegendentry{Random Model}  
+      \addlegendentry{Pre-trained Model} 
+      \addlegendentry{Scratch Model}  
       
-      \addplot [ultra thick, black, mark=.] table [y=Transfer, x=episodes]
-      {./Results/Chapter03/logs/asymptotic_improvements.txt};
-       \addplot [ultra thick, blue, mark=.] table [y=No-Transfer, x=episodes]
-      {./Results/Chapter03/logs/asymptotic_improvements.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=Transfer, x=episodes]
+      {./Results/Chapter03/logs/jumpstart_improvements.txt};
+       \addplot [ultra thick, orange, mark=.] table [y=No-Transfer, x=episodes]
+      {./Results/Chapter03/logs/jumpstart_improvements.txt};
      
       \legend{}
 
@@ -56,7 +56,7 @@
 	grid style={dashed,gray},
       	grid = both, 
       	tick style=black,
-	title=Learning Speed Improvements,
+	title=Asymptotic Improvements,
         xlabel=Training Iterations,
         ylabel= Performance,
 	legend columns=4, 
@@ -64,17 +64,17 @@
       ]
 
 
-      \addlegendentry{Transferred Model} 
-      \addlegendentry{Random Model}  
+      \addlegendentry{Pre-trained Model} 
+      \addlegendentry{Scratch Model}  
  
-      \addplot [ultra thick, black, mark=.] table [y=Transfer, x=episodes]
-      {./Results/Chapter03/logs/speed_improvements.txt};
-      \addplot [ultra thick, blue, mark=.] table [y=No-Transfer, x=episodes]
-      {./Results/Chapter03/logs/speed_improvements.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=Transfer, x=episodes]
+      {./Results/Chapter03/logs/asymptotic_improvements.txt};
+      \addplot [ultra thick, orange, mark=.] table [y=No-Transfer, x=episodes]
+      {./Results/Chapter03/logs/asymptotic_improvements.txt};
        
       \end{axis}
 	\end{tikzpicture}
-	\caption{}
+	\caption{A visualization of the three possible desired outcomes that can come from adopting Transfer Learning strategies as initially defined by \citet{langley2006transfer} and later by \citet{lazaric2012transfer}.}
 	\label{fig:tl_examples} 
 \end{figure}
 
