@@ -30,32 +30,33 @@ Now that we have introduced the key ideas behind TL, and presented why adopting 
 \section{Mathematical Definitions}
 \label{sec:definitions}
 
-As is common throughout this thesis we start by focusing on the supervised learning perspective.
+As is common throughout this thesis we start by focusing on the supervised learning case.
 
 \subsection{Supervised Learning}
-
-
-
+The first two definitions that we provide are borrowed from \citet{zhuang2020comprehensive} and are the ones of \textcolor{RoyalBlue}{domain} and \textcolor{RoyalBlue}{task}. The first one is defined as follows:
 \begin{definition}
 	A domain $\mathcal{D}$ is the combination between an input space $\mathcal{X}$ and a marginal distribution $P(X)$, $\mathcal{D} = \{\mathcal{X},P(X)\}$ where $X$ denotes an instance set defined as $X=\{\vec{x}|\vec{x_i}\in \mathcal{X}, i =1, \cdots, n \}$.
 \end{definition}
-
-
+Examples of domains can be natural images, time-series data, biomedical markers and so on. In supervised learning we know that each domain is associated to its respective task, which is representative of the problem we would like to solve. A task is defined as follows:
 \begin{definition}
 	A task $\mathcal{T}$ consists of a label space $\mathcal{Y}$ and a decision function $f$, i.e., $\mathcal{T}=\{\mathcal{Y},f\}$. The decision function $f$ is implicit and can only be learned by sampling data from $\mathcal{X}$ which comes in the form of $\{x_i,y_i\}$ pairs where $x_i\inX$ and $y_i \in \mathcal{Y}$.
 \end{definition}
-
-
+Examples of possible decision functions $f$ can be classifiers which categorize natural images in their respective classes, or regressors that are able to predict future values in a time-series. 
+The key concept underlying TL is that, differently from the common supervised learning scenario
+where the only information that is available to a model are one domain and one task, we now have access to at least two domains. The one that corresponds to the task we would like to solve, called the \textcolor{RoyalBlue}{target-domain} $\mathcal{D}_T$, and an additional, possibly related, domain that comes with the name of the \textcolor{RoyalBlue}{source-domain} $\mathcal{D}_S$. With all these concepts in place we can now define \textcolor{RoyalBlue}{Transfer Learning} as:
 \begin{definition}
 Given one, or more, observations corresponding to $m^s \in \mathds{N}^{+}$ source domain(s) and tasks(s) (i.e., $\{(\mathcal{D}_{S}_{i}, \mathcal{T}_{S}_{i}|i=1\cdots,m^s)\})$ and some additional observation(s) about $m^T \in \mathds{N}^{+}$ target domain(s) and task(s) (i.e. $\{(\mathcal{D}_{T}_{j},\mathcal{T}_{T}_{j}|j=1,\cdots,m^T)\})$, transfer learning utilizes the knowledge implied in the source domains to improve the performance of the learned decision functions $f^{T}_j(j=1,\cdots,m^T)$ on the target domain(s).
 \end{definition}
+As pointed out by \citet{pan2009survey} the condition that the source and the target domains might be different $\mathcal{D}_S \neq \mathcal{D}_T$ implies that either their respective input spaces are different as well $\mathcal{X}_S\neq\mathcal{X}_T$, or that their corresponding marginal distributions are different $P_s(X)\neq P_T(X)$. Similarly, if the tasks are different instead $\mathcal{T}_S\neq\mathcal{T}_T$, then either one between the output spaces, or the conditional distributions has to be different ($\mathcal{Y}_S\neq\mathcal{Y}_T$ or $P(Y_S|X_S)\neq P(Y_T|X_T))$.
+
+Based on the consistency between the source and target input spaces $\mathcal{X}$, and the respective output spaces $\mathcal{Y}$, one can categorize TL into three following settings.
 
 \paragraph{Inductive Transfer Learning}
+This TL scenario is characterized by the fact that the target task $\mathcal{T}_T$ is different from the source task $\mathcal{T}_S$, while the source domain $\mathcal{D}_S$ and the target domain $\mathcal{D}_T$ might, or might not, be similar. As originally presented in \cite{pan2009survey} we define inductive transfer learning as:
 \begin{definition}
 	Given a source domain $\mathcal{D}_S$ and a learning task $\mathcal{T}_S$, and a target domain $\mathcal{D}_T$ and a learning task $\mathcal{T}_T$, inductive transfer learning aims to help improving the target predictive function $f_T(\cdot)$ in $\mathcal{D}_T$ by using the knowledge in $\mathcal{D}_S$ and $\mathcal{T}_S$, where $\mathcal{T}_S \neq \mathcal{T}_T$. 
 \end{definition}
-
-
+A key requirement of this type of TL is that some labeled data in the target domain is necessary for inducing the objective predictive function $f_T(\cdot)$. To build some more intuition about this kind of TL let us assume that we would like to train a model on our target task $\mathcal{T}_T$ which corresponds to recognizing what kind of letter is depicted in an image. Instead of training a model only on a dataset of letters, we instead start from a model that has already been trained to recognize digits, which will therefore be our source task $\mathcal{T}_S$. Note that in this case the source task and the target tasks are evidently different $\mathcal{T}_S \neq \mathcal{T}_T$ (classifying digits vs classifying letters), but that the input space of the source and target domains is the same $\mathcal{X}_S = \mathcal{X}_T$, since it corresponds to images. Please note that in this example, since we use a model that is pre-trained on images representing digits, we assume that we have had access to some labeled data in the source domain in the past. However, please note that based on the definition of inductive transfer learning, having access to labeled data within the source domain is not strictly necessary.
 
 \paragraph{Transductive Transfer Learning}
 
