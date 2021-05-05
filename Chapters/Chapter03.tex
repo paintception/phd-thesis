@@ -77,7 +77,6 @@ Originally proposed by \citet{arnold2007comparative}, this type of TL is charact
 \end{definition}
 As an example of transductive transfer learning let us assume that we would like to train a model to classify which type of clothing is depicted in an image. This time, differently from the inductive transfer learning case, the images in our target domain $\mathcal{D}_T$ are not black and white images anymore, but rather colored images, therefore they are defined over the RGB domain (see right image of Fig. \ref{fig:transductive_tl}). We now assume that we have access to a pre-trained model which has already been trained to classify the same type of clothes, with the main difference being that the images constituting the source domain $\mathcal{D}_S$ were black and white images (see left image of Fig. \ref{fig:transductive_tl}). If we now train this pre-trained model on our colored dataset we see that our setting fits the transductive transfer learning scenario: our considered domains are different $\mathcal{D}_S \neq \mathcal{D}_T$ (colored vs black and white images), but their respective tasks are the same  $\mathcal{T}_S \neq \mathcal{T}_T$, since a model is always trained to classify types of clothing.
 
-
 \begin{figure*}
  \minipage{0.45\textwidth}
     \includegraphics[width=\linewidth]{./Images/Chapter03/fashion_mnist}
@@ -91,12 +90,11 @@ As an example of transductive transfer learning let us assume that we would like
 
 
 \paragraph{Unsupervised Transfer Learning}
-
+Arguably considered to be the most challenging, and the least explored type of TL, unsupervised transfer learning is characterized by the total absence at training time of labeled data in both the source domain and the target domain. As mentioned by \citet{pan2009survey} very little research work has so far explored this TL paradigm, with the only existing works exploring typical unsupervised learning topics such as clustering \cite{dai2008self, jin2011transferring, qian2015cluster} and dimensionality reduction \cite{wang2008transferred, zhu2013self, zhu2016robust}. Unsupervised transfer learning is defined as follows:
 \begin{definition}
 	Given a source domain $\mathcal{D}_S$ and a learning task $\mathcal{T}_S$, and a target domain $\mathcal{D}_T$ and a learning task $\mathcal{T}_T$, unsupervised transfer learning aims to help improving the target predictive function $f_T(\cdot)$ in $\mathcal{D}_T$ by using the knowledge in $\mathcal{D}_S$ and $\mathcal{T}_S$, where $\mathcal{T}_S \neq \mathcal{T}_T$ and $\mathcal{Y}_S$ and $\mathcal{Y}_T$ are not observable. 
 \end{definition}
-
-
+Based on this definition we can note that unsupervised transfer learning is more similar to inductive transfer learning than to to transductive transfer learning since it also assumes that the source and the target tasks are different $\mathcal{T}_S \neq \mathcal{T}_T$.
 
 
 \subsection{Reinforcement Learning}
