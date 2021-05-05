@@ -56,14 +56,38 @@ This TL scenario is characterized by the fact that the target task $\mathcal{T}_
 \begin{definition}
 	Given a source domain $\mathcal{D}_S$ and a learning task $\mathcal{T}_S$, and a target domain $\mathcal{D}_T$ and a learning task $\mathcal{T}_T$, inductive transfer learning aims to help improving the target predictive function $f_T(\cdot)$ in $\mathcal{D}_T$ by using the knowledge in $\mathcal{D}_S$ and $\mathcal{T}_S$, where $\mathcal{T}_S \neq \mathcal{T}_T$. 
 \end{definition}
-A key requirement of this type of TL is that some labeled data in the target domain is necessary for inducing the objective predictive function $f_T(\cdot)$. To build some more intuition about this kind of TL let us assume that we would like to train a model on our target task $\mathcal{T}_T$ which corresponds to recognizing what kind of letter is depicted in an image. Instead of training a model only on a dataset of letters, we instead start from a model that has already been trained to recognize digits, which will therefore be our source task $\mathcal{T}_S$. Note that in this case the source task and the target tasks are evidently different $\mathcal{T}_S \neq \mathcal{T}_T$ (classifying digits vs classifying letters), but that the input space of the source and target domains is the same $\mathcal{X}_S = \mathcal{X}_T$, since it corresponds to images. Please note that in this example, since we use a model that is pre-trained on images representing digits, we assume that we have had access to some labeled data in the source domain in the past. However recall that the definition of inductive transfer learning does not require labeled data within the source domain to be strictly necessary.
+A key requirement of this type of TL is that some labeled data in the target domain is necessary for inducing the objective predictive function $f_T(\cdot)$. To build some more intuition about this kind of TL let us assume that we would like to train a model on our target task $\mathcal{T}_T$ which corresponds to recognizing what kind of Japanese letter is depicted in an image. Instead of training a model only on a dataset of letters, we instead start from a model that has already been trained to recognize digits, which will therefore be our source task $\mathcal{T}_S$. Note that in this case the source task and the target tasks are evidently different $\mathcal{T}_S \neq \mathcal{T}_T$ (classifying digits vs classifying letters), but that the input space of the source and target domains is the same $\mathcal{X}_S = \mathcal{X}_T$, since it corresponds to black and white images as represented in Fig. \ref{fig:inductive_tl}. Please note that in this example, since we use a model that is pre-trained on images representing digits, we assume that we have had access to some labeled data in the source domain in the past. However the definition of inductive transfer learning does not require labeled data within the source domain to be strictly necessary.
+
+\begin{figure*}
+ \minipage{0.45\textwidth}
+    \includegraphics[width=\linewidth]{./Images/Chapter03/mnist_dataset.png}
+  \endminipage\hfill
+  \minipage{0.45\textwidth}%
+    \includegraphics[width=\linewidth]{./Images/Chapter03/kuzushiji_mnist.jpg}
+  \endminipage\hfill
+  \caption{A visualization of two datasets that can be used for performing inductive transfer learning. On the left we represent instances of the popular MNIST dataset \cite{lecun1994mnist}, while on the right instances of the Kuzushiji-MNIST dataset \cite{clanuwat2018deep}. We see that both datasets share the same domain $\mathcal{D}_S = \mathcal{D}_T$ (black and white images), but are associated to different tasks $\mathcal{T}_S \neq \mathcal{T}_T$ (classification of digits vs classification of Japanese letters).}
+  \label{fig:inductive_tl}
+\end{figure*}
+
 
 \paragraph{Transductive Transfer Learning}
-Originally proposed by \citet{arnold2007comparative}, this type of TL is characterized by the fact that the source and target tasks are the same $\mathcal{T}_S = \mathcal{T}_T$, but their respective domains are different $\mathcal{D}_S \neq \mathcal{D}_T$. It is also possible that the feature spaces between domains are the same but, if that is the case, then the marginal probability distributions are different $P(X_S)\neq P(X_T)$. In its original formulation, \citet{arnold2007comparative} assumed that all unlabeled data in the target domain is available at training time, however we hereafter report the definition of \citet{pan2009survey} who instead relax this condition by requiring only a subset of unlabeled target data to be seen at training time.
+Originally proposed by \citet{arnold2007comparative}, this type of TL is characterized by the fact that the source and target tasks are the same $\mathcal{T}_S = \mathcal{T}_T$, but their respective domains are different $\mathcal{D}_S \neq \mathcal{D}_T$. It is also possible that the feature spaces between domains are the same but, if that is the case, then the marginal probability distributions are different $P(X_S)\neq P(X_T)$. In its original formulation, \citet{arnold2007comparative} assumed that all unlabeled data in the target domain is available at training time, however we hereafter report the definition of \citet{pan2009survey} who instead relax this condition and require only a subset of unlabeled target data to be seen at training time.
 \begin{definition}
 	Given a source domain $\mathcal{D}_S$ and a learning task $\mathcal{T}_S$, and a target domain $\mathcal{D}_T$ and a learning task $\mathcal{T}_T$, transductive transfer learning aims to help improving the target predictive function $f_T(\cdot)$ in $\mathcal{D}_T$ by using the knowledge in $\mathcal{D}_S$ and $\mathcal{T}_S$, where $\mathcal{D}_S \neq \mathcal{D}_T$ and $\mathcal{T}_S = \mathcal{T}_T$. 
 \end{definition}
+As an example of transductive transfer learning let us assume that we would like to train a model to classify which type of clothing is depicted in an image. This time, differently from the inductive transfer learning case, the images in our target domain $\mathcal{D}_T$ are not black and white images anymore, but rather colored images, therefore they are defined over the RGB domain (see right image of Fig. \ref{fig:transductive_tl}). We now assume that we have access to a pre-trained model which has already been trained to classify the same type of clothes, with the main difference being that the images constituting the source domain $\mathcal{D}_S$ were black and white images (see left image of Fig. \ref{fig:transductive_tl}). If we now train this pre-trained model on our colored dataset we see that our setting fits the transductive transfer learning scenario: our considered domains are different $\mathcal{D}_S \neq \mathcal{D}_T$ (colored vs black and white images), but their respective tasks are the same  $\mathcal{T}_S \neq \mathcal{T}_T$, since a model is always trained to classify types of clothing.
 
+
+\begin{figure*}
+ \minipage{0.45\textwidth}
+    \includegraphics[width=\linewidth]{./Images/Chapter03/fashion_mnist}
+  \endminipage\hfill
+  \minipage{0.45\textwidth}%
+    \includegraphics[width=\linewidth]{./Images/Chapter03/colorful_fashion_mnist}
+  \endminipage\hfill
+  \caption{Two datasets that are representative of transductive transfer learning. On the left we show images coming from the Fashion-MNIST dataset \cite{xiao2017fashion}, while on the right we report instances of the same dataset that are colored. In this case tasks among datasets are shared $\mathcal{T}_S = \mathcal{T}_T$ (classification of clothes), but the respective images come from different domains $\mathcal{D}_S \neq \mathcal{D}_T$ (black and white vs RGB images).}
+  \label{fig:transductive_tl}
+\end{figure*}
 
 
 \paragraph{Unsupervised Transfer Learning}
