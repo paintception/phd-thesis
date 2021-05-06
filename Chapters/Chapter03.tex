@@ -99,15 +99,22 @@ Based on this definition we can note that unsupervised transfer learning is more
 
 \subsection{Reinforcement Learning}
 
+The domain is the underlying MDP of the problem we would like to solve 
+
 \begin{definition}
-Other definition
+	Given a source MDP $\mathcal{M}_S$ and a target MDP $\mathcal{M}_D$, transfer learning in reinforcement learning aims to learn an optimal policy $\pi^{*}$ for $\mathcal{M}_D$ by exploiting some prior knowledge related to $\mathcal{M}_S$, $\mathcal{K}_S$, together with the knowledge that underlies $\mathcal{M}_T$, $\mathcal{K}_T$ such that:
+	\begin{align}
+		\pi^{*} = \argmax_{\pi} \mathds{E}_{s \sim\mu_{0}^{t},a\sim\pi}\bigl[Q^{\pi}_\mathcal{M}(s,a)\bigr],
+	\end{align}
+	where $\pi = \zeta(\mathcal{K}_S \sim \mathcal{M}_S, \mathcal{K}_T \sim \mathcal{M}_T): \mathcal{S}^t \rightarrow \mathcal{A}^t$ is a function mapping from the states to actions for $\mathcal{M}_T$ learned thanks to both $\mathcal{K}_S$ and $\mathcal{K}_T$.
 
 \end{definition}
 
 
-\paragraph{Transfer of Value Functions}
+\paragraph{Transfer of Parameters}
 \paragraph{Transfer of Features}
 \paragraph{Transfer of Policies}
+\paragraph{Transfer of Rewards}
 
 \section{Literature Review}
 \label{sec:literature_review}
