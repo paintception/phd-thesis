@@ -88,7 +88,7 @@ As an example of transductive transfer learning let us assume that we would like
   \label{fig:transductive_tl}
 \end{figure*}
 
-Although this section focuses on supervised learning, we still report for the sake of completeness a definition of unsupervised transfer learning hereafter, and see how this kind of TL is linked to the types of TL that we have analyzed so far.
+Although this section focuses on supervised learning, we still report for the sake of completeness a definition of unsupervised transfer learning hereafter, and see how this kind of TL is linked to the types of TL that we have analyzed so far
 
 \paragraph{Unsupervised Transfer Learning}
 Arguably considered to be the most challenging, and the least explored type of TL, unsupervised transfer learning is characterized by the total absence at training time of labeled data in both the source domain and the target domain. As mentioned by \citet{pan2009survey} very little research work has so far explored this TL paradigm, with the only existing works exploring typical unsupervised learning topics such as clustering \cite{dai2008self, jin2011transferring, qian2015cluster} and dimensionality reduction \cite{wang2008transferred, zhu2013self, zhu2016robust}. Unsupervised transfer learning is defined as follows:
@@ -109,17 +109,25 @@ When it comes to the reinforcement learning setup, the aforementioned definition
 	where $\pi = \zeta(\mathcal{K}_S \sim \mathcal{M}_S, \mathcal{K}_T \sim \mathcal{M}_T): \mathcal{S}^t \rightarrow \mathcal{A}^t$ is a function mapping from the states to actions for $\mathcal{M}_T$ learned thanks to both $\mathcal{K}_S$ and $\mathcal{K}_T$.
 \end{definition}
 
-Note that differently from the supervised learning case we are now making explicit use of the concept of knowledge $\mathcal{K}$, which is what we would like to retain when moving from a source MDP $\mathcal{M}_S$ to a target MDP $\mathcal{M}_T$. We do this because RL is a machine learning paradigm that is, arguably, more complex than the supervised learning one. A complexity which stems from the fact that in RL there are concepts such as e.g. rewards and policies, which are, by definition, not present in the supervised learning setup. As a result, $\mathcal{K}$ can come in forms that it cannot take in SL, and correctly identifying which kind of knowledge to transfer between $\mathcal{M}_S$ and $\mathcal{M}_T$ is just as important as developing a method that successfully transfer this knowledge. As mentioned by \citet{tirinzoni2018transfer}, $\mathcal{K}$ can come in the following forms:
+Note that differently from the supervised learning case we are now making explicit use of the concept of knowledge $\mathcal{K}$, which is what we would like to retain when moving from a source MDP $\mathcal{M}_S$ to a target MDP $\mathcal{M}_T$. We do this because RL is a machine learning paradigm that is, arguably, more complex than the supervised learning one. A complexity which stems from the fact that in RL there are concepts such as e.g. rewards and policies, which are, by definition, not present in the supervised learning setup. As a result, $\mathcal{K}$ can come in forms that it cannot take in SL, and correctly identifying which kind of knowledge to transfer between $\mathcal{M}_S$ and $\mathcal{M}_T$ is just as important as developing a method that successfully transfers this knowledge in the first place. As mentioned by \citet{lazaric2012transfer} and by \citet{tirinzoni2018transfer}, $\mathcal{K}$ can come in the following forms:
 
-\paragraph{Transfer of Parameters}
-\paragraph{Transfer of Features}
-\paragraph{Transfer of Policies}
-\paragraph{Transfer of Rewards}
+\paragraph{Transfer of Instances:} in this scenario $\mathcal{K}$ corresponds to RL trajectories coming in the form $\langle s_t, a_t, r_t, s_{t+1}\rangle$ and that have been collected on one, or possibly multiple, source MDPs $\mathcal{M}_S$. Such trajectories can then be used both in a model-based RL setting, as done by \citet{taylor2008transferring}, or for speeding up the process of learning a value function as described in \cite{lazaric2008transfer} and \cite{laroche2017transfer}. Ideally, transferring RL trajectories should result into algorithms that are highly sample efficient, although it is worth noting that this property, albeit desirable, can constrain the source task $\mathcal{M}_S$ and the target task $\mathcal{M}_T$ to have similar transition models and reward functions. This instance of TL is usually used within the batch RL setup, where gathering experience samples for $\mathcal{M}_T$ can be particularly expensive or time consuming, which is a constraint that, however does not hold for $\mathcal{M}_S$. The typical challenge is then correctly identifying which samples coming from $\mathcal{M}_S$ are the most informative ones for solving $\mathcal{M}_T$ \cite{tirinzoni2018importance}.
+
+\paragraph{Transfer of Representations:}
+\paragraph{Transfer of Parameters:}
+
 
 \section{Deep Transfer Learning}
 \label{sec:literature_review}
 
 \subsection{General Framework}
+
+\begin{itemize}
+	\item \textcolor{RoyalBlue}{Off the Shelf Classification}
+	\item \textcolor{RoyalBlue}{Fine-Tuning}
+\end{itemize}
+
+
 \subsection{Literature Review}
 \paragraph{Supervised Learning} # not limited to vision ---> mention NLP, BERT, ...
 \paragraph{Reinforcement Learning}
