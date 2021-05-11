@@ -151,10 +151,21 @@ While both approaches come with pros and cons, the latter option is usually pref
 
 
 \subsection{Literature Review}
-\paragraph{Supervised Learning} # Jasper's paper, not limited to vision ---> mention NLP, BERT, ...
-\paragraph{Reinforcement Learning}
-\paragraph{Transfer Learning Extensions}
+As soon as convolutional neural networks started to perform well on popular computer vision benchmarks researchers started to investigate whether the networks which were achieving a state of the art performance could be transferred and reused for novel tasks. Among the different works exploring this research direction, one of the very first ones is the one explored by \citet{donahue2014decaf} who evaluated whether features extracted from a convolutional neural network trained for image classification, could also be used for tackling CV tasks such as scene recognition and domain adaptation. \citet{donahue2014decaf} showed that this was indeed the case, and publicly released the pre-trained model under the name of \texttt{DeCAF} with the goal of stimulating the CV community to further investigate the extent to which the features learned by the network were transferable to novel tasks. Almost concurrently, similar conclusions about the transferability of pre-trained convolutional networks were also drawn by \citet{oquab2014learning}, who showed the benefits of using a pre-trained convolutional layers as feature extractor when dealing with object and action localization problems, and by \citet{zeiler2014visualizing} who first showed that on many problems it was more beneficial to simply train the final classification layer of a pre-trained network, than to train a randomly initialized model from scratch. Although definitely promising, all these works restricted their experimental analysis to a relatively small set of CV problems, and it was only with the seminal work of \citet{sharif2014cnn} that the deep learning community realized how powerful pre-trained networks could be. \citet{sharif2014cnn} used the off the shelf features of the pre-trained \texttt{OverFeat} network \cite{sermanet2013overfeat} for tackling numerous challenging CV problems , and consistently reported a final performance that was superior than the one of the state of the art algorithms of the time. Next to providing a wealth of empirical evidence in support of using off the shelf features, the work presented by \citet{sharif2014cnn} also established the very first protocol for training linear classifiers, such as SVMs, on the extracted high dimensional features by relying on dimensionality reduction techniques such as principal component analysis. It did not take long before the scientific community started to investigate whether off the shelf features could be used for problems outside the typical CV benchmarks, and fully realized the potential of this TL approach. Among the very first practical applications, we mention the work of \citet{van2015off} who used the previously mentioned \texttt{DeCAF} model for (successfully) tackling the challenging medical task of pulmonary nodule detection. Along the same line of research equally good results were obtained within the medical domain by \citet{hernandez2018periocular} who tackled the problem of periocular recognition, and by \citet{nguyen2017iris} who considered the similar task of iris recognition. 
 
+
+\iffalse
+\begin{itemize}
+	\item among the first applications \citet{van2015off} for pulmonary diseases + lots of further applications \citet{nguyen2017iris} (iris recognition), \citet{sharma2015adapting} word spotting, 
+	\item \citet{wang2014action} human action understanding + combination of older CV feature engineering approaches, similar idea used by \citet{zhong2016face} face localization techniques + off 
+	\item \citet{zhou2014learning} larger new dataset specifically designed for scene recognition which works better than ImageNet features. 
+	\item \citet{van2015deep} gender classification 
+	\item \citet{hernandez2018periocular} periocular recognition
+\end{itemize}
+
+
+# Jasper's paper, not limited to vision ---> mention NLP, BERT, ...
+\fi
 
 \section{Relevance for this Dissertation}
 \label{sec:relevance}
