@@ -8,6 +8,14 @@
 \section{Introduction}
 \label{sec:tl_introduction}
 
+\begin{itemize}
+	\item cogsci perspective on nature of intelligence
+	\item practical benefits real world applications
+	\item computational costs 
+	\item tl as a tool for understanding neural networks
+\end{itemize}
+
+
 
 \section{Rationale of Transfer Learning}
 \label{sec:rationale}
@@ -112,11 +120,10 @@ When it comes to the reinforcement learning setup, the aforementioned definition
 
 Note that differently from the supervised learning case we are now making explicit use of the concept of knowledge $\mathcal{K}$, which is what we would like to retain when moving from a source MDP $\mathcal{M}_S$ to a target MDP $\mathcal{M}_T$. We do this because RL is a machine learning paradigm that is, arguably, more complex than the supervised learning one. A complexity which stems from the fact that in RL there are concepts such as e.g. rewards and policies, which are, by definition, not present in the supervised learning setup. As a result, $\mathcal{K}$ can come in forms that it cannot take in SL, and correctly identifying which kind of knowledge to transfer between $\mathcal{M}_S$ and $\mathcal{M}_T$ is just as important as developing a method that successfully transfers this knowledge in the first place. As mentioned by \citet{lazaric2012transfer} and by \citet{tirinzoni2018transfer}, $\mathcal{K}$ can come in the following forms:
 
-\paragraph{Transfer of Instances:} in this scenario $\mathcal{K}$ corresponds to RL trajectories coming in the form $\langle s_t, a_t, r_t, s_{t+1}\rangle$ and that have been collected on one, or possibly multiple, source MDPs $\mathcal{M}_S$. Such trajectories can then be used both in a model-based RL setting, as done by \citet{taylor2008transferring}, or for speeding up the process of learning a value function as described in \cite{lazaric2008transfer} and \cite{laroche2017transfer}. Ideally, transferring RL trajectories should result into algorithms that are highly sample efficient, although it is worth noting that this property, albeit desirable, can constrain the source task $\mathcal{M}_S$ and the target task $\mathcal{M}_T$ to have similar transition models and reward functions. This instance of TL is usually used within the batch RL setup, where gathering experience samples for $\mathcal{M}_T$ can be particularly expensive or time consuming, which is a constraint that, however does not hold for $\mathcal{M}_S$. The typical challenge is then correctly identifying which samples coming from $\mathcal{M}_S$ are the most informative ones for solving $\mathcal{M}_T$ as for example studied by \citet{tirinzoni2018importance}.
+\paragraph{Transfer of Instances:} in this scenario $\mathcal{K}$ corresponds to RL trajectories coming in the form $\langle s_t, a_t, r_t, s_{t+1}\rangle$ and that have been collected on one, or possibly multiple, source MDPs $\mathcal{M}_S$. Such trajectories can then be used both in a model-based RL setting, as done by \citet{taylor2008transferring}, or for speeding up the process of learning a value function as described in \cite{lazaric2008transfer} and \cite{laroche2017transfer}. Ideally, transferring RL trajectories should result into algorithms that are highly sample efficient, although it is worth noting that this property, albeit desirable, can constrain the source task $\mathcal{M}_S$ and the target task $\mathcal{M}_T$ to have similar transition models and reward functions. This instance of TL is usually used within the batch RL setup, where gathering experience samples for $\mathcal{M}_T$ can be particularly expensive or time consuming, which is a constraint that does not hold for $\mathcal{M}_S$. The typical challenge then consists in correctly identifying which samples coming from $\mathcal{M}_S$ are the most informative ones for solving $\mathcal{M}_T$ as for example studied by \citet{tirinzoni2018importance}.
 
 \paragraph{Transfer of Representations:}
-\paragraph{Transfer of Parameters:}
-
+\paragraph{Transfer of Parameters:} as we have seen in Chapter \ref{ch:reinforcement_learning} it is often desirable to integrate RL algorithms with parametric function approximators. The main goal is then to train these parametric functions such that they will learn an approximation of an optimal value function or policy. When parameter transfer is performed the main idea is to start solving the problem modeled by the target task $\mathcal{M}_T$ with a function that instead of being initialized with random parameters, is initialized with parameters that have been learned on a certain source task $\mathcal{M}_S$. Examples of knowledge $\mathcal{K}$ that fit this description are the parameters $\theta$ of a pre-trained Deep Q-Network, or the parameters that model an Actor-Critic agent.  
 
 \section{Deep Transfer Learning}
 \label{sec:literature_review}
