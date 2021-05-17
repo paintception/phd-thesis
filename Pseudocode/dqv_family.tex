@@ -1,0 +1,57 @@
+\begin{algorithm*}
+\footnotesize
+\caption{DQV and DQV-Max Learning}\label{alg: dqv_algorithms}
+\begin{algorithmic}[1]
+\Require{Experience Replay Queue $D$ of maximum size $N$}{}
+\Require{$Q$ network with parameters $\theta${}} \Comment{Network required by DQV}
+\Require{$V$ networks with parameters $\Phi$ and $\Phi^{-}$ {}} \Comment{Networks required by DQV}
+\Require{$Q$ networks with parameters $\theta$ and $\theta^{-}${}} \Comment{Networks required by DQV-Max}
+\Require{$V$ network with parameters $\Phi${}} \Comment{Network required by DQV-Max}
+\Require{total\_a = 0}
+\Require{total\_e = 0}
+\Require{c = $10000$}
+\Require{$\mathcal{N} = 50000$}
+
+\While{True}
+\State{set $s_t$ as the initial state}
+\While{$s_t$ is not terminal}
+    \State{select $a_t\in\mathcal{A}$ for $s_{t}$ with policy $\pi$ (using the epsilon-greedy strategy)}
+    \State{get $r_{t}$ and $s_{t+1}$}
+    \State{store $\langle s_{t}, a_{t}, r_{t}, s_{t+1}\rangle$ in $D$}
+    \State{$s_t := s_{t+1}$}
+    \State{total\_e += 1}
+    \If{total\_e $\geqq \mathcal{N}$}
+            \State{sample a minibatch $B=\{\langle s^i_t, a_t^i, r^i_t, s^i_{t+1}\rangle|i=1,\ldots,32\}$ of size 32 from $D$}
+        \For{i = 1 to 32}
+        \If{$s^i_{t+1}$ is terminal}
+            \State{$y^i_{t} := r^i_{t}$}    \Comment{TD-Error for DQV}
+            \State{$v^i_{t} := r^i_{t}$}    \Comment{1st TD-Error for DQV-Max}
+            \State{$q^i_{t} := r^i_{t}$} \Comment{2nd TD-Error for DQV-Max}
+        \Else
+            \State{$y^i_{t} := r^i_{t} + \gamma V(s^i_{t+1}, \Phi^{-})$} \Comment{TD-Error for DQV} 
+            
+            \State{$v^i_{t} := r^i_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s^i_{t+1}, a, \theta^{-})$} \Comment{1st TD-Error for DQV-Max}
+            \State{$q^i_{t} := r^i_{t} + \gamma \: V(s^i_{t+1}, \Phi)$} \Comment{2nd TD-Error for DQV-Max}
+         \EndIf
+         \EndFor
+        \State{$\theta := \underset{\theta}{\argmin} \sum_{i=1}^{32} (y^i_{t} - Q(s^i_{t}, a^i_{t}, \theta))^{2}$}
+        \Comment{Train the $Q$ network for DQV}
+        \State{$\Phi := \underset{\Phi}{\argmin} \sum_{i=1}^{32}(y^i_{t} - V(s^i_{t}, \Phi))^{2}$}
+        \Comment{Train the $V$ network for DQV}
+         \State{$\theta := \underset{\theta}{\argmin}\: \sum_{i=1}^{32} (q^i_{t} - Q(s^i_{t}, a^i_{t}, \theta))^{2}$}
+         \Comment{Train the $Q$ network for DQV-Max}
+        \State{$\Phi := \underset{\Phi}{\argmin}\: \sum_{i=1}^{32} (v^i_{t} - V(s^i_{t}, \Phi))^{2}$}
+        \Comment{Train the $V$ network for DQV-Max}
+        \State{total\_a += 1}
+        \If{total\_a = $c$}
+            \State{$\Phi^{-}$ := $\Phi$} \Comment{Update the target $V$ network in DQV}
+            \State{$\theta^{-}$ := $\theta$} \Comment{Update the target $Q$ network in DQV-Max}
+            \State{total\_a := 0}
+         \EndIf
+    \EndIf
+\EndWhile
+\EndWhile
+
+\end{algorithmic}
+\end{algorithm*}
+

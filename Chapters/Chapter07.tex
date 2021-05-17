@@ -141,6 +141,9 @@ In this case the target network $\theta^{-}$ corresponds to the same target netw
 
 The pseudocode of both DQV and DQV-Max is presented at the end of this thesis in Algorithm \ref{alg: dqv_algorithms} which can be found in Appendix. The pseudocode is an adaptation of a standard DRL training loop which corresponds to what is usually presented within the literature \cite{mnih2015human}. We just make explicit use of the hyperparameters \texttt{total\_a} and \texttt{c} which ensure that enough actions have been performed by the agent before updating the weights of the target network. We also ensure via the hyperparameter \texttt{total\_e}, that enough episodes are stored within the memory buffer (which has capacity $\mathcal{N}$) before starting to optimize the neural networks. 
 
+\input{./Pseudocode/dqv_family.tex}
+
+
 \section{Results}
 \label{sec:ijcnn_results}
 
