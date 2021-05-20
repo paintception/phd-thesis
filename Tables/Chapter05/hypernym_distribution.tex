@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+  \begin{axis}[title  = Contributions per category
+                          at LaTeX-Community.org,
+    xbar,
+    bar width=.3cm,
+    y axis line style = { opacity = 0 },
+    axis x line       = none,
+    tickwidth         = 1pt,
+    enlarge y limits  = 0.05,
+    enlarge x limits  = 0.001,
+    symbolic y coords = {Stringed, Wind, Percussion,Keyboard, Electronic},
+    nodes near coords,
+  ]
+\addplot coordinates {(2099,Stringed) (1212,Wind) (478,Percussion) (339,Keyboard) (14,Electronic)};
+\addplot coordinates {(1130,Stringed) (751,Wind) (214,Percussion) (184,Keyboard) (9,Electronic)};
+\addplot coordinates {(1058,Stringed) (706,Wind) (180,Percussion) (151,Keyboard) (7,Electronic)};
+\legend{Training,Validation,Testing}
+
+\end{axis}
+\end{tikzpicture}
+
+\iffalse
+\end{axis}
+\end{tikzpicture}
+\fi
