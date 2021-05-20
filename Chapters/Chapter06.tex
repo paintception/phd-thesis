@@ -18,19 +18,19 @@ The ``Lottery-Ticket-Hypothesis" (LTH) \cite{frankle2018lottery} states that wit
 
 \begin{figure*}[!htb]
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter05/mlp.pdf}
+  \includegraphics[width=\linewidth]{./Images/Chapter06/mlp.pdf}
 \endminipage\hfill
 \minipage{0.3\textwidth}
-  \includegraphics[width=\linewidth]{./Images/Chapter05/mlp_ticket_3.pdf}
+  \includegraphics[width=\linewidth]{./Images/Chapter06/mlp_ticket_3.pdf}
 \endminipage\hfill
 \minipage{0.3\textwidth}%
-  \includegraphics[width=\linewidth]{./Images/Chapter05/random_ticket_1.pdf}
+  \includegraphics[width=\linewidth]{./Images/Chapter06/random_ticket_1.pdf}
 \endminipage
 \caption{A visual representation of the LTH as introduced by \citet{frankle2018lottery}. Let us consider a simplified version of a two hidden layer feedforward neural network as is depicted in the first image on the left. The LTH states that within this neural network there exist multiple smaller networks (represented in green), which can perform just as well as their larger counterpart. Training these sparse models from scratch successfully is only possible as long as their weights are initialized with the same values that were also used when the larger (black) model was initialized. Furthermore, the structure of these sparse models appears to be crucial as well, since it is not possible to randomly extract any subset of weights from an unpruned model and successfully train the resulting sparse network (represented in red in the last figure) from scratch. We visually represent the performance od models that are the winners of the LTH in the two plots reported in Figure \ref{fig:original_lth_results}.}	
 \label{fig:tickets_visualization}
 \end{figure*}
 
-\input{./Results/Chapter05/tex/lth_example.tex}
+\input{./Results/Chapter06/tex/lth_example.tex}
 
 Since the introduction of the idea of the LTH, several research works have focused on understanding what makes some weights so special to be the winners of the initialization lottery. Among the different tested approaches, which will be reviewed in Sec. \ref{sec:related_work}, one research direction in particular has looked into how well winning ticket initializations can be transferred among different training settings (datasets and optimizers), an approach which aims at characterizing the winners of the LTH by studying to what extent their inductive biases are generic \cite{morcos2019one}. The most interesting findings of this study are that winning tickets generalize across datasets, within the natural image domain at least, and that tickets obtained from larger datasets typically generalize better. This opens the door to the transfer of winning tickets between datasets, which makes the high computational cost required to identify them much more acceptable practically, as this cost has to be paid only once and can be shared across datasets.
 
@@ -44,16 +44,16 @@ We report an overview about the size of these datasets in Table \ref{tab:lth_dat
 The Digital-Pathology (DP) data comes from the Cytomine \cite{maree2016collaborative} web application, an open-source platform that allows interdisciplinary researchers to work with large-scale images. While Cytomine has collected a large number of datasets over the years, in this work we have limited our analysis to a subset of four datasets that all represent tissues and cells from either human or animal organs: \texttt{Human-LBA}, \texttt{Lung-Tissues}, and \texttt{Mouse-LBA} were originally proposed in \cite{mormont2018comparison}, while \texttt{Bone-Marrow} comes from \cite{kainz2017training}. All four datasets have been used in \cite{mormont2018comparison}, that researched whether neural networks pre-trained on natural images could successfully be re-used in the DP domain. In this paper, we explore whether an alternative to the transfer-learning approaches presented in \cite{mormont2018comparison} could be based on training pruned networks that are the winners of the LTH. This will allow us to investigate the two research questions introduced in Sec. \ref{sec:intro}: we will explore whether winning initializations that are found on datasets of natural images do generalize to non-natural domains, and whether sparse models winners of the LTH can perform better than larger unpruned models that get trained from scratch. 
 Regarding the field of Digital-Humanities (DH) we have created three novel datasets that all revolve around the classification of artworks. We consider two different classification tasks that have already been thoroughly studied by researchers bridging between the fields of Computer Vision (CV) and DH \cite{mensink2014rijksmuseum,strezoski2017omniart,sabatelli2018deep}. The first task consists in identifying the artist of the different artworks, while the second one aims at classifying which kind of artwork is depicted in the different images, a challenge which is usually referred to in the literature as type-classification \cite{mensink2014rijksmuseum,sabatelli2018deep}. When it comes to the artist-classification task we have created two different datasets, which purpose will be better explained in Sec. \ref{sec:additional_studies}. All images are publicly available as part of the WikiArt gallery \cite{phillips2011wiki} and can also be found within the large popular OmniArt dataset \cite{strezoski2018omniart}. Albeit as we have seen in Chapter \ref{ch:tl_natural_to_non_natural} in DH it is actually easier to find large datasets than in histopathology, it is worth mentioning that we have kept the size of these datasets intentionally small in order to fit the research questions introduced in Sec. \ref{sec:intro}. Furthermore, it is also worth noting that there are several additional challenges that need to be overcome when training deep neural networks on artistic collections, which therefore motivate the use of this kind of datasets in this work. The size, texture, and resolution of the images coming from the DH are usually representative of different time periods, artistic movements and might have gone through different digitization processes, which are all reasons that make these datasets largely varied and challenging.
 
-\input{./Tables/Chapter05/datasets_overview.tex}
+\input{./Tables/Chapter06/datasets_overview.tex}
 
 \begin{figure*}
   \centering
-   \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter05/lba.pdf}%
-  \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter05/tissus.pdf}%
-  \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter05/mouse_lba.pdf}%
-    \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter05/bonemarrow.pdf}%
-  \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter05/artist.pdf}%
-  \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter05/type.pdf}%
+   \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter06/lba.pdf}%
+  \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter06/tissus.pdf}%
+  \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter06/mouse_lba.pdf}%
+    \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter06/bonemarrow.pdf}%
+  \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter06/artist.pdf}%
+  \includegraphics[width=2cm,height=\textheight,keepaspectratio]{./Images/Chapter06/type.pdf}%
 \caption{Some image samples that constitute the non-natural image datasets which have been used in this work.
 From left to right we have the \texttt{Human-LBA}, \texttt{Lung-Tissues}, \texttt{Mouse-LBA} and \texttt{Bone-Marrow} datasets, while finally we report some examples that represent artworks which come from the field of digital heritage and that are therefore similar to the images we have used for the experiments reported in Chapter \ref{ch:tl_natural_to_non_natural}.}
 \label{fig:dataset_images}
@@ -70,7 +70,7 @@ At the end of training, we study the performance of each winning ticket in two d
 
 \begin{figure*}
   \centering
-   \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{./Images/Chapter05/natural_datasets.png}
+   \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{./Images/Chapter06/natural_datasets.png}
    \caption{The three natural datasets used in our experiments to find winning tickets. From left to right samples from the CIFAR-10/100 and Fashion-MNIST datasets.}
 \label{fig:natural_source_datasets}
 \end{figure*}
@@ -83,9 +83,9 @@ The results of all our experiments are visually reported in the plots of Fig. \r
 \subsection{On the Importance of Finding Winning Initializations}
 We can start by observing that pruned models which happen to be the winners of the LTH either on a natural dataset, or on a non-natural one, can maintain a good final performance until large pruning rates are reached. This is particularly evident on the first three datasets, where models that keep only $\approx 1\%$ of their original weights barely suffer from any drop in performance. This gets a little bit less evident on the last three datasets, where the performance of winning ticket initializations that are directly found on the considered target dataset starts getting harmed once a fraction of $\approx 97$ of original weights are pruned. These results show that an extremely large part of the parameters of a ResNet-50 architecture can be considered as superfluous, therefore confirming the LTH when datasets contain non-natural images. More importantly, we also observe that pruned models winners of the LTH, significantly outperform larger over-parametrized models that get trained from scratch. This can be very clearly seen in all plots where the performance of pruned models is always consistently better than what is reported by the black dashed line. To get a better sense of how much these pruned networks perform better than their larger unpruned counterparts, we report in Table \ref{tab:results} the performance that is obtained by the best performing pruned model, found over all 31 possible pruned models, and compare it to the performance of an unpruned architecture. The exact fraction of weights which is pruned from an original ResNet-50 architecture is reported in Table \ref{tab:fraction_results} for each configuration. We can observe that no matter which dataset has been used as a source for finding a winning ticket initialization, all pruned networks reach a final accuracy that is significantly higher than the one that is obtained after training an unpruned model from scratch. While in most cases the difference in terms of performance is of $\approx 10\%$ (see e.g. the \texttt{Human-LBA, Lung-Tissues} and the \texttt{Type-Classification} datasets), it is worth highlighting that there are other cases in which this difference is even larger. This is the case for the \texttt{Mouse-LBA} and \texttt{Artist-Classification-1} datasets where a winning ticket coming from the CIFAR-10 dataset performs more than $20\%$ better than a model trained from scratch. These results show that in order to maximize the performance of deep networks it is always worth finding and training pruned models which are the winners of the LTH.
 
-\input{./Tables/Chapter05/tl_results.tex}
-\input{./Tables/Chapter05/pruning_results.tex}
-\input{./Results/Chapter05/tex/tl_study_results.tex}
+\input{./Tables/Chapter06/tl_results.tex}
+\input{./Tables/Chapter06/pruning_results.tex}
+\input{./Results/Chapter06/tex/tl_study_results.tex}
 
 
 \subsection{On the Generalization Properties of Lottery Winners}
@@ -101,18 +101,18 @@ To characterize the transferability of winning initializations even more, while 
 \subsubsection{Lottery Tickets VS fine-tuned pruned models}
 So far we have focused our transfer-learning study on lottery tickets that come in the form of $f(x;m\odot\theta_k)$, where, as mentioned in Sec. \ref{sec:experimental_setup}, $\theta_k$ corresponds to the weights that parametrize a neural network at a very early training iteration. This formalization is however different from more common transfer-learning scenarios like the ones we have explored in Chapter \ref{ch:tl_natural_to_non_natural} where neural networks get transferred with the weights that are obtained at the end of the training process \cite{mormont2018comparison,sabatelli2018deep}. We have therefore studied whether there is a difference in terms of performance between transferring and fine-tuning a lottery ticket with parameters $\theta_k$, and the same kind of pruned network which is initialized with the weights that are obtained once the network is fully trained on a source task. We define these kind of models as $f(x;m\odot\theta_i)$ where $i$ stays for the last training iteration. We report some examples of this behaviour in the plots presented in Fig. \ref{fig:full_fine_tuning_comparison}, where we consider $f(x;m\odot\theta_i)$ models which were trained on the CIFAR-10 and CIFAR-100 datasets, and then transferred and fine-tuned on the \texttt{Human-LBA} dataset. We found that these models overall perform worse than lottery tickets, while also being less robust to pruning. This also shows that on this dataset, the slightly inferior performance of the natural image tickets with respect to the target tickets is not due to the weight re-initialization.
 
-\input{./Results/Chapter05/tex/full_pretraining_comparison.tex}
+\input{./Results/Chapter06/tex/full_pretraining_comparison.tex}
 
 \subsubsection{Transferring tickets from similar non-natural domains}
 We investigated whether it is beneficial to fine-tune lottery winners that, instead of coming from a natural image distribution, come from a related non-natural dataset. Specifically we tested whether winning tickets generated on the \texttt{Human-LBA} dataset generalize to the \texttt{Mouse-LBA} one (since both datasets are representative of the field of Live-Blood-Analysis), and whether lottery winners coming from the \texttt{Artist-Classification-1} dataset generalized to the \texttt{Artist-Classification-2} one. We visually represent these results in Fig. \ref{fig:from_similar_source_transfer}. As one might expect, we found that it is beneficial to transfer winning tickets that come from a related source. Specifically, \texttt{Human-LBA} tickets can perform just as well as winning tickets that are generated on the \texttt{Mouse-LBA} dataset, while at the same time also being more robust to large pruning rates. When it comes to lottery winners found on the \texttt{Artist-Classification-1} dataset we have observed that these tickets can even outperform the ones generated on the \texttt{Artist-Classification-2} one. Overall these results confirm the claims that we made in Chapter \ref{ch:tl_natural_to_non_natural} where we already highlighted the benefits that could come from transferring models that were trained on a similar source as the target task. This conclusion now also holds for models that are the winners of the LTH. 
 
-\input{./Results/Chapter05/tex/similar_source_transfer.tex}
+\input{./Results/Chapter06/tex/similar_source_transfer.tex}
 
 
 \subsubsection{On the size of the training set}
 We have observed from the blue line plots of Fig. \ref{fig:tl_learning_with_lottery_tickets_results} that there are cases in which lottery winners are very robust to extremely large pruning rates (see as an example the first and second plots), while there are other cases in which their performance deteriorates faster with respect to the fraction of weights that get pruned. The most robust performance is obtained by winning tickets that are generated on the \texttt{Human-LBA} and \texttt{Lung-Tissues} datasets, which are the two target datasets that contain the largest amount of training samples. We have therefore studied whether there is a relationship between the size of the training data that is used for finding lottery winners, and the robustness in terms of performance of the resulting pruned models. We generated lottery winners after incrementally reducing the size of the training data by $75\%$, $50\%$ and $25\%$, and then investigated whether we could observe a similar drop in performance as the one we have observed in the last three blue line-plots of Fig. \ref{fig:tl_learning_with_lottery_tickets_results} once a large fraction of weights got pruned. Perhaps surprisingly, we have observed that this was not the case, and as can be seen by the plots represented in Fig. \ref{fig:training_data_study}, the performance of lottery winners that are found when using only $25\%$ of the training set is just as stable as the one of winning tickets which are generated on the entire dataset. It is however worth mentioning that, albeit the performance of such sparse models is robust, their final performance on the testing set is lower than the one that is obtained by winning tickets that have been trained on the full training data distribution.
 
-\input{./Results/Chapter05/tex/percentage_study.tex}
+\input{./Results/Chapter06/tex/percentage_study.tex}
 
 
 \section{Related Work}
