@@ -1,0 +1,22 @@
+\begin{table*}[ht!]
+\small
+\caption{The results comparing the performance that is obtained on the testing-set by the best pruned model winner of the LTH, and an unpruned architecture trained from scratch. The overall best performing model is reported in a green cell, while the second best one in a yellow cell. We can observe that pruned models winners of the LTH perform significantly better than a larger over-parametrized architecture that gets trained from scratch. As can be seen by the results obtained on the \texttt{Mouse-LBA} and \texttt{Artist-Classification-1} datasets the difference in terms of performance can be particularly large ($\approx 20\%$).}
+\resizebox{\columnwidth}{!}{%
+\centering
+\begin{tabular}{lcccccc}
+\hline
+Target-Dataset & Scratch-Training & CIFAR-10 & CIFAR-100 & Fashion-MNIST & Target-Ticket \\
+\hline
+\texttt{Human-LBA} & $71.85_{\pm 1.12}$ &\cellcolor{yellow!25}$79.17_{\pm1.85}$ &$76.97_{\pm0.73}$ &$77.32_{\pm1.85}$ &\cellcolor{green!25}$81.72_{\pm0.39}$\\
+\texttt{Lung-Tissues} &$84.75_{\pm0.81}$ &\cellcolor{yellow!25}$88.90_{\pm1.97}$ &$87.61_{\pm0.90}$ & $87.61_{\pm0.11}$ & $\cellcolor{green!25}90.48_{\pm0.16}$\\
+\texttt{Mouse-LBA} &$48.17_{\pm1.18}$ &\cellcolor{green!25}$74.20_{\pm2.04}$ &$57.42_{\pm0.48}$ &$52.27_{\pm1.73}$ &\cellcolor{yellow!25}$68.20_{\pm3.79}$\\
+\texttt{Bone-Marrow} &$64.66_{\pm1.36}$ &\cellcolor{yellow!25}$71.75_{\pm3.36}$ &$69.87_{\pm0.39}$&$68.77_{\pm0.39}$&$\cellcolor{green!25}72.55_{\pm0.46}$\\
+\hline
+\texttt{Artist-Classification-1} & $45.88_{\pm0.42}$ & $\cellcolor{green!25}66.58_{\pm1.54}$ & $\cellcolor{yellow!25}65.55_{\pm1.79}$ & $63.88_{\pm0.12}$ & $58.74_{\pm1.92}$\\
+\texttt{Type-Classification} &$41.36_{\pm2.31}$ & $58.63_{\pm2.97}$ & $\cellcolor{green!25}60.56_{\pm0.44}$ & $\cellcolor{yellow!25}58.92_{\pm0.59}$ & $50.44_{\pm2.23}$ \\
+
+\hline
+\end{tabular}%
+}
+\label{tab:results}
+\end{table*}
