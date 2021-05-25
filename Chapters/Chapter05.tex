@@ -15,13 +15,24 @@ This chapter ...
 \section{Challenges of Modern Computer Vision}
 \label{sec:cv_challenges}
 
+If it is true that the results presented in the previous chapter show that it is possible to successfully transfer pre-trained convolutional neural networks to non natural image datasets, it is equally true that some limitations might still need to be addressed. One above all, is the need of fine-tuning the networks instead of simply using them as feature extractors. As demonstrated by the experiments performed on the third classification problem of the Rijksmuseum dataset, it is clear that pre-trained models might only learn features that are relevant for their respective source task $\mathcal{T}_S$ (ImageNet), which therefore might result into unsatisfying performance when an off the shelf training strategy is used. While this is a result that does not come as a surprise, as it would be unreasonable to expect pre-trained networks to act as universal feature extractors, this limitation can still have some important practical implications, since it can prevent the deployment of computer vision systems outside the domain of natural images. As a very practical example let us consider the first image presented in Fig. \ref{fig:fails} and the computer vision task of object detection. We tackle this task with an object detector that is pre-trained on natural images only and that therefore, has never seen any images coming from a domain other than the source domain $\mathcal{D}_S$. From the performance of the model it is clear that only one out of the two predictions made by the network is appropriate, as it fails in detecting the musical instrument depicted in the image by wrongly classifying it as a `frisbee". While certainly reasonable and fully justifiable, this kind of performance is the result of some limitations that currently characterize modern Computer Vision (CV) and which we summarize as follows:
 
-\subsection{Photo-realism}
-\subsection{Data Scarcity}
-\subsection{Irrelevant Training Categories}
-\subsection{Model Robustness}
+\begin{itemize}
+	\item \textcolor{RoyalBlue}{Photorealism and Data Scarcity:} it is well known that modern CV strongly gravitates towards photorealistic material, since most of the datasets that are used in the field are representative of digitized, or born-digital, versions of photographs. Nevertheless, datasets like MNIST, CIFAR-10/100 and the already mentioned ImageNet play a crucial role in today's rapid development of the field, as they are constantly used as benchmarks by the community. While certainly suitable for defining different challenging CV tasks, it is worth noting however, that these datasets are also only partially representative of the physical world, as they do not actively attempt to distort the reality they depict. Unfortunately, datasets going beyond the photorealistic domain are either much rarer, or are simply not as popular as their photorealistic counterparts, a limitation that results into pre-trained models that fail in performing well when used outside from the natural world (see again first image of Fig. \ref{fig:fails}).  
 
+	\item \textcolor{RoyalBlue}{Modern Training Classes:} the performance depicted in the first image of Fig. \ref{fig:fails} can largely be attributed to the fact that the model used for detecting the objects in the image has never been explicitly trained on images of musical instruments. As a result its predictions can only tend to be representative of the classes that have governed the training process. While this is a behavior that has only to be expected, it can still serve as a surrogate for highlighting a crucial limitation of modern object detection datasets: datasets are not as diversified and heterogeneous as one might expect. As an example let us consider the popular Pascal-Voc \cite{everingham2010pascal} and MS-COCO \cite{lin2014microsoft} datasets. The first one tackles the detection of 20 classes, out of which more than a third constitute different kinds of transportation systems, such as `trains", `boats",`motorcycles" and `cars". The latter, albeit more complex, mostly represents objects that are representative of the highly technological world we currently live in, with classes such as `microwave", `laptop" and `remote control". In practice this results into models that gravitate towards detecting objects in an image which are modern, a behavior that hurts not-technological classes such as the `person" one which should be detected in the second image of Fig. \ref{fig:fails}.     
 
+	\item \textcolor{RoyalBlue}{Model Robustness:} the aforementioned limitation also results into models that learn features that are hardly general enough for successfully tackling different representations of the same class. As an example let us consider the last image of Fig. \ref{fig:fails}: we can clearly see that a model pre-trained on MS-COCO successfully detects the persons represented in the paintings only as long as their pose corresponds to a pose that can easily be found in the images depicting persons in photorealistic datasets. As soon as a person is depicted in a pose that is different from the one that usually characterizes a person in a photorealistic dataset (sitting or standing), then a pre-trained network mistakenly detects it as an animal.   
+\end{itemize}
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=\linewidth]{./Images/Chapter05/fails}
+  \caption{}
+  \label{fig:fails}
+\end{figure}
+
+In this chapter we take inspiration from these limitations and use them as a surrogate for introducing novel datasets that can be used as a benchmark for CV researchers. The purpose of such datasets is twofold: on the one hand they represent, at least in part, a solution to the aforementioned issues that currently characterize CV, while on the other hand, they allow us to continue the study of the transfer learning properties of convolutional neural networs which we started in the previous chapter.  
 
 \section{The MINERVA Dataset}
 \label{sec:minerva_dataset}
@@ -32,7 +43,6 @@ This chapter ...
 \subsection{Versions and Splits}
 
 \input{./Tables/Chapter05/minerva_splits.tex}
-
 
 
 \begin{figure}[htb!]
@@ -58,6 +68,17 @@ This chapter ...
 
 \subsection{Classification}
 \subsection{Object Detection}
+
+\begin{aligned}
+& \lambda_\text{coord} \sum_{i=1}^{S \times S} \sum_{j=1}^B \mathbb{1}_{i,j}^\text{obj} \left( (x_i - \hat{x}_{i,j})^2 + (y_i - \hat{y}_{i,j})^2 + (\sqrt{w_i} - \sqrt{\hat{w}_{i,j}})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_{i,j}})^2\right)\\\\
+& + \lambda_\text{obj} \sum_{i=1}^{S \times S} \sum_{j=1}^B \mathbb{1}_{i,j}^\text{obj} (c_{i,j} - \hat{c}_{i,j})^2 + \lambda_\text{noobj} \sum_{i=1}^{S \times S} \sum_{j=1}^B (1-\mathbb{1}_{i,j}^\text{obj}) \hat{c}_{i,j}^2  \\\\
+& + \lambda_\text{classes} \sum_{i=1}^{S \times S} \mathbb{1}_i^\text{obj} \sum_{c=1}^C (p_{i,c} - \hat{p}_{i,c})^2 
+\end{aligned}
+
+
+where $\hat{p}{i,c}$, $\hat{x}{i,j}$, $\hat{y}{i,j}$, $\hat{w}{i,j}$, $\hat{h}{i,j}$ and $\hat{c}{i,j}$ are the network outputs.
+
+
 
 
 \section{Results}
