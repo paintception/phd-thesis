@@ -32,13 +32,26 @@ If it is true that the results presented in the previous chapter show that it is
   \label{fig:fails}
 \end{figure}
 
-In this chapter we take inspiration from these limitations and use them as a surrogate for introducing novel datasets that can be used as a benchmark for CV researchers. The purpose of such datasets is twofold: on the one hand they represent, at least in part, a solution to the aforementioned issues that currently characterize CV, while on the other hand, they allow us to continue the study of the transfer learning properties of convolutional neural networs which we started in the previous chapter.  
+In this chapter we take inspiration from these limitations and use them as a surrogate for introducing novel datasets that can be used as a benchmark for CV researchers. The purpose of such datasets is twofold: on the one hand they represent, at least in part, a solution to the aforementioned issues that currently characterize CV, while on the other hand, they allow us to continue studying the transfer learning properties of convolutional neural networks which we started in the previous chapter.  
 
 \section{The MINERVA Dataset}
 \label{sec:minerva_dataset}
 
+We now introduce MINERVA, a novel annotated dataset that can be used for object detection. More specifically, the main task that we present is that of the detection of musical instruments in non-photorealistic, unrestricted image collections from the artistic domain. We start by providing some background information about the field of music iconography which allows us to motivate why being able of identifying musical instruments within artistic images is a task which is desirable from a perspective that is different from the one of CV. We then describe how the images of MINERVA have been first collected and then annotated, and then quantitatively characterize the dataset under the lens of machine learning.    
+
 \subsection{Music Iconography}
+
+
 \subsection{Data Collection}
+The images constituting MINERVA come from three different data sources which allow the dataset to be highly varied and unrestricted. In fact its images cover a large range of periods, genres and materials and are both of photorealistic and not-photorealistic nature as visually represented in Fig. \ref{fig:minerva_dataset}. The three data sources are the following:
+\begin{itemize}
+	\item RIDIM: which stays for \textit{Repertoire International d'Iconographie Musicale} is an international digital inventory for musical iconography that functions as a reference image database. Developed and curated by \citet{} it has been designed to facilitate the discovery of music-related artworks. Among the three different considered data sources, the images coming from the RIDIM collection are the ones of highest quality in terms of resolution.
+	\item RMFAB/RMAH: which stays for \textit{Royal Museums of Fine Arts of Belgium} and \textit{Royal Museums of Art and History}. These images come from a larger pool of digitized images which have been manually selected on the basis whether they included depictions of musical instruments or not. Among the different data sources, the amount of images coming from RMFAB/RMAH within MINERVA is is the lowest when compared to the other two data sources. These images are of midrange resolution.
+	\item Flickr: is a well known image hosting service from which we downloaded a large dataset of images depicting musical instruments in the visual arts pre-dating 1800. Most of the images present within MINERVA come from Flickr, although their resolution is not always on par with the previous two data sources.  
+\end{itemize}
+
+Once all these images have been collected we have started the labeling process.
+
 \subsection{Annotation Process}
 \subsection{Versions and Splits}
 
