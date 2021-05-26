@@ -83,17 +83,27 @@ The experimental setup used for the classification experiments largely builds on
 
 \subsection{Object Detection}
 
+For this set of experiments we explore the performance of a YOLO object detector \cite{}, a popular neural architecture that has obtained state of the art results on the MS-COCO object detection benchmark. YOLO treats the task of object detection as a standard regression problem by dividing an image into a $S\times S$ grid and by predicting for each grid cell $B$ bounding boxes and $C$ class probabilities. The main assumption behind YOLO is that any of the $S\times S$ cells contains at most the center of one single object, therefore for every image, cell index $i=1,...,S\times S$, predicted box $j=1,...,B$ and class index $c=1,...,C$ we have the following components: 
+
+\begin{itemize}
+	\item $\mathbb{1}_{i}^\text{obj}$ which is $1$ if there is an object in cell $i$, and $0$ otherwise;
+	\item $\mathbb{1}_{i,j}^\text{obj}$ which is $1$ if there is an object in cell $i$ and predicted box $j$ that is the most fitting one, whereas is $0$ otherwise; 
+	\item $p_{i,c}$ which is $1$ if there in an object of class $c$ in cell $i$, and 0 otherwise;
+	\item $x_i,y_i,w_i,h_i$ which are the coordinates of an annotated bounding box that are defined only if $\mathbb{1}_{i}^{\text{obj}}=1$;
+	\item $c_{i,j}$ which is the IoU between the predicted box and the ground truth target.
+\end{itemize}
+
+At training, YOLO computes the value of the $\mathbb{1}_{i,j}^{\text{obj}}$ for each image together with the respective $c_{i,j}$, and then minimizes the following multi-part loss function:
+
 \begin{aligned}
 & \lambda_\text{coord} \sum_{i=1}^{S \times S} \sum_{j=1}^B \mathbb{1}_{i,j}^\text{obj} \left( (x_i - \hat{x}_{i,j})^2 + (y_i - \hat{y}_{i,j})^2 + (\sqrt{w_i} - \sqrt{\hat{w}_{i,j}})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_{i,j}})^2\right)\\\\
 & + \lambda_\text{obj} \sum_{i=1}^{S \times S} \sum_{j=1}^B \mathbb{1}_{i,j}^\text{obj} (c_{i,j} - \hat{c}_{i,j})^2 + \lambda_\text{noobj} \sum_{i=1}^{S \times S} \sum_{j=1}^B (1-\mathbb{1}_{i,j}^\text{obj}) \hat{c}_{i,j}^2  \\\\
 & + \lambda_\text{classes} \sum_{i=1}^{S \times S} \mathbb{1}_i^\text{obj} \sum_{c=1}^C (p_{i,c} - \hat{p}_{i,c})^2 
 \end{aligned}
 
+where $\hat{p}{i,c}$, $\hat{x}{i,j}$, $\hat{y}{i,j}$, $\hat{w}{i,j}$, $\hat{h}{i,j}$ and $\hat{c}{i,j}$ are the predictions of the network.
 
-where $\hat{p}{i,c}$, $\hat{x}{i,j}$, $\hat{y}{i,j}$, $\hat{w}{i,j}$, $\hat{h}{i,j}$ and $\hat{c}{i,j}$ are the network outputs.
-
-
-
+In our experiments we use the YOLO-V3 version of the network which we initialize with the weights that are obtained after training the network on the MS-COCO dataset. Regarding the stochastic optimization procedure we use two different optimizers: we train the network with the Adam optimizer for the first 10 epochs, while we then use the RMSprop optimizer for the remaining training epochs, which are again controlled through early stopping. To assess the final performance of the model, we follow an evaluation protocol that is typical for object detection problems in CV \cite{lin2014microsoft}. Each detected bounding box is compared to the bounding box which has been annotated on the \texttt{Cytomine} platform. We only consider bounding boxes for which the confidence level is $\geq 0.05$, following the protocol established by \citet{everingham2010pascal}. We then compute the "Intersection over Union" (IoU) for measuring how much the detected bounding-boxes differ from the ground-truth ones. To assess whether a prediction can be considered as a true positive or a false positive, we define two, increasingly restrictive metrics: first, IoU $\geq10$ and, secondly, IoU $\geq50$. This approach is inspired by the work of \citet{gonthier2018weakly}, where the authors report results for both IoU thresholds when assessing the performance of their weakly supervised learning system on the IconArt dataset.
 
 \section{Results}
 \label{sec:results}
