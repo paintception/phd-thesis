@@ -112,12 +112,23 @@ In our experiments we use the YOLO-V3 version of the network which we initialize
 \paragraph{Classification}
 
 
+
+
 \begin{table}
-    \caption{An overview reporting how many images $N_t$ and instruments $I_t$ are present within the splits of the \texttt{Minerva-0, Minerva-5} and \texttt{Minerva-10} versions of the MINERVA dataset.}
+	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks ting with models that do not come as pre-trained on any sort of source task $\mathcal{T}_S$. We can see that the best performing architecture is , but that its performance is significantly worse than the one that is obtained when the same model comes as pre-trained (see Table \ref{table:minerva_tl_results}).}
 \resizebox{\columnwidth}{!}{%
 	\input{./Tables/Chapter05/classification_results.tex}%
 }
-\label{table:minerva_splits}
+\label{table:minerva_no_tl_results}
+\end{table}
+
+
+\begin{table}
+	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks after adapting transfer learning. We can again see that, compared to the results presented in Table \ref{table:minerva_no_tl_results}, this approach yields significant benefits. Furthermore, differently from what we observed in Chapter \ref{ch:tl_natural_to_non_natural}, we now see that the overall best performing architecture is InceptionV3 instead of ResNet50.}
+\resizebox{\columnwidth}{!}{%
+	\input{./Tables/Chapter05/classification_results.tex}%
+}
+\label{table:minerva_tl_results}
 \end{table}
 
 
@@ -135,12 +146,34 @@ In our experiments we use the YOLO-V3 version of the network which we initialize
 \paragraph{Object Detection}
 
 
+\begin{table}
+	\caption{Average Precision ($\%$) obtained when fine-tuning a pre-trained YOLO-V3 object detector on the \texttt{Minerva-Hypernyms} dataset. We can observe that satisfying results are obtained for both IoU thresholds when it comes to the detection of stringed instruments, whereas detecting the remaining four hypernyms of MINERVA appears to be much more challenging.}
+\resizebox{\columnwidth}{!}{%	
+	\input{./Tables/Chapter05/hypernyms_detection.tex}%
+}
+\label{table:minerva_detection_hypernyms}
+\end{table}
 
-\begin{figure}[htb!]
-	\scalebox{0.8}{\input{./Tables/Chapter05/detection_experiment_1.tex}}
-	\caption{}
-	\label{fig:detection_experiment_1}
-\end{figure}
+
+\begin{table}
+	\caption{Average Precision ($\%$) obtained on the \texttt{ Minerva-5} benchmark. We can observe that the fine-tuned model successfully detects `Harps", `Lutes" and `Violins", whereas the detection of `Shawns" and `Trumpets" can be improved.}
+\resizebox{\columnwidth}{!}{%	
+	\input{./Tables/Chapter05/minerva_5_detection.tex}%
+}
+\label{table:minerva_5_detection}
+\end{table}
+
+
+\begin{table}
+	\caption{Average Precision ($\%$) obtained on the \texttt{Minerva-10} benchmark. Similarly to what was presented in Table \ref{tab:minerva_5_detection}, we can again observe that the model successfully detects the first three most occurring instruments within the dataset, whereas it appears to perform poorly on the remaining instrument classes.}
+\resizebox{\columnwidth}{!}{%	
+	\input{./Tables/Chapter05/minerva_10_detection.tex}%
+}
+\label{table:minerva_10_detection}
+\end{table}
+
+
+
 
 
 \begin{figure}[htb!]

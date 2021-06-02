@@ -5,8 +5,10 @@
     bar width=.3cm,
     y axis line style = { opacity = 0 },
     axis x line       = none,
-    tickwidth         = 0.5pt,
+    tickwidth         = 0.2pt,
+    width=7cm,
     symbolic y coords = {Stringed, Wind, Percussion,Keyboard, Electronic},
+    ytick = data,
     nodes near coords,
   ]
   \addplot [color=green,fill ] coordinates {(488,Stringed) (123,Wind) (63,Keyboard) (17,Percussion) (0,Electronic)};
@@ -15,7 +17,7 @@
 \end{axis}
 \end{tikzpicture}
  \end{minipage}
- \hspace{3cm}
+ \hspace{2cm}
 \begin{minipage}{.5\textwidth}
 \begin{tikzpicture}
   \begin{axis}[title  = IoU $\geq 50$,
@@ -23,8 +25,10 @@
     bar width=.3cm,
     y axis line style = { opacity = 0 },
     axis x line       = none,
-    tickwidth         = 0.5pt,
+    tickwidth         = 0.2pt,
+    width=7cm,
     symbolic y coords = {Stringed, Wind, Percussion,Keyboard, Electronic},
+    ytick = data,
     nodes near coords,
   ]
   \addplot [color=green,fill] coordinates {(412,Stringed) (89,Wind) (47,Keyboard) (15,Percussion) (0,Electronic)};
