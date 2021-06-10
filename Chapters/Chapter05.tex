@@ -117,19 +117,30 @@ In our experiments we use the YOLO-V3 version of the network which we initialize
 \begin{table}
 	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks ting with models that do not come as pre-trained on any sort of source task $\mathcal{T}_S$. We can see that the best performing architecture is , but that its performance is significantly worse than the one that is obtained when the same model comes as pre-trained (see Table \ref{table:minerva_tl_results}).}
 \resizebox{\columnwidth}{!}{%
-	\input{./Tables/Chapter05/classification_results.tex}%
+	\input{./Tables/Chapter05/random_classification_results.tex}%
 }
 \label{table:minerva_no_tl_results}
+\end{table}
+
+
+
+\begin{table}
+	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks after adapting transfer learning. We can again see that, compared to the results presented in Table \ref{table:minerva_no_tl_results}, this approach yields significant benefits. Furthermore, differently from what we observed in Chapter \ref{ch:tl_natural_to_non_natural}, we now see that the overall best performing architecture is InceptionV3 instead of ResNet50.}
+\resizebox{\columnwidth}{!}{%
+	\input{./Tables/Chapter05/imagenet_classification_results.tex}%
+}
+\label{table:minerva_tl_results}
 \end{table}
 
 
 \begin{table}
 	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks after adapting transfer learning. We can again see that, compared to the results presented in Table \ref{table:minerva_no_tl_results}, this approach yields significant benefits. Furthermore, differently from what we observed in Chapter \ref{ch:tl_natural_to_non_natural}, we now see that the overall best performing architecture is InceptionV3 instead of ResNet50.}
 \resizebox{\columnwidth}{!}{%
-	\input{./Tables/Chapter05/classification_results.tex}%
+	\input{./Tables/Chapter05/rijksnet_classification_results.tex}%
 }
-\label{table:minerva_tl_results}
+\label{table:minerva_rijks_results}
 \end{table}
+
 
 
 \iffalse
@@ -202,11 +213,53 @@ In our experiments we use the YOLO-V3 version of the network which we initialize
 
 \subsection{Qualitative Analysis}
 \paragraph{True vs False Positives}
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=\linewidth]{./Images/Chapter05/wikiart_detections}
+  \caption{}
+  \label{fig:wikiart_detections}
+\end{figure}
+
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=\linewidth]{./Images/Chapter05/false_positives_1}
+  \caption{}
+  \label{fig:false_positives_1}
+\end{figure}
+
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=\linewidth]{./Images/Chapter05/false_positives_2}
+  \caption{}
+  \label{fig:false_positives_2}
+\end{figure}
+
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=\linewidth]{./Images/Chapter05/false_positives_3}
+  \caption{}
+  \label{fig:false_positives_3}
+\end{figure}
+
+
+
 \paragraph{Saliency Maps}
+
+
+
+
 
 
 \section{Discussion and Critical Analysis}
 \label{sec:discussion}
+
+
+
+
 
 
 \section{Future Work: towards more benchmarks}

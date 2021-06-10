@@ -2,16 +2,17 @@
 \begin{tikzpicture}
   \begin{axis}[title  = IoU $\geq 10$,
     xbar,
-    bar width=.3cm,
+    bar width=.25cm,
     y axis line style = { opacity = 0 },
     axis x line       = none,
-    tickwidth         = 0.5pt,
-    symbolic y coords = {Harp, Lute, Violin, Organ, Rebec, Bagpipe},
-    yticks=data,
+    tickwidth         = 0.3pt,
+    width=9cm,
+    symbolic y coords = {Harp, Lute, Violin, Organ, Bagpipe, Shawn, Trumpet, Horn},
+    ytick= data,
     nodes near coords,
   ]
-  \addplot [color=green,fill ] coordinates {(163,Harp) (107,Lute) (65,Violin) (4,Organ) (4,Rebec) (1,Bagpipe)};
-  \addplot [color=red,fill] coordinates {(71,Harp) (97,Lute) (46,Violin) (0,Organ) (0,Rebec) (1,Bagpipe)};
+  \addplot [color=green,fill ] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn)};
+  \addplot [color=red,fill] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn)};
 \legend{TP,FP}
 \end{axis}
 \end{tikzpicture}
@@ -21,19 +22,21 @@
 \begin{tikzpicture}
   \begin{axis}[title  = IoU $\geq 50$,
     xbar,
-    bar width=.3cm,
+    bar width=.25cm,
     y axis line style = { opacity = 0 },
     axis x line       = none,
-    tickwidth         = 0.5pt,
-    symbolic y coords = {Harp, Lute, Violin, Organ, Rebec, Bagpipe},
-    yticks=data,
+    tickwidth         = 0.3pt,
+    width=9cm,
+    symbolic y coords = {Harp, Lute, Violin, Organ, Bagpipe, Shawn, Trumpet, Horn},
+    ytick=data,
     nodes near coords,
   ]
-  \addplot [color=green,fill] coordinates {(151,Harp) (84,Lute) (34,Violin) (4,Organ) (4,Rebec) (1,Bagpipe)};
-  \addplot [color=red,fill] coordinates {(83,Harp) (115,Lute) (77,Violin) (0,Organ) (0,Rebec) (1,Bagpipe)};
+  \addplot [color=green,fill] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn)};
+  \addplot [color=red,fill] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn)};
 \legend{TP,FP}
 
 \end{axis}
 \end{tikzpicture}
  \end{minipage}
  
+
