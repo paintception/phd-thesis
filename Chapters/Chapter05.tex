@@ -111,11 +111,25 @@ In our experiments we use the YOLO-V3 version of the network which we initialize
 \subsection{Quantitative Analysis}
 \paragraph{Classification}
 
+We start by discussing the results obtained with our classification experiments. The performance of all models is reported in Tables \ref{table:minerva_no_tl_results}, \ref{table:minerva_tl_results} and \ref{table:minerva_rijks_results}, where we present the accuracy that the networks have obtained on the different Minerva testing sets, together with their respective F-1 scores. To this end for a given class $c$, a ground truth label $y$ and a model's prediction $\hat{y}$, let us introduce the notions of precision and recall. The first is computed as:
+\begin{equation}
+	\text{P}(c)=p(y=c|\hat{y}=c)=\frac{TP}{TP+FP},
+\end{equation}
+while the latter as
+\begin{equation}
+	\text{R}(c)=p(y=c|\hat{y}=c)=\frac{TP}{TP+FN}.
+\end{equation}
+Both quantities can be used for computing the F-1 score as follows:
+\begin{equation}
+	\text{F-1}(c)=2 \cdot \frac{\text{P}(c)\cdot\text{R}(c)}{\text{P}+\text{R}}.
+\end{equation}
+Similarly to the results reported in Chapter \ref{ch:tl_natural_to_non_natural} we again report the best performing architecture in a green cell, while the second best performing model in a yellow one.  
 
+We can start by observing that among all the results presented in the three different tables, the best performing models are either the ones reported in Table \ref{table:minerva_tl_results}, or the ones presented in Table \ref{table:minerva_rijks_results}. This confirms the results that were presented in the previous chapter: fine tuning pre-trained models yields significantly better results that training models from scratch, even when the source and the target tasks can be particularly different (as is the case for musical instruments classification). While the results of this study confirm the conclusions that were drawn at the end of Chapter \ref{ch:tl_natural_to_non_natural}, they also provide some additional insights that were not observed before. First, it appears that the best performing architecture is not ResNet50 anymore, but rather the arguably older InceptionV3, a result which seems to suggest that there is no overall best performing architecture for all target tasks $\mathcal{T}_T$, and that the best architecture is highly problem dependent. Second, and perhaps arguably more surprising, we can also see that differently from what was observed in the last experiment in Chapter \ref{ch:tl_natural_to_non_natural}, it appears to be more beneficial to transfer models pre-trained on ImageNet only, instead of models that are additionally trained on the Rjksmuseum collection. Indeed, as can be observed by the results presented in Tables \ref{table:minerva_tl_results} and \ref{table:minerva_rijks_results}, the latter pre-training strategy outperforms the first one only when the ResNet50 and the InceptionV3 architectures are trained on the \texttt{Minerva-5} benchmark. These results can be explained as follows: in Chapter \ref{ch:tl_natural_to_non_natural} the target task $\mathcal{T}_T$ tackled with a model pre-trained on the Rijksmuseum collection corresponded to the original source task $\mathcal{S}_T$ (classification of `types" and `artists"). In these experiments however, albeit coming from similar domains, the considered source task $\mathcal{T}_S$ and target task $\mathcal{T}_T$ are unrelated, which could work in favor of an arguably more general ImageNet weight initialization.
 
 
 \begin{table}
-	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks ting with models that do not come as pre-trained on any sort of source task $\mathcal{T}_S$. We can see that the best performing architecture is , but that its performance is significantly worse than the one that is obtained when the same model comes as pre-trained (see Table \ref{table:minerva_tl_results}).}
+	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks ting with models that do not come as pre-trained on any sort of source task $\mathcal{T}_S$. We can see that their performance is significantly worse than the one that is obtained when the same models come as pre-trained (see Table \ref{table:minerva_tl_results} and Table \ref{table:minerva_rijks_results}).}
 \resizebox{\columnwidth}{!}{%
 	\input{./Tables/Chapter05/random_classification_results.tex}%
 }
@@ -125,7 +139,7 @@ In our experiments we use the YOLO-V3 version of the network which we initialize
 
 
 \begin{table}
-	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks after adapting transfer learning. We can again see that, compared to the results presented in Table \ref{table:minerva_no_tl_results}, this approach yields significant benefits. Furthermore, differently from what we observed in Chapter \ref{ch:tl_natural_to_non_natural}, we now see that the overall best performing architecture is InceptionV3 instead of ResNet50.}
+	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks after adapting transfer learning and considering the ImageNet dataset as the only source task $\mathcal{T}_S$. We observe that, compared to the results presented in Table \ref{table:minerva_no_tl_results}, this approach yields significant benefits as already observed in Chapter \ref{ch:tl_natural_to_non_natural}.}
 \resizebox{\columnwidth}{!}{%
 	\input{./Tables/Chapter05/imagenet_classification_results.tex}%
 }
@@ -134,22 +148,12 @@ In our experiments we use the YOLO-V3 version of the network which we initialize
 
 
 \begin{table}
-	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks after adapting transfer learning. We can again see that, compared to the results presented in Table \ref{table:minerva_no_tl_results}, this approach yields significant benefits. Furthermore, differently from what we observed in Chapter \ref{ch:tl_natural_to_non_natural}, we now see that the overall best performing architecture is InceptionV3 instead of ResNet50.}
+	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks after adapting transfer learning and considering the ImageNet and the Rijksmuseum collection as source domains $\mathcal{D}_S$. Similarly to what was observed in Table \ref{table:minerva_tl_results} we can again see that transfer learning yields significant benefits.}
 \resizebox{\columnwidth}{!}{%
 	\input{./Tables/Chapter05/rijksnet_classification_results.tex}%
 }
 \label{table:minerva_rijks_results}
 \end{table}
-
-
-
-\iffalse
-\begin{figure}[htb!]
-	\input{./Tables/Chapter05/classification_confusion_matrix.tex}
-	\caption
-	\label{fig:hypernym_distribution}
-\end{figure}
-\fi
 
 
 
