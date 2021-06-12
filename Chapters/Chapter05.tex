@@ -109,6 +109,7 @@ In our experiments we use the YOLO-V3 version of the network which we initialize
 \label{sec:results}
 
 \subsection{Quantitative Analysis}
+\label{sec:quantitative_analysis}
 \paragraph{Classification}
 
 We start by discussing the results obtained with our classification experiments. The performance of all models is reported in Tables \ref{table:minerva_no_tl_results}, \ref{table:minerva_tl_results} and \ref{table:minerva_rijks_results}, where we present the accuracy that the networks have obtained on the different Minerva testing sets, together with their respective F-1 scores. To this end for a given class $c$, a ground truth label $y$ and a model's prediction $\hat{y}$, let us introduce the notions of precision and recall. The first is computed as:
@@ -220,7 +221,7 @@ We now characterize the performance of the aforementioned fine-tuned models from
 
 
 \paragraph{Object Detection}
-Regarding the models trained for object detection, we visually investigate the quality of the predictions on the IconArt dataset \cite{gonthier2018weakly}, a database of $\approx 6000$ paintings that has been collected with the aim of detecting classes that are specific to the analysis of artworks. Among such classes IconArt tackles the detection of `angels", `Jesus" and `Mary", or more simply `ruins". IconArt, however, does not come with any ground truth labels when it comes to the task of instruments detection, as the dataset has been built for different purposes. Yet, musical instruments might still be depicted within its images and trying to detect them corresponds to a nice proof of concept that can show the benefits of deploying Minerva pre-trained models to different artistic collections. In Fig. \ref{fig:wikiart_detections} we show some successful examples of detections that were obtained after testing the performance of a YOLO-V3 model that was fine-tuned on the \texttt{Minerva-Hypernym} benchmark. We see that the model is indeed able to successfully detect musical instruments within this new artistic collection, a result that can be exploited by art historians that are interested in the study of musical instruments .   
+Regarding the models trained for object detection, we visually investigate the quality of the predictions on the IconArt dataset \cite{gonthier2018weakly}, a database of $\approx 6000$ paintings that has been collected with the aim of detecting classes that are specific to the analysis of artworks. Among such classes IconArt tackles the detection of `angels", `Jesus" and `Mary", or more simply `ruins". IconArt, however, does not come with any ground truth labels that are suitable for the task of instruments detection, as the dataset has been built for different purposes. Yet, musical instruments might still be depicted within its images, and trying to detect them corresponds to a nice proof of concept that can show the benefits of deploying Minerva pre-trained models to different artistic collections. In Fig. \ref{fig:wikiart_detections} we show some successful examples of detections that were obtained after testing the performance of a YOLO-V3 model that was fine-tuned on the \texttt{Minerva-Hypernym} benchmark. We see that the model is indeed able to successfully detect musical instruments within this new artistic collection, a result that can be exploited by art historians that are interested in the study of musical instruments .   
 
 \begin{figure}[ht!]
 \centering
@@ -229,11 +230,10 @@ Regarding the models trained for object detection, we visually investigate the q
   \label{fig:wikiart_detections}
 \end{figure}
 
-While these results are certainly nice and encouraging, it is arguably of even larger interest analyzing the model's detections which are erroneous. To this end, we have manually identified the incorrect model's predictions, and grouped them into three different categories. This process resulted into novel insights that, at least in part, explain the performance of the models which we have quantitatively assessed in the previous section. First, we have noticed that the model strongly gravitates towards the detection of `stringed instruments" (a result which was already observed in Fig. \ref{fig:detection_experiment_1}). We believe that such detections are driven by the large presence of dual, conic contour curves of naked women's bodies that are reminiscent of the resonance box of guitar-like instruments (see Fig. \ref{fig:false_positives_1}). 
-
-Second we have observed that long, often martial objects such as swords, arrows and spears are mistakenly detected as `wind instruments" as the shape between such objects and the one of instruments like `shawns" is indeed very similar and hard to distinguish even for humans (see Fig. \ref{fig:false_positives_2})
-
-
+While these results are certainly nice and encouraging, it is arguably of even larger interest analyzing the model's detections which are erroneous. To this end, we have manually identified the incorrect model's predictions, and grouped them into different categories. This process resulted into novel insights that, at least in part, explain the performance of the models that we have quantitatively assessed in Sec. \ref{sec:quantitative_analysis}.
+First and foremost, we have noticed that the model strongly gravitates towards the detection of `stringed instruments" (a result which was already observed in Fig. \ref{fig:detection_experiment_2}). We believe that such detections are driven by two main reasons: the large presence of dual, conic contour curves of naked women's bodies, which are reminiscent of the resonance box of guitar-like instruments (see Fig. \ref{fig:false_positives_1}), and the presence of book-like objects that, just as instruments, are mostly depicted next to hands and fingers (see Fig. \ref{}). 
+We have then also observed that long, often martial objects such as swords, arrows and spears are mistakenly detected as `wind instruments". We believe that the reason for this is that the shape between such objects and the one of instruments like `shawns", is very similar, and sometimes even hard to distinguish for the human eye (see Fig. \ref{fig:false_positives_2}).
+Lastly we have noticed that musical instruments are often mistakenly detected when regular patterns or parallel grids of straight lines (e.g folds in clothing or wheel spokes) are present within the images. We hypothesize that the model associates these patterns to the presence of strings (see Fig. \ref{false_positives_3}) within stringed instruments. 
 
 \begin{figure}[ht!]
 \centering
@@ -246,7 +246,7 @@ Second we have observed that long, often martial objects such as swords, arrows 
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=\linewidth]{./Images/Chapter05/false_positives_2}
-  \caption{}
+  \caption{Examples of false detections that are due to the strong resemblance between long martial objects and (mostly) `wind instruments".}
   \label{fig:false_positives_2}
 \end{figure}
 
@@ -254,11 +254,9 @@ Second we have observed that long, often martial objects such as swords, arrows 
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=\linewidth]{./Images/Chapter05/false_positives_3}
-  \caption{}
+  \caption{Examples of geometrical patterns that mistakenly yield the detection of instruments.}
   \label{fig:false_positives_3}
 \end{figure}
-
-
 
 
 
