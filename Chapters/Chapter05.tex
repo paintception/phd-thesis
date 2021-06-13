@@ -2,7 +2,7 @@
 
 \begin{remark}{Outline}
 
-This chapter ...
+	In this chapter we continue studying the transfer learning properties of convolutional neural networks that are trained on non natural image distributions. To facilitate this process we present MINERVA, a novel dataset that can be used both for object classification as for object detection. We report thorough experiments that highlight the challenges that can arise from using MINERVA as a computer vision testbed, while at the same time, we further characterize the benefits that can come from adopting transfer learning training strategies. The structure of this chapter is the following: in Sec. \ref{sec:cv_challenges} we describe some of the limitations that currently define the field of computer vision, and that have served as inspiration for the development of our newly introduced dataset. In Sec. \ref{sec:minerva_dataset} we present MINERVA, we thoroughly explain how its images have been collected and annotated, and how the resulting splits have served for the experiments that are presented in Sec. \ref{sec:benchmarking}. We then report and discuss the results of our experiments in Sec. \ref{sec:benchmarking} and Sec. \ref{sec:discussion} respectively, before ending the chapter by identifying possible avenues for future work in Sec. \ref{sec:future_work}. 
 
 \vspace{5mm}
 \textit{This chapter is based on the publication \citet{sabatelli2021advances}.}
@@ -28,7 +28,7 @@ If it is true that the results presented in the previous chapter show that it is
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=\linewidth]{./Images/Chapter05/fails}
-  \caption{}
+  \caption{Some examples that show the limitations of object detectors that are trained on photorealistic images only. In the first image we see how a model confidently detects a `frisbee", while in the second image we can observe how next to being unable to detecting the people in the painting, it also mistakenly detects the frame a `tv-monitor". Similar limitations can be observed in the final image, where we can see that the persons within the painting are only correctly detected as long as they are either sitting or standing.}
   \label{fig:fails}
 \end{figure}
 
@@ -51,6 +51,14 @@ The images constituting MINERVA come from three different data sources which all
 \end{itemize}
 
 Once all these images have been collected we have started the labeling process.
+
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=\linewidth]{./Images/Chapter05/minerva}
+  \caption{Samples from Minerva.}
+  \label{fig:minerva_dataset}
+\end{figure}
 
 \subsection{Annotation Process}
 
@@ -83,7 +91,7 @@ The experimental setup used for the classification experiments largely builds on
 
 \subsection{Object Detection}
 
-For this set of experiments we explore the performance of a YOLO object detector \cite{}, a popular neural architecture that has obtained state of the art results on the MS-COCO object detection benchmark. YOLO treats the task of object detection as a standard regression problem by dividing an image into a $S\times S$ grid and by predicting for each grid cell $B$ bounding boxes and $C$ class probabilities. The main assumption behind YOLO is that any of the $S\times S$ cells contains at most the center of one single object, therefore for every image, cell index $i=1,...,S\times S$, predicted box $j=1,...,B$ and class index $c=1,...,C$ we have the following components: 
+For this set of experiments we explore the performance of a YOLO object detector \cite{redmon2017yolo9000}, a popular neural architecture that has obtained state of the art results on the MS-COCO object detection benchmark. YOLO treats the task of object detection as a standard regression problem by dividing an image into a $S\times S$ grid and by predicting for each grid cell $B$ bounding boxes and $C$ class probabilities. The main assumption behind YOLO is that any of the $S\times S$ cells contains at most the center of one single object, therefore for every image, cell index $i=1,...,S\times S$, predicted box $j=1,...,B$ and class index $c=1,...,C$ we have the following components: 
 
 \begin{itemize}
 	\item $\mathbb{1}_{i}^\text{obj}$ which is $1$ if there is an object in cell $i$, and $0$ otherwise;
@@ -103,7 +111,7 @@ At training, YOLO computes the value of the $\mathbb{1}_{i,j}^{\text{obj}}$ for 
 
 where $\hat{p}{i,c}$, $\hat{x}{i,j}$, $\hat{y}{i,j}$, $\hat{w}{i,j}$, $\hat{h}{i,j}$ and $\hat{c}{i,j}$ are the predictions of the network.
 
-In our experiments we use the YOLO-V3 version of the network which we initialize with the weights that are obtained after training the network on the MS-COCO dataset. Regarding the stochastic optimization procedure we use two different optimizers: we train the network with the Adam optimizer for the first 10 epochs, while we then use the RMSprop optimizer for the remaining training epochs, which are again controlled through early stopping. To assess the final performance of the model, we follow an evaluation protocol that is typical for object detection problems in CV \cite{lin2014microsoft}. Each detected bounding box is compared to the bounding box which has been annotated on the \texttt{Cytomine} platform. We only consider bounding boxes for which the confidence level is $\geq 0.05$, following the protocol established by \citet{everingham2010pascal}. We then compute the "Intersection over Union" (IoU) for measuring how much the detected bounding-boxes differ from the ground-truth ones. To assess whether a prediction can be considered as a true positive or a false positive, we define two, increasingly restrictive metrics: first, IoU $\geq10$ and, secondly, IoU $\geq50$. This approach is inspired by the work of \citet{gonthier2018weakly}, where the authors report results for both IoU thresholds when assessing the performance of their weakly supervised learning system on the IconArt dataset.
+In our experiments we use the YOLO-V3 version of the network introduced by \citet{redmon2018yolov3} and initialize it with the weights that are obtained after training the network on the MS-COCO dataset. Regarding the stochastic optimization procedure we use two different optimizers: we train the network with the Adam optimizer for the first 10 epochs, while we then use the RMSprop optimizer for the remaining training epochs, which are again controlled through early stopping. To assess the final performance of the model, we follow an evaluation protocol that is typical for object detection problems in CV \cite{lin2014microsoft}. Each detected bounding box is compared to the bounding box which has been annotated on the \texttt{Cytomine} platform. We only consider bounding boxes for which the confidence level is $\geq 0.05$, following the protocol established by \citet{everingham2010pascal}. We then compute the "Intersection over Union" (IoU) for measuring how much the detected bounding-boxes differ from the ground-truth ones. To assess whether a prediction can be considered as a true positive or a false positive, we define two, increasingly restrictive metrics: first, IoU $\geq10$ and, secondly, IoU $\geq50$. This approach is inspired by the work of \citet{gonthier2018weakly}, where the authors report results for both IoU thresholds when assessing the performance of their weakly supervised learning system on the IconArt dataset.
 
 \section{Results}
 \label{sec:results}
@@ -179,7 +187,7 @@ We can start by observing that among all the results presented in the three diff
 
 
 \begin{table}
-	\caption{Average Precision ($\%$) obtained on the \texttt{Minerva-10} benchmark. Similarly to what was presented in Table \ref{tab:minerva_5_detection}, we can again observe that the model successfully detects the first three most occurring instruments within the dataset, whereas it appears to perform poorly on the remaining instrument classes.}
+	\caption{Average Precision ($\%$) obtained on the \texttt{Minerva-10} benchmark. Similarly to what was presented in Table \ref{table:minerva_5_detection}, we can again observe that the model successfully detects the first three most occurring instruments within the dataset, whereas it appears to perform poorly on the remaining instrument classes.}
 \resizebox{\columnwidth}{!}{%	
 	\input{./Tables/Chapter05/minerva_10_detection.tex}%
 }
@@ -231,9 +239,8 @@ Regarding the models trained for object detection, we visually investigate the q
 \end{figure}
 
 While these results are certainly nice and encouraging, it is arguably of even larger interest analyzing the model's detections which are erroneous. To this end, we have manually identified the incorrect model's predictions, and grouped them into different categories. This process resulted into novel insights that, at least in part, explain the performance of the models that we have quantitatively assessed in Sec. \ref{sec:quantitative_analysis}.
-First and foremost, we have noticed that the model strongly gravitates towards the detection of `stringed instruments" (a result which was already observed in Fig. \ref{fig:detection_experiment_2}). We believe that such detections are driven by two main reasons: the large presence of dual, conic contour curves of naked women's bodies, which are reminiscent of the resonance box of guitar-like instruments (see Fig. \ref{fig:false_positives_1}), and the presence of book-like objects that, just as instruments, are mostly depicted next to hands and fingers (see Fig. \ref{}). 
-We have then also observed that long, often martial objects such as swords, arrows and spears are mistakenly detected as `wind instruments". We believe that the reason for this is that the shape between such objects and the one of instruments like `shawns", is very similar, and sometimes even hard to distinguish for the human eye (see Fig. \ref{fig:false_positives_2}).
-Lastly we have noticed that musical instruments are often mistakenly detected when regular patterns or parallel grids of straight lines (e.g folds in clothing or wheel spokes) are present within the images. We hypothesize that the model associates these patterns to the presence of strings (see Fig. \ref{false_positives_3}) within stringed instruments. 
+First and foremost, we have noticed that the model strongly gravitates towards the detection of `stringed instruments" (a result which was already observed in Fig. \ref{fig:detection_experiment_2}). We believe that such detections are driven by two main reasons: the large presence of dual, conic contour curves of naked women's bodies, which are reminiscent of the resonance box of guitar-like instruments (see Fig. \ref{fig:false_positives_1}), and the presence of book-like objects that, just as instruments, are mostly depicted next to hands and fingers (see Fig. \ref{fig:false_positives_4}). We have then also observed that long, often martial objects such as swords, arrows and spears are mistakenly detected as `wind instruments". We believe that the reason for this is that the shape between such objects and the one of instruments like `shawns", is very similar, and sometimes even hard to distinguish for the human eye (see Fig. \ref{fig:false_positives_2}).
+Lastly we have noticed that musical instruments are often mistakenly detected when regular patterns or parallel grids of straight lines (e.g folds in clothing or wheel spokes) are present within the images. We hypothesize that the model associates these patterns to the presence of strings (see Fig. \ref{fig:false_positives_3}) within stringed instruments. 
 
 \begin{figure}[ht!]
 \centering
@@ -242,6 +249,12 @@ Lastly we have noticed that musical instruments are often mistakenly detected wh
   \label{fig:false_positives_1}
 \end{figure}
 
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=\linewidth]{./Images/Chapter05/false_positives_4}
+  \caption{Additional examples of false detections of `stringed instruments" that are triggered by the presence of objects close to hands and fingers.}
+  \label{fig:false_positives_4}
+\end{figure}
 
 \begin{figure}[ht!]
 \centering
@@ -262,8 +275,6 @@ Lastly we have noticed that musical instruments are often mistakenly detected wh
 
 \section{Discussion and Critical Analysis}
 \label{sec:discussion}
-
-
 
 
 
