@@ -2,17 +2,17 @@
 \begin{tikzpicture}
   \begin{axis}[title  = IoU $\geq 10$,
     xbar,
-    bar width=.25cm,
+    bar width=.15cm,
     y axis line style = { opacity = 0 },
     axis x line       = none,
     tickwidth         = 0.3pt,
-    width=7cm,
-    symbolic y coords = {Harp, Lute, Violin, Organ, Bagpipe, Shawn, Trumpet, Horn},
+    width=8cm,
+    symbolic y coords = {Harp, Lute, Violin, Organ, Bagpipe, Shawn, Trumpet, Horn, Rebec, Lyre},
     ytick= data,
     nodes near coords,
   ]
-  \addplot [color=green,fill ] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn)};
-  \addplot [color=red,fill] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn)};
+  \addplot [color=green,fill ] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn) (0,Rebec) (0,Lyre)};
+  \addplot [color=red,fill] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn) (0,Rebec) (0,Lyre)};
 \legend{TP,FP}
 \end{axis}
 \end{tikzpicture}
@@ -22,17 +22,17 @@
 \begin{tikzpicture}
   \begin{axis}[title  = IoU $\geq 50$,
     xbar,
-    bar width=.25cm,
+    bar width=.15cm,
     y axis line style = { opacity = 0 },
     axis x line       = none,
     tickwidth         = 0.3pt,
-    width=7cm,
-    symbolic y coords = {Harp, Lute, Violin, Organ, Bagpipe, Shawn, Trumpet, Horn},
+    width=8cm,
+    symbolic y coords = {Harp, Lute, Violin, Organ, Bagpipe, Shawn, Trumpet, Horn, Rebec, Lyre},
     ytick=data,
     nodes near coords,
   ]
-  \addplot [color=green,fill] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn)};
-  \addplot [color=red,fill] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn)};
+  \addplot [color=green,fill] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn) (0,Rebec) (0,Lyre)};
+  \addplot [color=red,fill] coordinates {(163,Harp) (107,Lute) (65,Violin) (10,Organ) (0,Bagpipe) (3,Shawn) (4,Trumpet) (0,Horn) (0,Rebec) (0,Lyre)};
 \legend{TP,FP}
 
 \end{axis}
