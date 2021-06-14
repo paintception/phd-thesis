@@ -229,6 +229,14 @@ We now characterize the performance of the aforementioned fine-tuned models from
 \paragraph{Object Classification}
 
 
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=\linewidth]{./Images/Chapter05/grad_cams}
+  \caption{Grad-cams}
+  \label{fig:grad_cams}
+\end{figure}
+
+
 \paragraph{Object Detection}
 Regarding the models trained for object detection, we visually investigate the quality of the predictions on the IconArt dataset \cite{gonthier2018weakly}, a database of $\approx 6000$ paintings that has been collected with the aim of detecting classes that are specific to the analysis of artworks. Among such classes IconArt tackles the detection of `angels", `Jesus" and `Mary", or more simply `ruins". IconArt, however, does not come with any ground truth labels that are suitable for the task of instruments detection, as the dataset has been built for different purposes. Yet, musical instruments might still be depicted within its images, and trying to detect them corresponds to a nice proof of concept that can show the benefits of deploying Minerva pre-trained models to different artistic collections. In Fig. \ref{fig:wikiart_detections} we show some successful examples of detections that were obtained after testing the performance of a YOLO-V3 model that was fine-tuned on the \texttt{Minerva-Hypernym} benchmark. We see that the model is indeed able to successfully detect musical instruments within this new artistic collection, a result that can be exploited by art historians that are interested in the study of musical instruments .   
 
