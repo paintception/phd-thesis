@@ -2,7 +2,7 @@
 
 \begin{remark}{Outline}
 
-	In this chapter we continue studying the transfer learning properties of convolutional neural networks that are trained on non natural image distributions. To facilitate this process we present MINERVA, a novel dataset that can be used both for object classification as for object detection. We report thorough experiments that highlight the challenges that can arise from using MINERVA as a computer vision testbed, while at the same time, we further characterize the benefits that can come from adopting transfer learning training strategies. The structure of this chapter is the following: in Sec. \ref{sec:cv_challenges} we describe some of the limitations that currently define the field of computer vision, and that have served as inspiration for the development of our newly introduced dataset. In Sec. \ref{sec:minerva_dataset} we present MINERVA, we thoroughly explain how its images have been collected and annotated, and how the resulting splits have served for the experiments that are presented in Sec. \ref{sec:benchmarking}. We then report and discuss the results of our experiments in Sec. \ref{sec:benchmarking} and Sec. \ref{sec:discussion} respectively, before ending the chapter by identifying possible avenues for future work in Sec. \ref{sec:future_work}. 
+	In this chapter we continue studying the transfer learning properties of convolutional neural networks that are trained on non natural image distributions. To facilitate this process we present MINERVA, a novel dataset that can be used both for object classification as for object detection. We report thorough experiments that highlight the challenges that can arise from using MINERVA as a computer vision testbed, while at the same time, we further characterize the benefits that can come from adopting transfer learning training strategies. The structure of this chapter is the following: in Sec. \ref{sec:cv_challenges} we describe some of the limitations that currently define the field of computer vision, and that have served as inspiration for the development of our newly introduced dataset. In Sec. \ref{sec:minerva_dataset} we present MINERVA, we thoroughly explain how its images have been collected and annotated, and how the resulting splits have served for the experiments that are presented in Sec. \ref{sec:benchmarking}. We then report and discuss the results of our experiments in Sec. \ref{sec:minerva_results} and Sec. \ref{sec:discussion} respectively, before ending the chapter by identifying possible avenues for future work in Sec. \ref{sec:future_work}. 
 
 \vspace{5mm}
 \textit{This chapter is based on the publication \citet{sabatelli2021advances}.}
@@ -65,7 +65,7 @@ We manually annotated almost $10000$ instruments by using the conventional metho
 
 MINERVA comes in four, different, increasingly complex, versions: \texttt{Minerva-0} which is arguably the easiest version of the dataset where the target task $\mathcal{T}_T$ simply consists in detecting whether a musical instrument is present within an image or not. We therefore do not yet consider the task of predicting the class of the detected instrument. The second version of the dataset is \texttt{Minerva-Hypernym} where the goal is that of detecting all the images present within \texttt{Minerva-0} and classify them according to their hypernym categories. All instruments present within MINERVA correspond to $5$ different hypernyms which define them as: `stringed instruments", `wind instruments", `percussion instruments", `keyboard instruments" and `electronic instruments'. The last two versions of MINERVA are \texttt{Minerva-5} and \texttt{Minerva-10} where the goal is to detect and classify the instruments depicted in the images according to the top 5 or top 10 most occurring classes. These classes are: `Lute", `Harp", `Violin", `Trumpet", `Shawn", `Bagpipe", `Organ", `Horn", `Rebec" and `Lyre". Naturally, in \texttt{Minerva-5} we only consider the first $5$ of such classes, whereas in \texttt{Minerva-10} we consider all $10$ of them. Each version of the dataset comes with its own training, validation and testing splits, where we offer the guarantee that at least one of the instrument classes in the task is represented in each of the splits. Additionally, the splits are stratified so that the class distribution is approximately the same in each split. The number of images per split in each version is summarized in Table \ref{table:minerva_splits} where $N_t$ corresponds to the amount of images present within the split, whereas $I_t$ denotes the number of total instruments. The hypernym version of the dataset is not reported as it shares the same images and splits as \texttt{Minerva-0} (they both contain all instruments), however a distribution of the hypernym classes within \texttt{Minerva-Hypernym} is reported in Fig. \ref{fig:hypernym_distribution}. All splits have been created with the \texttt{scikit-learn} software \cite{pedregosa2011scikit} by using $50\%$ of the images for training, and the remaining $50\%$ for validation and testing ($25\%$ respectively). 
 
-\begin{table}
+\begin{table}[ht!]
 \input{./Tables/Chapter05/minerva_splits.tex}
 \caption{An overview reporting how many images $N_t$ and instruments $I_t$ are present within the splits of the \texttt{Minerva-0, Minerva-5} and \texttt{Minerva-10} versions of the MINERVA dataset.}
 \label{table:minerva_splits}
@@ -112,7 +112,7 @@ where $\hat{p}{i,c}$, $\hat{x}{i,j}$, $\hat{y}{i,j}$, $\hat{w}{i,j}$, $\hat{h}{i
 In our experiments we use the YOLO-V3 version of the network introduced by \citet{redmon2018yolov3} and initialize it with the weights that are obtained after training the network on the MS-COCO dataset. Regarding the stochastic optimization procedure we use two different optimizers: we train the network with the Adam optimizer for the first 10 epochs, while we then use the RMSprop optimizer for the remaining training epochs, which are again controlled through early stopping. To assess the final performance of the model, we follow an evaluation protocol that is typical for object detection problems in CV \cite{lin2014microsoft}. Each detected bounding box is compared to the bounding box which has been annotated on the \texttt{Cytomine} platform. We only consider bounding boxes for which the confidence level is $\geq 0.05$, following the protocol established by \citet{everingham2010pascal}. We then compute the "Intersection over Union" (IoU) for measuring how much the detected bounding-boxes differ from the ground-truth ones. To assess whether a prediction can be considered as a true positive or a false positive, we define two, increasingly restrictive metrics: first, IoU $\geq10$ and, secondly, IoU $\geq50$. This approach is inspired by the work of \citet{gonthier2018weakly}, where the authors report results for both IoU thresholds when assessing the performance of their weakly supervised learning system on the IconArt dataset.
 
 \section{Results}
-\label{sec:results}
+\label{sec:minerva_results}
 
 \subsection{Quantitative Analysis}
 \label{sec:quantitative_analysis}
@@ -135,7 +135,7 @@ Similarly to the results reported in Chapter \ref{ch:tl_natural_to_non_natural} 
 We can start by observing that among all the results presented in the three different tables, the best performing models are either the ones reported in Table \ref{table:minerva_tl_results}, or the ones presented in Table \ref{table:minerva_rijks_results}. This confirms the results that were presented in the previous chapter: fine tuning pre-trained models yields significantly better results that training models from scratch, even when the source and the target tasks can be particularly different (as is the case for musical instruments classification). While the results of this study confirm the conclusions that were drawn at the end of Chapter \ref{ch:tl_natural_to_non_natural}, they also provide some additional insights that were not observed before. First, it appears that the best performing architecture is not ResNet50 anymore, but rather the arguably older InceptionV3, a result which seems to suggest that there is no overall best performing architecture for all target tasks $\mathcal{T}_T$, and that the best architecture is highly problem dependent. Second, and perhaps arguably more surprising, we can also see that differently from what was observed in the last experiment in Chapter \ref{ch:tl_natural_to_non_natural}, it appears to be more beneficial to transfer models pre-trained on ImageNet only, instead of models that are additionally trained on the Rjksmuseum collection. Indeed, as can be observed by the results presented in Tables \ref{table:minerva_tl_results} and \ref{table:minerva_rijks_results}, the latter pre-training strategy outperforms the first one only when the ResNet50 and the InceptionV3 architectures are trained on the \texttt{Minerva-5} benchmark. These results can be explained as follows: in Chapter \ref{ch:tl_natural_to_non_natural} the target task $\mathcal{T}_T$ tackled with a model pre-trained on the Rijksmuseum collection corresponded to the original source task $\mathcal{T}_S$ (classification of `types" and `artists"). In these experiments however, albeit coming from similar domains, the considered source task $\mathcal{T}_S$ and target task $\mathcal{T}_T$ are unrelated, which could work in favor of an arguably more general ImageNet weight initialization.
 
 
-\begin{table}
+\begin{table}[ht!]
 	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks with models that do not come as pre-trained on any sort of source task $\mathcal{T}_S$. We can see that their performance is significantly worse than the one that is obtained when the same models come as pre-trained (see Table \ref{table:minerva_tl_results} and Table \ref{table:minerva_rijks_results}).}
 \resizebox{\columnwidth}{!}{%
 	\input{./Tables/Chapter05/random_classification_results.tex}%
@@ -145,7 +145,7 @@ We can start by observing that among all the results presented in the three diff
 
 
 
-\begin{table}
+\begin{table}[ht!]
 	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks after adapting transfer learning and considering the ImageNet dataset as the only source task $\mathcal{T}_S$. We observe that, compared to the results presented in Table \ref{table:minerva_no_tl_results}, this approach yields significant benefits, therefore confirming the results presented in Chapter \ref{ch:tl_natural_to_non_natural}.}
 \resizebox{\columnwidth}{!}{%
 	\input{./Tables/Chapter05/imagenet_classification_results.tex}%
@@ -154,7 +154,7 @@ We can start by observing that among all the results presented in the three diff
 \end{table}
 
 
-\begin{table}
+\begin{table}[ht!]
 	\caption{Results obtained when classifying the bounding boxes of the three different MINERVA benchmarks after adapting transfer learning and considering the ImageNet and the Rijksmuseum collection as source domains $\mathcal{D}_S$. Similarly to what was observed in Table \ref{table:minerva_tl_results}, we can again see that transfer learning yields significant benefits although this weight initialization strategy does mostly not outperform the more common ImageNet one.}
 \resizebox{\columnwidth}{!}{%
 	\input{./Tables/Chapter05/rijksnet_classification_results.tex}%
@@ -168,7 +168,7 @@ The results for this set of experiments are reported in terms of average precisi
 
 We report a similar quantitative analysis for the \texttt{Minerva-Hypernym}, \texttt{Minerva-5} and \texttt{Minerva-10} benchmarks. We do this in Tables \ref{table:minerva_detection_hypernym}, \ref{table:minerva_5_detection} and \ref{table:minerva_10_detection} where we present the different average precision scores, and in Figures \ref{fig:detection_experiment_2}, \ref{fig:detection_experiment_3} and \ref{fig:detection_experiment_4}, where we visualize the true vs false positives detections. We can see that out of these three benchmarks, the \texttt{Minerva-Hypernym} one appears to be the most challenging one as it results into the worst performing models independently from which IoU threshold is considered. We can observe from Fig. \ref{fig:detection_experiment_2} that the model is able to detect `stringed instruments" successfully, whereas its performance in detecting the remaining four hypernyms of the dataset is drastically worse. When it comes to the \texttt{Minerva-5} benchmark we can observe from Table \ref{table:minerva_5_detection} that the model is able to successfully detect three instruments out of the five instruments which constitute this benchmark, namely `Harps', `Lutes", and `Violins". These results are only second to the ones obtained on \texttt{Minerva-0}, although the considered target task $\mathcal{T}_T$ is now significantly harder. Similar detections have been obtained after fine-tuning the model on the \texttt{Minerva-10}benchmark, here we can again observe (see Table \ref{table:minerva_10_detections} and Fig. \ref{fig:detection_experiment_4}) that the network is able to only successfully detect the first three most occurring instruments of the dataset, whereas for the `Horn", `Bagpipe" `Rebec" and `Lyre" classes no detections are made. 
 
-\begin{table}
+\begin{table}[ht!]
 	\caption{Average Precision ($\%$) obtained when fine-tuning a pre-trained YOLO-V3 object detector on the \texttt{Minerva-Hypernyms} dataset. We can observe that satisfying results are obtained for both IoU thresholds when it comes to the detection of stringed instruments, whereas detecting the remaining four hypernyms of MINERVA appears to be much more challenging.}
 \resizebox{\columnwidth}{!}{%	
 	\input{./Tables/Chapter05/hypernyms_detection.tex}%
@@ -177,7 +177,7 @@ We report a similar quantitative analysis for the \texttt{Minerva-Hypernym}, \te
 \end{table}
 
 
-\begin{table}
+\begin{table}[ht!]
 	\caption{Average Precision ($\%$) obtained on the \texttt{ Minerva-5} benchmark. We can observe that the fine-tuned model successfully detects `Harps", `Lutes" and `Violins", whereas the detection of `Shawns" and `Trumpets" can be improved.}
 \resizebox{\columnwidth}{!}{%	
 	\input{./Tables/Chapter05/minerva_5_detection.tex}%
@@ -195,12 +195,9 @@ We report a similar quantitative analysis for the \texttt{Minerva-Hypernym}, \te
 \end{table}
 
 
-
-
-
 \begin{figure}[htb!]
 	\scalebox{0.8}{\input{./Tables/Chapter05/detection_experiment_2.tex}}
-	\caption{}
+	\caption{True Positive (TP) vs False Positive (FP) analysis on the \texttt{Minerva-Hypernym} benchmark for IoU $\geq10$ and IoU $\geq50$.}
 	\label{fig:detection_experiment_2}
 \end{figure}
 
@@ -208,17 +205,16 @@ We report a similar quantitative analysis for the \texttt{Minerva-Hypernym}, \te
 
 \begin{figure}[htb!]
 	\scalebox{0.8}{\input{./Tables/Chapter05/detection_experiment_3.tex}}
-	\caption{}
+	\caption{True Positive (TP) vs False Positive (FP) analysis on the \texttt{Minerva-5} benchmark for IoU $\geq10$ and IoU $\geq50$.}
 	\label{fig:detection_experiment_3}
 \end{figure}
 
 
 \begin{figure}[htb!]
 	\scalebox{0.8}{\input{./Tables/Chapter05/detection_experiment_4.tex}}
-	\caption{}
+	\caption{True Positive (TP) vs False Positive (FP) analysis on the \texttt{Minerva-Hypernym} benchmark for IoU $\geq10$ and IoU $\geq50$.}
 	\label{fig:detection_experiment_4}
 \end{figure}
-
 
 
 
@@ -227,12 +223,14 @@ We report a similar quantitative analysis for the \texttt{Minerva-Hypernym}, \te
 We now characterize the performance of the aforementioned fine-tuned models from a qualitative perspective. 
 
 \paragraph{Object Classification}
+For the classification experiments we keep building on top of the study presented in the previous chapter, and perform a qualitative evaluation of the models that is based on the visualization of saliency maps, as this allows us to investigate which visual properties in the image are exploited by the networks for correctly classifying the instruments in MINERVA. We hereafter report saliency maps that are obtained after fine-tuning an ImageNet pre-trained ResNet50 model on the \texttt{Minerva-Hypernym} benchmark and that are computed with two, different, gradient-based techniques: Grad-CAM \cite{selvaraju2017grad} and Grad-CAM ++ \cite{chattopadhay2018grad}. Examples of computed saliencies are reported in Fig. \ref{fig:grad_cams}. We can observe that the model focuses on two broad types of regions within the image: properties of the instruments itself (which can be expected), but also the immediate context of the instruments, and more specifically the way they are operated, handled or presented. Let us for example consider the `stringed instruments" category: as can be seen from the images in the first and third row of Fig. \ref{fig:grad_cams}, the network happens to focus more on the strings of the instruments rather than on the, arguably more representative, resonance body of the instrument (which is however of interest in the second row of images). When it comes to the `percussion instrument" represented in the forth row, and the `wind instrument" represented in the last row, we can again observe that the model considers the fingers handling the instruments at least as important as the instruments themselves.  
 
+While saliency maps are indeed able to produce appealing visual explanations of the performance of neural networks, it is also worth noting that the output of these methods should also be critically assessed. As reported by \citet{alqaraawi2020evaluating} saliency maps do not always necessarily explain the model's predictions, and there is a large body of work questioning their reliability \cite{simonyan2013deep,arun2020assessing,saporta2021deep}. Nevertheless they can still be interesting to visually inspect, as long as the resulting saliencies are taken with a grain of sand. 
 
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=\linewidth]{./Images/Chapter05/grad_cams}
-  \caption{Grad-cams}
+  \caption{Saliency maps obtained after fine-tuning an ImageNet pre-trained ResNet50 on the \texttt{Minerva-Hypernym} benchmark. The first image corresponds to the original image, while the second and fourth images, and the third and fifth images, respectively report the performance of the Grad-CAM and Grad-CAM ++ methods.}
   \label{fig:grad_cams}
 \end{figure}
 
