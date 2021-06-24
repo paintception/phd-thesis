@@ -5,17 +5,17 @@
     \label{tab:Antwerpen_dataset}
     \centering
     \begin{tabular}{c|c|c|c|c|c}
-	    \textbf{Challenge} &\textbf{DCNN} & \textbf{$\theta^{i}$ + off the shelf} & \textbf{$\theta^{r}$ + off the shelf} & \textbf{$\theta^{i}$ + fine tuning} & \textbf{$\theta^{r}$ + fine tuning}  \\
+	    $\mathcal{T}_T$ &model & $\theta^{i}$ + off the shelf & $\theta^{r}$ + off the shelf & $\theta^{i}$ + fine tuning & $\theta^{r}$ + fine tuning  \\
+        \hline \hline
+	\circled{2} & Xception  & 42.01\% &  \cellcolor{yellow!25}62.92\% &69.74\% & 72.03\%       \\
+        \circled{2} & InceptionV3  & 43.90\% & 57.65\% &70.58\%  & 71.88\%    \\
+	\circled{2} & ResNet50 & 41.59\% & \cellcolor{green!25}{64.95\%} & \cellcolor{yellow!25}76.50\% & \cellcolor{green!25}{78.15\%}    \\
+        \circled{2} & VGG19 & 38.36\% & 60.10\%& 70.37\%  & 71.21\%      \\
         \hline
-	$2$ & Xception  & 42.01\% &  \cellcolor{yellow!25}62.92\% &69.74\% & 72.03\%       \\
-        $2$ & InceptionV3  & 43.90\% & 57.65\% &70.58\%  & 71.88\%    \\
-	$2$ & ResNet50 & 41.59\% & \cellcolor{green!25}{64.95\%} & \cellcolor{yellow!25}76.50\% & \cellcolor{green!25}{78.15\%}    \\
-        $2$ & VGG19 & 38.36\% & 60.10\%& 70.37\%  & 71.21\%      \\
-        \hline
-	$3$ & Xception  &48.52\% & \cellcolor{green!25}{54.81\%}& 58.15\% & 58.47\%   \\
-        $3$ & InceptionV3 & 21.29\% &  53.41\%& 56.68\% & 57.84\%   \\
-	$3$ & ResNet50 & 22.39\% & 31.38\% & \cellcolor{yellow!25}62.57\% & \cellcolor{green!25}{69.01\%}    \\
-	$3$ & VGG19 &  49.90\% & \cellcolor{yellow!25}53.52\% & 54.90\% & 60.01\%  \\
+	\circled{3} & Xception  &48.52\% & \cellcolor{green!25}{54.81\%}& 58.15\% & 58.47\%   \\
+        \circled{3} & InceptionV3 & 21.29\% &  53.41\%& 56.68\% & 57.84\%   \\
+	\circled{3} & ResNet50 & 22.39\% & 31.38\% & \cellcolor{yellow!25}62.57\% & \cellcolor{green!25}{69.01\%}    \\
+	\circled{3} & VGG19 &  49.90\% & \cellcolor{yellow!25}53.52\% & 54.90\% & 60.01\%  \\
         \end{tabular}%
 }
 \end{table}

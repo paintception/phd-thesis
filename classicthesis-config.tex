@@ -106,6 +106,8 @@ natbib=true % natbib compatibility mode (\citep and \citet still work)
 
 \usepackage{textcomp} % Fix warning with missing font shapes
 
+\usepackage{amssymb}
+
 %------------------------------------------------
 
 \usepackage{scrhack} % Fix warnings when using KOMA with listings package  
@@ -119,6 +121,12 @@ natbib=true % natbib compatibility mode (\citep and \citet still work)
 \usepackage{mparhack} % To get marginpar right
 
 %------------------------------------------------
+
+\usepackage{romannum}
+
+%------------------------------------------------
+
+
 
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -177,7 +185,8 @@ natbib=true % natbib compatibility mode (\citep and \citet still work)
 \newtheorem{definition}{Definition}
 \renewcommand{\vec}[1]{\mathbf{#1}}
 %------------------------------------------------
-
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=0.5pt] (char) {#1};}}
 
 \PassOptionsToPackage{pdftex}{graphicx}
 \usepackage{graphicx} 
