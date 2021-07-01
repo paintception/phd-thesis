@@ -5,7 +5,7 @@
       	grid style={dashed,gray},
       	grid = both, 
       	tick style=black,
-	title=Type Classification,
+	title=$\mathcal{T}_T$ \circled{2},
         xlabel=Epochs,
         ylabel= Accuracy ($\%$),
       ]
@@ -15,7 +15,7 @@
       \addlegendentry{ResNet50 $\theta^{-}$}
       \addlegendentry{InceptionV3 $\theta^{-}$}
       \addlegendentry{VGG19 $\theta^{-}$}
-	\addlegendentry{InceptionV3 $\theta$}
+	\addlegendentry{Scratch-V3 $\theta$}
 	\addlegendentry{Xception $\theta^{i}$}
 	\addlegendentry{ResNet50 $\theta^{i}$}
 	\addlegendentry{InceptionV3 $\theta^{i}$}
@@ -43,7 +43,7 @@
       	grid style={dashed,gray},
       	grid = both, 
       	tick style=black,
-	title=Artist Classification,
+	title=$\mathcal{T}_T$ \circled{3},
         xlabel=Epochs,
         ylabel= Accuracy ($\%$),
 	legend columns=3, 
@@ -55,7 +55,7 @@
       \addlegendentry{ResNet50 $\theta^{-}$}
       \addlegendentry{InceptionV3 $\theta^{-}$}
       \addlegendentry{VGG19 $\theta^{-}$}
-	\addlegendentry{InceptionV3 $\theta$}
+	\addlegendentry{Scratch-V3 $\theta$}
 	\addlegendentry{Xception $\theta^{i}$}
 	\addlegendentry{ResNet50 $\theta^{i}$}
 	\addlegendentry{InceptionV3 $\theta^{i}$}
@@ -64,7 +64,7 @@
 
 
       \addplot [thick, blue, mark=diamond] table [y=Xception, x=epochs]
-      {./Results/Chapter03/logs/rijksmuseum_artist_challenge_only_softmax.txt};
+      {./Results/Chapter04/logs/rijksmuseum_artist_challenge_only_softmax.txt};
       \addplot [thick, red, mark=diamond] table [y=ResNet, x=epochs]{./Results/Chapter04/logs/rijksmuseum_artist_challenge_only_softmax.txt};
       \addplot [thick, black, mark=diamond] table [y=V3, x=epochs]{./Results/Chapter04/logs/rijksmuseum_artist_challenge_only_softmax.txt};
       \addplot [thick, green, mark=diamond] table [y=VGG19, x=epochs]{./Results/Chapter04/logs/rijksmuseum_artist_challenge_only_softmax.txt};
@@ -79,7 +79,7 @@
 
       \end{axis}
 	\end{tikzpicture}
-    \caption{A similar analysis as the one which has been reported in Figure \ref{fig:rijks_material} but for the second and third classification challenges (left and right figures respectively). The results show again the significant benefits that fine tuning (reported by the dashed line plots) has when compared to the off the shelf approach (reported by the dash-dotted lines) and how this latter strategy miserably under-performs when it comes to artist classification. Furthermore we again see the benefits that using a pre-trained DCNN has over training the architecture from scratch (solid orange line).}
+    \caption{A similar analysis as the one which has been reported in Figure \ref{fig:rijks_material} but for the second and third classification tasks (left and right figures respectively). The results show again the significant benefits that fine-tuning (reported by the dashed line plots) has when compared to the off-the-shelf approach (reported by the dash-dotted lines) and how this latter strategy miserably under-performs when it comes to artist classification. Furthermore we again see the benefits that using a pre-trained model has over training the architecture from scratch (solid orange line).}
 \label{fig:type_and_artist} 
 \end{figure}
 

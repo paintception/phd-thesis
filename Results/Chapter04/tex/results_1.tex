@@ -8,7 +8,7 @@
 	tick style=black,
   	xlabel=Epochs,
   	ylabel= Accuracy ($\%$),
-	title=Material Classification,
+	title=$\mathcal{T}_T$ \circled{1},
 	%width=1,
     	xmin=0,
     	xmax=10,
@@ -16,28 +16,26 @@
     	ymax=0.95,
   	legend pos=outer north east,
 ]
+	\addlegendentry{Xception $\theta_{i}$}
+	\addlegendentry{ResNet50 $\theta_{i}$}
+	\addlegendentry{InceptionV3 $\theta_{i}$}
+	\addlegendentry{VGG19 $\theta_{i}$}      	
+	\addlegendentry{Scratch-V3 $\theta$}	      	
+	\addlegendentry{Xception $\theta^{-}_{i}$}
+      	\addlegendentry{ResNet50 $\theta^{-}_{i}$}
+      	\addlegendentry{InceptionV3 $\theta^{-}_{i}$}
+      	\addlegendentry{VGG19 $\theta^{-}_{i}$}
 
-	\addlegendentry{Xception $\theta^{i}$}
-	\addlegendentry{ResNet50 $\theta^{i}$}
-	\addlegendentry{InceptionV3 $\theta^{i}$}
-	\addlegendentry{VGG19 $\theta^{i}$}
-      	\addlegendentry{Scratch-V3 $\theta$}
-      	\addlegendentry{Xception $\theta^{-}$}
-      	\addlegendentry{ResNet50 $\theta^{-}$}
-      	\addlegendentry{InceptionV3 $\theta^{-}$}
-      	\addlegendentry{VGG19 $\theta^{-}$}
 
-
-\addplot [thick, blue, mark=x] table [y=Xception, x=epochs]
-{./Results/Chapter03/logs/res_1.txt};
+\addplot [thick, blue, mark=x] table [y=Xception, x=epochs]{./Results/Chapter04/logs/res_1.txt};
 \addplot [thick, red, mark=x] table [y=ResNet, x=epochs]{./Results/Chapter04/logs/res_1.txt};
 \addplot [thick, black, mark=x] table [y=V3, x=epochs]{./Results/Chapter04/logs/res_1.txt};
 \addplot [thick, green, mark=x] table [y=VGG19, x=epochs]{./Results/Chapter04/logs/res_1.txt};
-\addplot [ultra thick, orange , solid] table [y=RandomV3, x=epochs]{./Results/Chapter04/logs/res_1.txt};
+\addplot [ultra thick, orange, solid] table [y=RandomV3, x=epochs]{./Results/Chapter04/logs/res_1.txt};
 
 
-\addplot [ thick, blue, mark=halfcircle] table [y=Xception, x=epochs]{./Results/Chapter04/logs/res_2.txt};
-\addplot [ thick, red, mark=halfcircle] table [y=ResNet, x=epochs]{./Results/Chapter04/logs/res_2.txt};
+\addplot [thick, blue, mark=halfcircle] table [y=Xception, x=epochs]{./Results/Chapter04/logs/res_2.txt};
+\addplot [thick, red, mark=halfcircle] table [y=ResNet, x=epochs]{./Results/Chapter04/logs/res_2.txt};
 \addplot [thick, black, mark=halfcircle] table [y=V3, x=epochs]{./Results/Chapter04/logs/res_2.txt};
 \addplot [thick, green, mark=halfcircle] table [y=VGG19, x=epochs]{./Results/Chapter04/logs/res_2.txt};
 
@@ -45,6 +43,6 @@
 
 \end{axis}
     \end{tikzpicture}
-    \caption{Comparison between the fine tuning approach ($\theta^{i}$) versus the off the shelf one ($\theta^{-}$) when classifying the material of the heritage objects of the Rijksmuseum dataset. We can observe that for three out of four neural architectures the first approach leads to significant improvements when compared to the latter one. Furthermore, we can also observe that training a randomly initialized model from scratch (solid orange line) leads to worse results than fine-tuning a network that comes as pre-trained on the ImageNet dataset.}
+    \caption{Comparison between the fine-tuning approach ($\theta_{i}$) versus the off-the-shelf one ($\theta^{-}_{i}$) when classifying the material of the heritage objects of the Rijksmuseum dataset. We can observe that for three out of four neural architectures the first approach leads to significant improvements when compared to the latter one. Furthermore, we can also observe that training a randomly initialized model from scratch (solid orange line) leads to worse results than fine-tuning a network that comes as pre-trained on the ImageNet dataset.}
     \label{fig:rijks_material}
 \end{figure} 
