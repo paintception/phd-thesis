@@ -6,4 +6,81 @@ structure ...
 \end{remark}
 
 \section{Introduction}
+\label{sec:introduction01}
 
+
+\section{Statistical Learning Theory}
+\label{sec:learning_from_data}
+
+We start by defining a Supervised Learning (SL) problem with a triplet containing the following elements:
+\begin{itemize}
+	\item An input space $\mathcal{X}$,
+	\item An output space $\mathcal{Y}$,
+	\item A joint probability distribution $P(X,Y)$.
+\end{itemize}
+Let us define with $\mathcal{F}$ the set of all functions $f$ that can be produced by a certain learning algorithm, in SL the main goal is to find a function $f:\mathcal{X}\rightarrow\mathcal{Y} \in \mathcal{F}$ that minimizes the expectation over $P(X,Y)$ of a certain loss $\ell$, based on the predictions made by $f$ and the correct outputs defined in $\mathcal{Y}$.
+
+This expectation is also known as the \textcolor{RoyalBlue}{expected risk}, or generalization error, and is defined as:
+\begin{equation}
+	R(f) = \mathds{E}_{(\vec{x},y)\sim P(X,Y)} \big[\ell(y,f(\vec{x}))\big],
+\end{equation}
+\label{eq:expected_risk}
+where $f$ is built from a limited set of observations that define the SL problem we would like to solve. Such observations constitute the \textcolor{RoyalBlue}{training data} $\vec{d}$ which is defined by $N$ pairs of input vectors and output values $(\vec{x}_1, y_1),...,(\vec{x}_N, y_N)$ where $\vec{x}_i \in \mathcal{X}$ and $y_i \in \mathcal{Y}$. As $P(X,Y)$ is unknown one cannot evaluate the quantity defined in Eq. \ref{eq:expected_risk}, however, one can compute an estimate of it instead. This quantity, called the \textcolor{RoyalBlue}{empirical risk}, or training error, is computed as follows:
+\begin{equation}
+	\hat{R}(f,\vec{d}) = \frac{1}{N} \sum_{(\vec{x}_i, y_i)\in \vec{d}} \ell(y_i,f(\vec{x}_i)).
+\end{equation}
+\label{eq:empirical_risk}
+Computing Eq. \ref{eq:empirical_risk} results in an unbiased estimate that can be used for finding a good approximation of the optimal function $f^{*}$ that minimizes Eq. \ref{eq:expected_risk}. Formally this corresponds to satisfying the equality
+\begin{equation}
+	f^{*}_{\vec{d}} = \underset{f\in\mathcal{F}}{\argmin}\hat{R}(f,\vec{d}),
+\end{equation}
+which is known as the empirical risk minimization principle. As mentioned by \citet{} empirical risk minimizers converge in the limit to optimal models:
+\begin{equation}
+	\lim_{N \to \infty} f^{*}_{\vec{d}} = f^{*}.
+\end{equation}
+
+Based on the characteristics of $Y$ one can distinguish between two different SL problems: \textcolor{RoyalBlue}{classification} and \textcolor{RoyalBlue}{regression}. In the first case $\mathcal{Y}$ comes in the form of a finite set of classes $\{c_1, c_2,...,c_i\}$, whereas in the latter case $\mathcal{Y}=\mathds{R}$. As a result the loss function $\ell$ that measures the quality of the predictions of $f(\vec{x})$, also changes. For classification the arguably most straightforward loss function is the $0-1$ loss defined as 
+\begin{equation}
+	\ell(f(\vec{x},y)) = \mathbb{1}(f(\vec{x}\neq y)),
+\end{equation}
+while for regression problems $\ell$ comes either in the form of the squared error loss:
+\begin{equation}
+	\ell(f(\vec{x},y)=(y-f(\vec{x})))^2
+\end{equation}
+or in the form of the absolute error loss
+\begin{equation}
+	\ell(f(\vec{x},y))=|y-f(\vec{x})|,
+\end{equation}
+depending on how much one wants to penalize the errors made by $f$.
+
+\section{Neural Networks}
+\label{sec:neural_networks}
+
+\subsection{Loss Functions}
+\label{sec:loss_functions}
+
+\subsection{Stochastic Gradient Descent}
+\label{sec:sgd}
+
+\subsection{Backpropagation}
+\label{sec:backprop}
+
+\subsection{Activation Functions}
+\label{sec:activations}
+
+\subsection{Overfitting and Regularization}
+\label{sec:regularization}
+
+
+\section{Convolutional Neural Networks}
+\label{sec:convolutional_networks}
+
+\subsection{Mathematical Operations}
+\label{sec:operations}
+
+\subsection{Popular Architectures}
+\label{sec:architectures}
+
+
+\section{Conclusion}
+\label{sec:conclusion01}
