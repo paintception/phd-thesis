@@ -18,28 +18,41 @@ We start by defining a Supervised Learning (SL) problem with a triplet containin
 	\item An output space $\mathcal{Y}$,
 	\item A joint probability distribution $P(X,Y)$.
 \end{itemize}
-Let us define with $\mathcal{F}$ the set of all functions $f$ that can be produced by a certain learning algorithm, in SL the main goal is to find a function $f:\mathcal{X}\rightarrow\mathcal{Y} \in \mathcal{F}$ that minimizes the expectation over $P(X,Y)$ of a certain loss $\ell$, based on the predictions made by $f$ and the correct outputs defined in $\mathcal{Y}$.
+Let us define with $\mathcal{F}$ the set of all functions $f$ that can be produced by a certain learning algorithm. In SL the main goal is to find a function $f:\mathcal{X}\rightarrow\mathcal{Y} \in \mathcal{F}$ that minimizes the expectation over $P(X,Y)$ of a certain loss $\ell$, based on the predictions made by $f$ and the correct outputs defined in $\mathcal{Y}$.
 
 This expectation is also known as the \textcolor{RoyalBlue}{expected risk}, or generalization error, and is defined as:
 \begin{equation}
 	R(f) = \mathds{E}_{(\vec{x},y)\sim P(X,Y)} \big[\ell(y,f(\vec{x}))\big],
 \end{equation}
 \label{eq:expected_risk}
-where $f$ is built from a limited set of observations that define the SL problem we would like to solve. Such observations constitute the \textcolor{RoyalBlue}{training data} $\vec{d}$ which is defined by $N$ pairs of input vectors and output values $(\vec{x}_1, y_1),...,(\vec{x}_N, y_N)$ where $\vec{x}_i \in \mathcal{X}$ and $y_i \in \mathcal{Y}$. As $P(X,Y)$ is unknown one cannot evaluate the quantity defined in Eq. \ref{eq:expected_risk}, however, one can compute an estimate of it instead. This quantity, called the \textcolor{RoyalBlue}{empirical risk}, or training error, is computed as follows:
+where $f$ is built from a limited set of observations that define the SL problem we would like to solve. Such observations constitute the \textcolor{RoyalBlue}{learning set} $\mathcal{L}$ which is defined by $N$ pairs of input vectors and output values $(\vec{x}_1, y_1),...,(\vec{x}_N, y_N)$ where $\vec{x}_i \in \mathcal{X}$ and $y_i \in \mathcal{Y}$. 
+
+As $P(X,Y)$ is unknown and $\mathcal{L}$ is finite, one cannot evaluate the quantity defined in Eq. \ref{eq:expected_risk}, however, one can compute an estimate of it instead. To this end it is common to use part of the learning set $\mathcal{L}$ for constructing a \textcolor{RoyalBlue}{training set} $\mathcal{L}_{\text{Train}}$, of size $M$, that can be used for computing the \textcolor{RoyalBlue}{empirical risk}, or training error, as follows:
 \begin{equation}
-	\hat{R}(f,\vec{d}) = \frac{1}{N} \sum_{(\vec{x}_i, y_i)\in \vec{d}} \ell(y_i,f(\vec{x}_i)).
-\end{equation}
+	\hat{R}(f,\mathcal{L}_\text{Train}) = \frac{1}{M} \sum_{(\vec{x}_i, y_i)\in \mathcal{L}_{\text{Train}}} \ell(y_i,f(\vec{x}_i)).
 \label{eq:empirical_risk}
+\end{equation}
 Computing Eq. \ref{eq:empirical_risk} results in an unbiased estimate that can be used for finding a good approximation of the optimal function $f^{*}$ that minimizes Eq. \ref{eq:expected_risk}. Formally this corresponds to satisfying the equality
 \begin{equation}
-	f^{*}_{\vec{d}} = \underset{f\in\mathcal{F}}{\argmin}\hat{R}(f,\vec{d}),
+	f^{*}_{\mathcal{L}_{\text{Train}}} = \underset{f\in\mathcal{F}}{\argmin}\hat{R}(f,\mathcal{L}_{\text{Train}}),
 \end{equation}
 which is known as the empirical risk minimization principle. As mentioned by \citet{} empirical risk minimizers converge in the limit to optimal models:
 \begin{equation}
-	\lim_{N \to \infty} f^{*}_{\vec{d}} = f^{*}.
+	\lim_{N \to \infty} f^{*}_{\mathcal{L}_\text{Train}} = f^{*}.
 \end{equation}
+With these concepts in place we can summarize the goal of SL as finding a function $f$ that on average makes good predictions over $P(X,Y)$. To this end, when explaining the true data generating process underlying $P(X,Y)$, $f$ does not have to be too `simple" nor too `complex". In order to assess this let $\mathcal{Y}^{\mathcal{X}}$ be the set of all functions $f:\mathcal{X}\rightarrow\mathcal{Y}$. The minimal expected risk over all these functions is defined as
+\begin{equation}
+	R_B = \underset{f\in\mathcal{Y}^{\mathcal{X}}}{\min} R(f),
+	\label{eq:bayes_risk}
+\end{equation}
+and is called the \textcolor{RoyalBlue}{Bayes risk}. When minimized, the quantity defined in Eq. \ref{eq:bayes_risk} results in the best possible function $f_B$, which is called the Bayes model. If the capacity of the hypothesis space $\mathcal{F}$ chosen for finding $f$ is too low, then it follows that $R(f)-R_B$ will be large for any $f\in\mathcal{F}$, including $f^{*}$ and $f^{*}_{\mathcal{L}_{\text{Train}}}$. Similarly, if the capacity of $\mathcal{F}$ is too high then albeit $R(f)-R_B$ will be small, $f^{*}_\mathcal{L}_{\text{Train}}$ can fit 
+$\mathcal{L}_{\text{Train}}$ arbitrarily well such that:
+\begin{equation}
+	R(f^{*}_{\mathcal{L}_{\text{Train}}}) \geq R_B \geq \hat{R}(f^{*}_{\mathcal{L}_{\text{Train}}},\mathcal{L}_{\text{Train}}) \geq 0.
+\end{equation}
+When $f$ is too simple then it is said to \textcolor{RoyalBlue}{underfit} the data, whereas it said to \textcolor{RoyalBlue}{overfit} it when it is too complex. As a result one wants both the expected risk $R$ and the empirical risk $\hat{R}$ minimizers to be as low as possible. To achieve this one can again evaluate the perfomance of $f{*}_\mathcal{L}_{\text{Train}}$ by computing the empirical risk defined in Eq. \ref{eq:empirical_risk} on a separate independent dataset known as the \textcolor{RoyalBlue}{testing set} $\mathcal{L}_{\text{Test}}$. Note however that this quantity should be used for model evaluation purposes only, and not for model selection ones, which is usually done through a separate dataset called the \textcolor{RoyalBlue}{validation set}. 
 
-Based on the characteristics of $Y$ one can distinguish between two different SL problems: \textcolor{RoyalBlue}{classification} and \textcolor{RoyalBlue}{regression}. In the first case $\mathcal{Y}$ comes in the form of a finite set of classes $\{c_1, c_2,...,c_i\}$, whereas in the latter case $\mathcal{Y}=\mathds{R}$. As a result the loss function $\ell$ that measures the quality of the predictions of $f(\vec{x})$, also changes. For classification the arguably most straightforward loss function is the $0-1$ loss defined as 
+So far we have defined the concepts of expected risk and empirical risk with respect to a loss function $\ell$, however, we have not yet seen how this loss function looks in practice. In SL $\ell$ changes based on the characteristics of $Y$, which allows us to distinguish between two different SL problems: \textcolor{RoyalBlue}{classification} and \textcolor{RoyalBlue}{regression}. In the first case $\mathcal{Y}$ comes in the form of a finite set of classes $\{c_1, c_2,...,c_i\}$, whereas in the latter case $\mathcal{Y}=\mathds{R}$. As a result the loss function $\ell$ that measures the quality of the predictions of $f(\vec{x})$, also changes. For classification the arguably most straightforward loss function is the $0-1$ loss defined as 
 \begin{equation}
 	\ell(f(\vec{x},y)) = \mathbb{1}(f(\vec{x}\neq y)),
 \end{equation}
