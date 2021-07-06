@@ -23,8 +23,8 @@ Let us define with $\mathcal{F}$ the set of all functions $f$ that can be produc
 This expectation is also known as the \textcolor{RoyalBlue}{expected risk}, or generalization error, and is defined as:
 \begin{equation}
 	R(f) = \mathds{E}_{(\vec{x},y)\sim P(X,Y)} \big[\ell(y,f(\vec{x}))\big],
-\end{equation}
 \label{eq:expected_risk}
+\end{equation}
 where $f$ is built from a limited set of observations that define the SL problem we would like to solve. Such observations constitute the \textcolor{RoyalBlue}{learning set} $\mathcal{L}$ which is defined by $N$ pairs of input vectors and output values $(\vec{x}_1, y_1),...,(\vec{x}_N, y_N)$ where $\vec{x}_i \in \mathcal{X}$ and $y_i \in \mathcal{Y}$. 
 
 As $P(X,Y)$ is unknown and $\mathcal{L}$ is finite, one cannot evaluate the quantity defined in Eq. \ref{eq:expected_risk}, however, one can compute an estimate of it instead. To this end it is common to use part of the learning set $\mathcal{L}$ for constructing a \textcolor{RoyalBlue}{training set} $\mathcal{L}_{\text{Train}}$, of size $M$, that can be used for computing the \textcolor{RoyalBlue}{empirical risk}, or training error, as follows:
@@ -36,11 +36,11 @@ Computing Eq. \ref{eq:empirical_risk} results in an unbiased estimate that can b
 \begin{equation}
 	f^{*}_{\mathcal{L}_{\text{Train}}} = \underset{f\in\mathcal{F}}{\argmin}\hat{R}(f,\mathcal{L}_{\text{Train}}),
 \end{equation}
-which is known as the empirical risk minimization principle. As mentioned by \citet{} empirical risk minimizers converge in the limit to optimal models:
+which is known as the empirical risk minimization principle \cite{vapnik1992principles}. As mentioned by \citet{} empirical risk minimizers converge in the limit to optimal models:
 \begin{equation}
 	\lim_{N \to \infty} f^{*}_{\mathcal{L}_\text{Train}} = f^{*}.
 \end{equation}
-With these concepts in place we can summarize the goal of SL as finding a function $f$ that on average makes good predictions over $P(X,Y)$. To this end, when explaining the true data generating process underlying $P(X,Y)$, $f$ does not have to be too `simple" nor too `complex". In order to assess this let $\mathcal{Y}^{\mathcal{X}}$ be the set of all functions $f:\mathcal{X}\rightarrow\mathcal{Y}$. The minimal expected risk over all these functions is defined as
+With these concepts in place we can summarize the goal of SL as finding a function $f$ that on average makes good predictions over $P(X,Y)$. To this end, when explaining the data generating process underlying $P(X,Y)$, $f$ does not have to be too `simple" nor too `complex". In order to assess this let $\mathcal{Y}^{\mathcal{X}}$ be the set of all functions $f:\mathcal{X}\rightarrow\mathcal{Y}$. The minimal expected risk over all these functions is defined as
 \begin{equation}
 	R_B = \underset{f\in\mathcal{Y}^{\mathcal{X}}}{\min} R(f),
 	\label{eq:bayes_risk}
@@ -50,9 +50,9 @@ $\mathcal{L}_{\text{Train}}$ arbitrarily well such that:
 \begin{equation}
 	R(f^{*}_{\mathcal{L}_{\text{Train}}}) \geq R_B \geq \hat{R}(f^{*}_{\mathcal{L}_{\text{Train}}},\mathcal{L}_{\text{Train}}) \geq 0.
 \end{equation}
-When $f$ is too simple then it is said to \textcolor{RoyalBlue}{underfit} the data, whereas it said to \textcolor{RoyalBlue}{overfit} it when it is too complex. As a result one wants both the expected risk $R$ and the empirical risk $\hat{R}$ minimizers to be as low as possible. To achieve this one can again evaluate the perfomance of $f{*}_\mathcal{L}_{\text{Train}}$ by computing the empirical risk defined in Eq. \ref{eq:empirical_risk} on a separate independent dataset known as the \textcolor{RoyalBlue}{testing set} $\mathcal{L}_{\text{Test}}$. Note however that this quantity should be used for model evaluation purposes only, and not for model selection ones, which is usually done through a separate dataset called the \textcolor{RoyalBlue}{validation set}. 
+When $f$ is too simple then it is said to \textcolor{RoyalBlue}{underfit} the data, whereas it said to \textcolor{RoyalBlue}{overfit} it when it is too complex. As a result, one wants both the expected risk $R$ and the empirical risk $\hat{R}$ minimizers to be as low as possible. To achieve this we can again evaluate the perfomance of $f^{*}_{\mathcal{L}_{\text{Train}}}$ by computing the empirical risk defined in Eq. \ref{eq:empirical_risk} on a separate independent dataset known as the \textcolor{RoyalBlue}{testing set} $\mathcal{L}_{\text{Test}}$. Note however that this quantity should be used for model evaluation purposes only, and not for model selection ones, which is usually done through a separate dataset called the \textcolor{RoyalBlue}{validation set}. 
 
-So far we have defined the concepts of expected risk and empirical risk with respect to a loss function $\ell$, however, we have not yet seen how this loss function looks in practice. In SL $\ell$ changes based on the characteristics of $Y$, which allows us to distinguish between two different SL problems: \textcolor{RoyalBlue}{classification} and \textcolor{RoyalBlue}{regression}. In the first case $\mathcal{Y}$ comes in the form of a finite set of classes $\{c_1, c_2,...,c_i\}$, whereas in the latter case $\mathcal{Y}=\mathds{R}$. As a result the loss function $\ell$ that measures the quality of the predictions of $f(\vec{x})$, also changes. For classification the arguably most straightforward loss function is the $0-1$ loss defined as 
+So far we have defined the concepts of expected risk and empirical risk with respect to a loss function $\ell$, however, we have not yet seen how this loss function looks like in practice. In SL $\ell$ changes based on the characteristics of $Y$. This allows us to distinguish between two different SL problems: \textcolor{RoyalBlue}{classification} and \textcolor{RoyalBlue}{regression}. In the first case $\mathcal{Y}$ comes in the form of a finite set of classes $\{c_1, c_2,...,c_i\}$, whereas in the latter case $\mathcal{Y}=\mathds{R}$. For classification the arguably most straightforward loss function is the $0-1$ loss defined as 
 \begin{equation}
 	\ell(f(\vec{x},y)) = \mathbb{1}(f(\vec{x}\neq y)),
 \end{equation}
@@ -66,17 +66,39 @@ or in the form of the absolute error loss
 \end{equation}
 depending on how much one wants to penalize the errors made by $f$.
 
+While several SL algorithms adopting empirical risk minimization principles exist, throughout this dissertation we will, however, only focus on artificial neural networks, a family of techniques that will be reviewed hereafter.  
+
 \section{Neural Networks}
 \label{sec:neural_networks}
-
-\subsection{Loss Functions}
-\label{sec:loss_functions}
 
 \subsection{Stochastic Gradient Descent}
 \label{sec:sgd}
 
+Training a neural network consists in finding parameters $\theta$ such that a loss function $\mathscr{L}(\theta)$, also denoted as the \textcolor{RoyalBlue}{objective function}, is minimized. Such loss functions are typically expressed as a sum of the losses $\ell_n$ incurred by each sample $n$ in the training set, and can be expressed in the following form:
+\begin{equation}
+	\mathscr{L}(\theta) = \sum_{n=1}^{N}\ell_n(\theta).
+	\label{eq:sum_of_losses}
+\end{equation}
+When neural networks are used, $\mathscr{L}$ has to be differentiable as this allows to minimize it through first order optimization algorithms. Among such methods, the arguably most straightforward one is gradient descent, which updates the parameters $\theta$ proportionally to the negative gradient of $\mathscr{L}$. This is done by applying the following update rule:
+\begin{align}
+	\theta_{t+1} & = \theta_t - \gamma_t(\nabla\ell(\theta_i))^{\intercal} \\ 
+	& = \theta_t - \gamma_t \sum_{n=1}^{N}(\nabla \ell_n(\theta_i))^{\intercal},
+	\label{eq:gradient_descent}
+\end{align}
+where ...
+
+We can easily observe that computing Eq. \ref{eq:gradient_descent} can become computationally very expensive as it requires to evaluate gradients from all individual functions $\ell_n$. This property is in fact what defines gradient descent as a batch optimization method, which makes it unfortunately unsuitable for dealing with large datasets. A possible solution to this computational burden consists in reducing the amount of computation required by the sum in Eq.\ref{eq:gradient_descent} by simply considering a small, random batch of samples of the training set. In the extreme case, one can even just estimate the gradient on one single, randomly chosen, training sample, which is a method called Stochastic Gradient Descent (SGD). While it is true that this approach gives an unbiased estimate of the true gradient, its estimate can also be very noisy, which is the reason behind why it is preferable to evaluate the gradient for a mini-batch of samples instead than on one single, unique sample.
+
+
 \subsection{Backpropagation}
 \label{sec:backprop}
+
+
+\subsection{Loss Functions}
+\label{sec:loss_functions}
+
+
+
 
 \subsection{Activation Functions}
 \label{sec:activations}
