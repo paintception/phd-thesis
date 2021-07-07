@@ -71,24 +71,42 @@ While several SL algorithms adopting empirical risk minimization principles exis
 \section{Neural Networks}
 \label{sec:neural_networks}
 
+
+\subsection{General Architecture}
+\label{sec:general_architecture}
+
 \subsection{Stochastic Gradient Descent}
 \label{sec:sgd}
 
-Training a neural network consists in finding parameters $\theta$ such that a loss function $\mathscr{L}(\theta)$, also denoted as the \textcolor{RoyalBlue}{objective function}, is minimized. Such loss functions are typically expressed as a sum of the losses $\ell_n$ incurred by each sample $n$ in the training set, and can be expressed in the following form:
+Training a neural network consists in finding parameters $\theta$ such that a loss function $\mathscr{L}(\theta)$, also denoted as the \textcolor{RoyalBlue}{objective function}, is minimized. Such loss functions are typically expressed as a sum of the losses $\ell_n$ incurred by each sample $n$ in a training set of size $N$, and can be expressed in the following form:
 \begin{equation}
 	\mathscr{L}(\theta) = \sum_{n=1}^{N}\ell_n(\theta).
 	\label{eq:sum_of_losses}
 \end{equation}
 When neural networks are used, $\mathscr{L}$ has to be differentiable as this allows to minimize it through first order optimization algorithms. Among such methods, the arguably most straightforward one is gradient descent, which updates the parameters $\theta$ proportionally to the negative gradient of $\mathscr{L}$. This is done by applying the following update rule:
 \begin{align}
-	\theta_{t+1} & = \theta_t - \gamma_t(\nabla\ell(\theta_i))^{\intercal} \\ 
-	& = \theta_t - \gamma_t \sum_{n=1}^{N}(\nabla \ell_n(\theta_i))^{\intercal},
+	\theta_{t+1} & = \theta_t - \gamma_t(\nabla\ell(\theta_t))^{\intercal} \\ 
+	& = \theta_t - \gamma_t \sum_{n=1}^{N}(\nabla \ell_n(\theta_t))^{\intercal},
 	\label{eq:gradient_descent}
 \end{align}
-where ...
+where $t$ is a time counter variable, and $\gamma\geq0$ is the learning rate, sometimes also denoted as the step-size parameter. We can easily observe that computing Eq. \ref{eq:gradient_descent} can become computationally very expensive as it requires to evaluate gradients from all individual functions $\ell_n$. This property is in fact what defines gradient descent as a batch optimization method, which makes it unfortunately unsuitable for dealing with large datasets. A possible solution to this computational burden consists in reducing the amount of computation required by the sum in Eq.\ref{eq:gradient_descent} by simply considering a small, random batch of samples of the training set. In the extreme case, one can even just estimate the gradient on one single, randomly chosen, training sample, which is a method called Stochastic Gradient Descent (SGD). While it is true that this approach gives an unbiased estimate of the true gradient, its estimate can also be very noisy, which is the reason behind why it is preferable to evaluate the gradient for a mini-batch of samples instead than on one single, unique sample. A large body of work has investigated the effect that the batch-size has on neural network training; however, so far no exact rule for determining an optimal batch-size exists. However, provided that enough computational resources are available, large mini-batches are usually preferred as they will result in more accurate estimates of the gradient, and therefore reduce the variance in the parameter update $\theta_{t+1}$. 
 
-We can easily observe that computing Eq. \ref{eq:gradient_descent} can become computationally very expensive as it requires to evaluate gradients from all individual functions $\ell_n$. This property is in fact what defines gradient descent as a batch optimization method, which makes it unfortunately unsuitable for dealing with large datasets. A possible solution to this computational burden consists in reducing the amount of computation required by the sum in Eq.\ref{eq:gradient_descent} by simply considering a small, random batch of samples of the training set. In the extreme case, one can even just estimate the gradient on one single, randomly chosen, training sample, which is a method called Stochastic Gradient Descent (SGD). While it is true that this approach gives an unbiased estimate of the true gradient, its estimate can also be very noisy, which is the reason behind why it is preferable to evaluate the gradient for a mini-batch of samples instead than on one single, unique sample.
+When the optimization surface is made of valley floors, gradient descent has the limitation of being very slow. To deal with such issue, several works have designed optimization strategies which make gradient based optimization faster and more efficient. The most straightforward improvement to the gradient descent algorithm is the one proposed by \citet{rumelhart1986learning} who suggested to use of an additional term in the update rule presented in Eq.\ref{eq:gradient_descent}, named \textcolor{RoyalBlue}{momentum}. This term, simply keeps track of what happened when the parameters were updated at $t-1$ and determines the next parameters' update as a linear combination between the current and previous gradients. This results in the following update rule:
+\begin{equation}
+	\theta_{t+1} = \theta_t - \gamma_t ((\nabla l(\theta_t)))^{\intercal} + \alpha\Delta\theta_t
+	\label{eq: momentum}
+\end{equation}
+where  
+\begin{align}
+	\theta_{t} & = \theta_t - \theta_{t-1} \\ 
+		   & = \alpha\Delta\theta_{t-1}-\gamma_{t-1}(\nabla \ell(\theta_{t-1}))^{\intercal},
+	\label{eq:gradient_descent}
+\end{align}
+and $\alpha\in[0,1]$, which accelerates the optimization process and allows the algorithm average out noisy estimates of the gradient.
 
+Next to adding a momentum term to improve the performance of gradient descent, another common method that can accelerate convergence revolves around dynamically adapting the learning rate parameter $\gamma$. Popular neural network optimizers such as \texttt{} , all adapt this method. While discussing these methods into detail is out of scope of this thesis we refer the reader to the work of \cite{ruder2016overview}, which provides a nice overview of the most common gradient descent optimization algorithms, and to the work of \citet{schmidt2020descending} who empirically evaluate their performance across different networks and machine learning problems. 
+
+Before ending this section it is worth noting that next to SGD-like methods, there also exist several alternative algorithms that can be used for optimization problems. Among such methods, we mention second order optimization techniques such as Newton, Quasi-Newton and the Conjugate gradient methods \citet{tan2019review}. While these algorithms are able to minimize the empirical risk faster and better than e.g., SGD, they do not result in equally good generalization performance. Recall from Sec. \ref{sec:learning_from_data}, that in SL minimizing the expected risk is just as important as minimizing the empirical risk, which is a property that the aforementioned second order optimization algorithms do not have. This key result, first presented by \citet{bottou201113}, is what motivates the use of SGD-like optimizers in machine learning.       
 
 \subsection{Backpropagation}
 \label{sec:backprop}
