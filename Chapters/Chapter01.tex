@@ -75,6 +75,8 @@ While several SL algorithms adopting empirical risk minimization principles exis
 \subsection{General Architecture}
 \label{sec:general_architecture}
 
+- activation functions 
+
 \subsection{Stochastic Gradient Descent}
 \label{sec:sgd}
 
@@ -89,11 +91,11 @@ When neural networks are used, $\mathscr{L}$ has to be differentiable as this al
 	& = \theta_t - \gamma_t \sum_{n=1}^{N}(\nabla \ell_n(\theta_t))^{\intercal},
 	\label{eq:gradient_descent}
 \end{align}
-where $t$ is a time counter variable, and $\gamma\geq0$ is the learning rate, sometimes also denoted as the step-size parameter. We can easily observe that computing Eq. \ref{eq:gradient_descent} can become computationally very expensive as it requires to evaluate gradients from all individual functions $\ell_n$. This property is in fact what defines gradient descent as a batch optimization method, which makes it unfortunately unsuitable for dealing with large datasets. A possible solution to this computational burden consists in reducing the amount of computation required by the sum in Eq.\ref{eq:gradient_descent} by simply considering a small, random batch of samples of the training set. In the extreme case, one can even just estimate the gradient on one single, randomly chosen, training sample, which is a method called Stochastic Gradient Descent (SGD). While it is true that this approach gives an unbiased estimate of the true gradient, its estimate can also be very noisy, which is the reason behind why it is preferable to evaluate the gradient for a mini-batch of samples instead than on one single, unique sample. A large body of work has investigated the effect that the batch-size has on neural network training; however, so far no exact rule for determining an optimal batch-size exists. However, provided that enough computational resources are available, large mini-batches are usually preferred as they will result in more accurate estimates of the gradient, and therefore reduce the variance in the parameter update $\theta_{t+1}$. 
+where $t$ is a time counter variable, and $\gamma\geq0$ is the learning rate, sometimes also denoted as the step-size parameter. We can easily observe that computing Eq. \ref{eq:gradient_descent} can become computationally very expensive as it requires to evaluate gradients from all individual functions $\ell_n$. This property is in fact what defines gradient descent as a batch optimization method, which makes it unfortunately unsuitable for dealing with large datasets. A possible solution to this computational burden consists in reducing the amount of computation required by the sum in Eq.\ref{eq:gradient_descent} by simply considering a small, random batch of samples of the training set. In the extreme case, one can even just estimate the gradient on one single, randomly chosen, training sample, which is a method called Stochastic Gradient Descent (SGD). While it is true that this approach gives an unbiased estimate of the true gradient, its estimate can also be very noisy, which is the reason behind why it is preferable to evaluate the gradient for a mini-batch of samples instead than on one single, unique sample. A large body of work has investigated the effect that the batch-size has on neural network training \cite{keskar2016large,radiuk2017impact,kandel2020effect}; however, so far no exact rule for determining an optimal batch-size exists. Yet, provided that enough computational resources are available, large mini-batches are usually preferred as they will result in more accurate estimates of the gradient, and therefore reduce the variance in the parameter update $\theta_{t+1}$. 
 
 When the optimization surface is made of valley floors, gradient descent has the limitation of being very slow. To deal with such issue, several works have designed optimization strategies which make gradient based optimization faster and more efficient. The most straightforward improvement to the gradient descent algorithm is the one proposed by \citet{rumelhart1986learning} who suggested to use of an additional term in the update rule presented in Eq.\ref{eq:gradient_descent}, named \textcolor{RoyalBlue}{momentum}. This term, simply keeps track of what happened when the parameters were updated at $t-1$ and determines the next parameters' update as a linear combination between the current and previous gradients. This results in the following update rule:
 \begin{equation}
-	\theta_{t+1} = \theta_t - \gamma_t ((\nabla l(\theta_t)))^{\intercal} + \alpha\Delta\theta_t
+	\theta_{t+1} = \theta_t - \gamma_t ((\nabla \ell(\theta_t)))^{\intercal} + \alpha\Delta\theta_t
 	\label{eq: momentum}
 \end{equation}
 where  
@@ -104,22 +106,50 @@ where
 \end{align}
 and $\alpha\in[0,1]$, which accelerates the optimization process and allows the algorithm average out noisy estimates of the gradient.
 
-Next to adding a momentum term to improve the performance of gradient descent, another common method that can accelerate convergence revolves around dynamically adapting the learning rate parameter $\gamma$. Popular neural network optimizers such as \texttt{} , all adapt this method. While discussing these methods into detail is out of scope of this thesis we refer the reader to the work of \cite{ruder2016overview}, which provides a nice overview of the most common gradient descent optimization algorithms, and to the work of \citet{schmidt2020descending} who empirically evaluate their performance across different networks and machine learning problems. 
+Next to adding a momentum term to improve the performance of gradient descent, another common method that can accelerate its convergence revolves around dynamically adapting the learning rate parameter $\gamma$. Popular neural network optimizers such as \texttt{RMSProp} \cite{tieleman2012lecture}, \texttt{AdaGrad} \cite{duchi2011adaptive}, and the very well-known \texttt{Adam} optimizer \cite{kingma2014adam}, all adapt this method. While discussing these algorithms into detail is out of the scope of this thesis, we refer the reader to the work of \citet{ruder2016overview}, which provides a nice overview of the most common gradient descent optimization algorithms, and to the work of \citet{schmidt2020descending} who empirically evaluate their performance across different networks and machine learning problems. 
 
-Before ending this section it is worth noting that next to SGD-like methods, there also exist several alternative algorithms that can be used for optimization problems. Among such methods, we mention second order optimization techniques such as Newton, Quasi-Newton and the Conjugate gradient methods \citet{tan2019review}. While these algorithms are able to minimize the empirical risk faster and better than e.g., SGD, they do not result in equally good generalization performance. Recall from Sec. \ref{sec:learning_from_data}, that in SL minimizing the expected risk is just as important as minimizing the empirical risk, which is a property that the aforementioned second order optimization algorithms do not have. This key result, first presented by \citet{bottou201113}, is what motivates the use of SGD-like optimizers in machine learning.       
+Before ending this section it is worth noting that next to SGD-like methods, there also exist several alternative algorithms that can be used for optimization problems. Among such methods, we mention second order optimization techniques such as Newton, Quasi-Newton and the Conjugate gradient methods discussed in \cite{tan2019review}. While these algorithms are able to minimize the empirical risk faster and even better than SGD, they do not result in equally good generalization performance. Recall from Sec. \ref{sec:learning_from_data}, that in SL minimizing the expected risk is just as important as minimizing the empirical risk, which is a property that the aforementioned second order optimization algorithms do not have. This key result, first presented by \citet{bottou201113}, is what motivates the use of SGD-like optimizers in deep learning.       
 
 \subsection{Backpropagation}
 \label{sec:backprop}
 
+From Eq.\ref{eq:gradient_descent} we can note that a crucial role in the optimization process is played by the gradient $\nabla\ell(\theta)$. As we have seen in Sec. \ref{sec:general_architecture} neural networks can be considered as a composition of nested functions $k$ for $k=0,...,K-1$, where each function comes with its own parameters $\theta_k$. Therefore the gradient comes in the form of a vector which contains all the partial derivatives of the loss $\ell$ with respect to the weights $\theta$ that parametrize the neural network:
+\begin{equation}
+	\nabla\ell(\theta) = \Big[\frac{\partial\ell}{\partial\theta_0}(\theta),...,\frac{\partial\ell}{\partial\theta_{K-1}}(\theta)\Big].
+\end{equation}
+As the number of functions increases, so does the complexity of the gradient, therefore an efficient way of calculating it is necessary. The backpropagation algorithm is a special case of a more general technique, called \textcolor{RoyalBlue}{automatic differentiation}, that allows to evaluate the gradient of complicated functions numerically and automatically. This is done by exploiting the chain rule, which can be applied recursively on the computation graph that keeps track of all the arithmetic operations that are performed by the network. 
+
+To this end let us define a simplified version of a two hidden layer perceptron $f$ that is parametrized with weight matrices $\vec{W}_1$ and $\vec{W}_2$. When given input data $\vec{x}$ the network produces a prediction $\hat{y}$ which results from traversing the computational graph represented in Fig. \ref{fig:computational_graph_1}.  
+\begin{figure}[ht!]
+	\centering
+	\input{Images/Chapter01/computational_graph_1.tex}
+\caption{Computational graph 1}
+\label{fig:computational_graph_1}
+\end{figure}
+During the traversal, also known as the \textcolor{RoyalBlue}{forward pass}, the result of each mathematical operation is stored within its own output variable $u$ (see Fig. \ref{fig:computational_graph_2}) 
+\begin{figure}[ht!]
+	\centering
+	\input{Images/Chapter01/computational_graph_2.tex}
+\caption{Computational graph 2}
+\label{fig:computational_graph_2}
+\end{figure}
+Having such an annotated graph it is now possible to compute all partial derivatives efficiently by traversing the graph backwards (\textcolor{RoyalBlue}{backward pass}), and by applying the chain rule which in its general form states that:
+\begin{equation}
+	\frac{\partial \ell}{\partial \theta_i} = \sum_{k\in\text{parents}(\ell)} \frac{\partial \ell}{\partial u_k} \frac{\partial u_k}{\partial \theta_i}.
+\end{equation}
+Therefore taking as example $\vec{W}_1$, the derivative of the network's output $\hat{y}$ with respect to this weight matrix is given by:
+\label{eq:general_chain_rule}
+\begin{equation}
+	\frac{\partial \hat{y}}{\partial \vec{W}_1} & = \frac{\partial \hat{y}}{\partial u_2} \frac{\partial u_2}{\partial h_1} \frac{\partial h_1}{\partial u_1} \frac{\partial u_1}{\partial\vec{W}_1} \\
+	& = \frac{\partial\sigma(u_2)}{\partial u_2} \frac{\partial\vec{W}_2^{\intercal}h_1}{\partial h_1} \frac{\partial \sigma(u_1)}{\partial u_1} \frac{\partial \vec{W}_1^{\intercal}\vec{x}}{\partial{\vec{W}_1}}.
+	\label{eq:applied_chain_rule}
+\end{equation}
 
 \subsection{Loss Functions}
 \label{sec:loss_functions}
 
 
 
-
-\subsection{Activation Functions}
-\label{sec:activations}
 
 \subsection{Overfitting and Regularization}
 \label{sec:regularization}

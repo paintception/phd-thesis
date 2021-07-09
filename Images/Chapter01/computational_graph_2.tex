@@ -1,0 +1,40 @@
+\tikzset{
+    ->, 
+    level distance = 22em,
+    minimum size=2em,
+    %edge from parent/.style={draw,thick},
+    level 1/.style={sibling distance=6em},
+    level 2/.style={sibling distance=3em},
+    thick/.style = {line width=1.5pt},
+    extra thick/.style = {line width=3.5pt},
+    red node/.style={shape=circle,draw=red,fill=red!40,thick,inner sep=1.2},
+    blue node/.style={shape=circle,draw=blue,fill=blue!40,thick,inner sep=1.2}
+}
+
+\tikzstyle{round}=[thick,draw=black,circle]
+
+ \begin{tikzpicture}[square/.style={regular polygon,regular polygon sides=4}]
+	 \node at (0,0) [circle,draw] (input) {$\vec{x}$};
+         \node at (1,0) [square,draw] (dot1) {$\cdot$};
+	 \node at (1,1) [circle,draw] (W1) {$\vec{W}_1$};
+	 \node at (1,-1) [circle,draw] (o1) {$\vec{u}_1$};
+	 \node at (2,0) [square,draw] (sigmoid1) {$\sigma$};
+	 \node at (3,0) [circle,draw] (h1) {$\vec{h}_1$};
+         \node at (4,0) [square,draw] (dot2) {$\cdot$};
+	 \node at (4,1) [circle,draw] (W2) {$\vec{W}_2$};
+ 	 \node at (4,-1) [circle,draw] (o2) {$\vec{u}_2$};
+	 \node at (5,0) [square,draw] (sigmoid2) {$\sigma$};
+	 \node at (6,0) [circle,draw] (output) {$\hat{y}$};
+
+	 \draw (W1) -> (dot1);
+	 \draw (W2) -> (dot2);
+	 \draw (input) -> (dot1); 
+	 \draw (dot1)-> (sigmoid1); 
+	 \draw (dot1)-> (o1); 
+	 \draw(sigmoid1) -> (h1);
+	 \draw(h1) -> (dot2); 
+	 \draw(dot2) -> (sigmoid2);
+         \draw (dot2)-> (o2);
+	 \draw(sigmoid2)-> (output);  
+
+\end{tikzpicture}
