@@ -1,0 +1,18 @@
+\begin{tikzpicture}[scale = 1]
+\begin{axis}[
+grid style={dashed,gray},
+grid = both, 
+  legend pos=north west]
+
+\addlegendentry{ReLU}
+\addplot [ultra thick, blue] table [y=Relu, x=P]{./Images/Chapter01/activation_functions.dat};
+\addlegendentry{Elu}
+\addplot [ultra thick, red] table [y=Elu, x=P]{./Images/Chapter01/activation_functions.dat};
+\addlegendentry{Tanh}
+\addplot [ultra thick, black] table [y=Tanh, x=P]{./Images/Chapter01/activation_functions.dat};
+\addlegendentry{Sigmoid}
+\addplot[ultra thick, green] table [y=Sigmoid, x=P]{./Images/Chapter01/activation_functions.dat};
+\end{axis}
+\end{tikzpicture}
+
+

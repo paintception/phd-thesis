@@ -71,11 +71,17 @@ While several SL algorithms adopting empirical risk minimization principles exis
 \section{Neural Networks}
 \label{sec:neural_networks}
 
+\subsection{Artificial Neurons}
 
-\subsection{General Architecture}
+
+\subsection{Multi-layer Perceptrons}
 \label{sec:general_architecture}
-
-- activation functions 
+\begin{figure}[ht!]
+	\centering
+	\input{Images/Chapter01/activation_functions.tex}
+\caption{Activation functions}
+\label{fig:activation_functions}
+\end{figure}
 
 \subsection{Stochastic Gradient Descent}
 \label{sec:sgd}
@@ -149,8 +155,6 @@ Therefore taking as example $\vec{W}_1$, the derivative of the network's output 
 \label{sec:loss_functions}
 
 
-
-
 \subsection{Overfitting and Regularization}
 \label{sec:regularization}
 
@@ -158,8 +162,24 @@ Therefore taking as example $\vec{W}_1$, the derivative of the network's output 
 \section{Convolutional Neural Networks}
 \label{sec:convolutional_networks}
 
+Convolutional Neural Networks (CNNs) are a family of artificial neural networks that are particularly well suited for problems involving high-dimensional inputs such as images or videos. This kind of data in fact prohibits the use of the multi-layer perceptrons presented in Sec. \ref{sec:general_architecture}, as it requires to represent images as unstructured vectors, which is a process that for obvious computational reasons is not feasible. Furthermore MLPs present some additional limitations: first and foremost, due to their fully connected structure, they do not involve any sort of parameter sharing across the network. Second, as the output of each unit in a layer is given as input to all the units in the subsequent layer, the interaction among all such neurons is also extremely dense. CNNs address these limitations by exploiting \textcolor{RoyalBlue}{sparse weight sharing} strategies that result into neural networks that are significantly more memory and computationally efficient. 
+
 \subsection{Mathematical Operations}
 \label{sec:operations}
+
+As their name suggests, the key mathematical operation behind CNNs is that of \textcolor{RoyalBlue}{convolution}. A convolution operation is performed over two arguments: an input vector $\vec{x}\in\mathds{R}^{W}$, and a kernel $\vec{u}\in\mathds{R}^{w}$. Its output is a new vector of size $W-w+1$ such that:
+\begin{equation}
+	(\vec{x}\circledast\vec{u}[i]) = \sum_{m=0}^{w-1}x_{m+i}u_m,
+	\label{eq:convolution}
+\end{equation}
+where $\circledast$ technically denotes the cross-correlation operation, namely a convolution operation that does not flip the kernel. The process described in Eq. \ref{eq:convolution} can easily be generalized to multi-dimensional tensors such as images which can in fact be seen as three-dimensional tensors $\vec{x}\in\mathds{R}^{C,w,h}$, of width and height $w$ and $h$ respectively, defined over the RGB color domain ($C=3$). 
+
+
+
+
+
+\subsection{General Structure}
+\label{sec:general_structure}
 
 \subsection{Popular Architectures}
 \label{sec:architectures}
