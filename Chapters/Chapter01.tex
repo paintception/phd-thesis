@@ -73,7 +73,7 @@ While several SL algorithms adopting empirical risk minimization principles exis
 
 \subsection{Multilayer Perceptrons}
 \label{sec:general_architecture}
-The first mathematical model developed with the intention of mimicking the biological processes underlying the human brain was proposed by \citet{}. Inspired by the work of \citet{}, Rosenblatt developed the \textcolor{RoyalBlue}{perceptron}, the simplest form of artificial neural network able of tackling supervised learning binary classification problems. Given an input vector $\vec{x}$ the perceptron produces the following output:
+The first mathematical model developed with the intention of mimicking the biological processes underlying the human brain was proposed by \citet{rosenblatt1958perceptron}. Inspired by the work of \citet{mcculloch1943logical}, Rosenblatt developed the \textcolor{RoyalBlue}{perceptron}, the simplest form of artificial neural network able of tackling supervised learning binary classification problems. Given an input vector $\vec{x}$ the perceptron produces the following output:
 \begin{equation}
 	f(\vec{x}) = 
 		\begin{cases}
@@ -81,15 +81,15 @@ The first mathematical model developed with the intention of mimicking the biolo
 			0 & \text{otherwise}
 		\end{cases}
 \end{equation}
-which is given by summing up each input $x$ with a certain weight $w$ and a final additional bias term $b$. The result of this sum is then passed through the sign non-linear activation function which yields the following output $h$:
+which is given by summing up each input $x$ with a certain weight $w$ and a final additional bias term $b$. The result of this sum is then passed through the sign non-linear activation function which yields output $h$:
 \begin{equation}
 	\text{sign}(x) = 
 		\begin{cases}
-			1  & \text{if} x \geq 0 \\
+			1  & \text{if} \: x \geq 0 \\
 			0 & \text{otherwise}
 		\end{cases}
 \end{equation}
-a process which is visually reported in Fig. \ref{fig:perceptron} and that can be summarized as:
+The way the perceptron works is visually represented in Fig. \ref{fig:perceptron} and can be summarized as follows:
 \begin{equation}
 	f(\vec{x}) = \text{sign}(\sum_i w_i x_i + b).
 	\label{eq:perceptron_equation}
@@ -98,29 +98,38 @@ a process which is visually reported in Fig. \ref{fig:perceptron} and that can b
 \begin{figure}[ht!]
 	\centering
 	\input{Images/Chapter01/perceptron.tex}
-\caption{The perceptron}
+\caption{A visualization of a perceptron.}
 \label{fig:perceptron}
 \end{figure}
-
-Eq. \ref{eq:perceptron_equation} can also be rewritten in terms of tensor operations, which allows us to conveniently express the perceptron classification rule as 
+Interestingly, Eq. \ref{eq:perceptron_equation} can also be rewritten in terms of tensor operations. This allows us to express the perceptron classification rule as 
 \begin{equation}
 	f(\vec{x}) = \text{sign}(\vec{w}^\intercal \vec{x} + b),
 	\label{eq:tensor_perceptron}
 \end{equation}
-and to introduce the concept of \textcolor{RoyalBlue}{computational graph}, a directed graph where each node represents one mathematical operation. The computational graph of Eq. \ref{eq:tensor_perceptron} is represented in Fig. \ref{computational_graph_0}:
+and to conveniently visualize its mathematical operations through a \textcolor{RoyalBlue}{computational graph}, a directed graph where each node represents a certain mathematical operation. The computational graph of Eq. \ref{eq:tensor_perceptron} is represented in Fig. \ref{fig:computational_graph_0} and can be considered as the main building block of artificial neural networks.
 \begin{figure}[ht!]
 	\centering
 	\input{Images/Chapter01/computational_graph_0.tex}
-\caption{Computational graph 0}
+	\caption{The computational graph representing the mathematical operations performed by the perceptron represented in Fig. \ref{fig:perceptron}.}
 \label{fig:computational_graph_0}
 \end{figure}
 
-\begin{figure}[ht!]
-	\centering
-	\input{Images/Chapter01/activation_functions.tex}
-\caption{Activation functions}
-\label{fig:activation_functions}
-\end{figure}
+Eq. \ref{eq:tensor_perceptron} summarizes the computations that are performed by one single input unit with respect to $\vec{x}\in\mathds{R}^{p}$, $\vec{w}\in\mathds{R}^{p}$ and $b\in\mathds{R}$. If such units are stacked in parallel they perform a layer with $q$ outputs defined as:
+\begin{equation}
+	\vec{h} = \sigma(\vec{W}^\intercal\vec{x}+\vec{b}),
+\end{equation}
+where $\vec{h}\in\mathds{R}^{q},\vec{x}\in\mathds{R}^{p},\vec{W}\in\mathds{R}^{p\times q},b\in\mathds{R}^{q}$. One can then compose a series of $L$ layers
+\begin{equation}
+	\begin{split}
+		\vec{h}_0 & = \vec{x} \\ 
+		\vec{h}_1 & = \sigma(\vec{W}^{\intercal}_{1}\vec{h}_0 + \vec{b}_1) \\ 
+	... \\
+		\vec{h}_L & = \sigma(\vec{W}^{\intercal}_{L}\vec{h}_{L-1}+\vec{b}_{L})
+	\end{split}
+\end{equation}
+and define the \textcolor{RoyalBlue}{multilayer perceptron}, also known as feedforward neural network, $f(\vec{x};\theta)$ where $\theta=\{\vec{W}_k,\vec{b}_k,...|k=1,...,L\}$. 
+
+Now that we defined the mathematical computations that are performed by a feedforward neural network we move on to explaining how one can train these kind of models to perform empirical risk minimization.
 
 \subsection{Stochastic Gradient Descent}
 \label{sec:sgd}
@@ -200,8 +209,16 @@ Therefore taking as example $\vec{W}_1$, the derivative of the network's output 
 \label{sec:loss_functions}
 
 
-\subsection{Overfitting and Regularization}
-\label{sec:regularization}
+
+\subsection{Activation Functions}
+\label{sec:activation_functions}
+
+\begin{figure}[ht!]
+	\centering
+	\input{Images/Chapter01/activation_functions.tex}
+\caption{Activation functions}
+\label{fig:activation_functions}
+\end{figure}
 
 
 \section{Convolutional Neural Networks}
