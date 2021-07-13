@@ -71,11 +71,50 @@ While several SL algorithms adopting empirical risk minimization principles exis
 \section{Neural Networks}
 \label{sec:neural_networks}
 
-\subsection{Artificial Neurons}
-
-
-\subsection{Multi-layer Perceptrons}
+\subsection{Multilayer Perceptrons}
 \label{sec:general_architecture}
+The first mathematical model developed with the intention of mimicking the biological processes underlying the human brain was proposed by \citet{}. Inspired by the work of \citet{}, Rosenblatt developed the \textcolor{RoyalBlue}{perceptron}, the simplest form of artificial neural network able of tackling supervised learning binary classification problems. Given an input vector $\vec{x}$ the perceptron produces the following output:
+\begin{equation}
+	f(\vec{x}) = 
+		\begin{cases}
+			1  & \text{if} \sum_i w_i x_i + b \geq 0 \\
+			0 & \text{otherwise}
+		\end{cases}
+\end{equation}
+which is given by summing up each input $x$ with a certain weight $w$ and a final additional bias term $b$. The result of this sum is then passed through the sign non-linear activation function which yields the following output $h$:
+\begin{equation}
+	\text{sign}(x) = 
+		\begin{cases}
+			1  & \text{if} x \geq 0 \\
+			0 & \text{otherwise}
+		\end{cases}
+\end{equation}
+a process which is visually reported in Fig. \ref{fig:perceptron} and that can be summarized as:
+\begin{equation}
+	f(\vec{x}) = \text{sign}(\sum_i w_i x_i + b).
+	\label{eq:perceptron_equation}
+\end{equation}
+
+\begin{figure}[ht!]
+	\centering
+	\input{Images/Chapter01/perceptron.tex}
+\caption{The perceptron}
+\label{fig:perceptron}
+\end{figure}
+
+Eq. \ref{eq:perceptron_equation} can also be rewritten in terms of tensor operations, which allows us to conveniently express the perceptron classification rule as 
+\begin{equation}
+	f(\vec{x}) = \text{sign}(\vec{w}^\intercal \vec{x} + b),
+	\label{eq:tensor_perceptron}
+\end{equation}
+and to introduce the concept of \textcolor{RoyalBlue}{computational graph}, a directed graph where each node represents one mathematical operation. The computational graph of Eq. \ref{eq:tensor_perceptron} is represented in Fig. \ref{computational_graph_0}:
+\begin{figure}[ht!]
+	\centering
+	\input{Images/Chapter01/computational_graph_0.tex}
+\caption{Computational graph 0}
+\label{fig:computational_graph_0}
+\end{figure}
+
 \begin{figure}[ht!]
 	\centering
 	\input{Images/Chapter01/activation_functions.tex}
@@ -92,11 +131,13 @@ Training a neural network consists in finding parameters $\theta$ such that a lo
 	\label{eq:sum_of_losses}
 \end{equation}
 When neural networks are used, $\mathscr{L}$ has to be differentiable as this allows to minimize it through first order optimization algorithms. Among such methods, the arguably most straightforward one is gradient descent, which updates the parameters $\theta$ proportionally to the negative gradient of $\mathscr{L}$. This is done by applying the following update rule:
-\begin{align}
+\begin{equation}
+	\begin{split}
 	\theta_{t+1} & = \theta_t - \gamma_t(\nabla\ell(\theta_t))^{\intercal} \\ 
 	& = \theta_t - \gamma_t \sum_{n=1}^{N}(\nabla \ell_n(\theta_t))^{\intercal},
+	\end{split}
 	\label{eq:gradient_descent}
-\end{align}
+\end{equation}
 where $t$ is a time counter variable, and $\gamma\geq0$ is the learning rate, sometimes also denoted as the step-size parameter. We can easily observe that computing Eq. \ref{eq:gradient_descent} can become computationally very expensive as it requires to evaluate gradients from all individual functions $\ell_n$. This property is in fact what defines gradient descent as a batch optimization method, which makes it unfortunately unsuitable for dealing with large datasets. A possible solution to this computational burden consists in reducing the amount of computation required by the sum in Eq.\ref{eq:gradient_descent} by simply considering a small, random batch of samples of the training set. In the extreme case, one can even just estimate the gradient on one single, randomly chosen, training sample, which is a method called Stochastic Gradient Descent (SGD). While it is true that this approach gives an unbiased estimate of the true gradient, its estimate can also be very noisy, which is the reason behind why it is preferable to evaluate the gradient for a mini-batch of samples instead than on one single, unique sample. A large body of work has investigated the effect that the batch-size has on neural network training \cite{keskar2016large,radiuk2017impact,kandel2020effect}; however, so far no exact rule for determining an optimal batch-size exists. Yet, provided that enough computational resources are available, large mini-batches are usually preferred as they will result in more accurate estimates of the gradient, and therefore reduce the variance in the parameter update $\theta_{t+1}$. 
 
 When the optimization surface is made of valley floors, gradient descent has the limitation of being very slow. To deal with such issue, several works have designed optimization strategies which make gradient based optimization faster and more efficient. The most straightforward improvement to the gradient descent algorithm is the one proposed by \citet{rumelhart1986learning} who suggested to use of an additional term in the update rule presented in Eq.\ref{eq:gradient_descent}, named \textcolor{RoyalBlue}{momentum}. This term, simply keeps track of what happened when the parameters were updated at $t-1$ and determines the next parameters' update as a linear combination between the current and previous gradients. This results in the following update rule:
@@ -105,11 +146,13 @@ When the optimization surface is made of valley floors, gradient descent has the
 	\label{eq: momentum}
 \end{equation}
 where  
-\begin{align}
+\begin{equation}
+	\begin{split}
 	\theta_{t} & = \theta_t - \theta_{t-1} \\ 
 		   & = \alpha\Delta\theta_{t-1}-\gamma_{t-1}(\nabla \ell(\theta_{t-1}))^{\intercal},
-	\label{eq:gradient_descent}
-\end{align}
+	\end{split}
+\label{eq:gradient_descent}
+\end{equation}
 and $\alpha\in[0,1]$, which accelerates the optimization process and allows the algorithm average out noisy estimates of the gradient.
 
 Next to adding a momentum term to improve the performance of gradient descent, another common method that can accelerate its convergence revolves around dynamically adapting the learning rate parameter $\gamma$. Popular neural network optimizers such as \texttt{RMSProp} \cite{tieleman2012lecture}, \texttt{AdaGrad} \cite{duchi2011adaptive}, and the very well-known \texttt{Adam} optimizer \cite{kingma2014adam}, all adapt this method. While discussing these algorithms into detail is out of the scope of this thesis, we refer the reader to the work of \citet{ruder2016overview}, which provides a nice overview of the most common gradient descent optimization algorithms, and to the work of \citet{schmidt2020descending} who empirically evaluate their performance across different networks and machine learning problems. 
@@ -146,8 +189,10 @@ Having such an annotated graph it is now possible to compute all partial derivat
 Therefore taking as example $\vec{W}_1$, the derivative of the network's output $\hat{y}$ with respect to this weight matrix is given by:
 \label{eq:general_chain_rule}
 \begin{equation}
+	\begin{split}
 	\frac{\partial \hat{y}}{\partial \vec{W}_1} & = \frac{\partial \hat{y}}{\partial u_2} \frac{\partial u_2}{\partial h_1} \frac{\partial h_1}{\partial u_1} \frac{\partial u_1}{\partial\vec{W}_1} \\
 	& = \frac{\partial\sigma(u_2)}{\partial u_2} \frac{\partial\vec{W}_2^{\intercal}h_1}{\partial h_1} \frac{\partial \sigma(u_1)}{\partial u_1} \frac{\partial \vec{W}_1^{\intercal}\vec{x}}{\partial{\vec{W}_1}}.
+	\end{split}
 	\label{eq:applied_chain_rule}
 \end{equation}
 
@@ -172,10 +217,26 @@ As their name suggests, the key mathematical operation behind CNNs is that of \t
 	(\vec{x}\circledast\vec{u}[i]) = \sum_{m=0}^{w-1}x_{m+i}u_m,
 	\label{eq:convolution}
 \end{equation}
-where $\circledast$ technically denotes the cross-correlation operation, namely a convolution operation that does not flip the kernel. The process described in Eq. \ref{eq:convolution} can easily be generalized to multi-dimensional tensors such as images which can in fact be seen as three-dimensional tensors $\vec{x}\in\mathds{R}^{C,w,h}$, of width and height $w$ and $h$ respectively, defined over the RGB color domain ($C=3$). 
+where $\circledast$ technically denotes the cross-correlation operation, namely a convolution operation that does not flip the kernel. The process described in Eq. \ref{eq:convolution} can easily be generalized to multi-dimensional tensors such as images which can in fact be seen as three-dimensional tensors $\vec{x}\in\mathds{R}^{C,W,H}$, of width and height $W$ and $H$ respectively, defined over the RGB color domain ($C=3$). Similarly one can also define a three-dimensional kernel $\vec{u}\in\mathds{R}^{C,w,h}$ whose purpose is to slide over the input tensor $\vec{x}$ and which yields a two-dimensional output tensor $\vec{o}$ of size $(H-h+1)\times(W-1+1)$ that is computed as follows:
+\begin{equation}
+	\begin{split}
+		\vec{o}_{i,j} & = \vec{b}_{i,j} + \sum_{c=0}^{C-1}(\vec{x}_c\circledast\vec{u}_c)[j,i] \\ 
+			      & = \vec{b}_{i,j} + \sum_{c=0}^{C-1} \sum_{n=0}^{h-1}\sum_{m=0}^{w-1} \vec{x}_{c,n+j,m+i}\vec{u}_{c,n,m},
+	\end{splot}
+\end{equation}
+where $\vec{b}$ and $\vec{u}$ are learnable parameters. Within the deep learning literature, $\vec{o}$ is also referred to as a \textcolor{RoyalBlue}{feature map} \cite{goodfellow2016deep}.
 
+Note that by adopting a convolution approach, one input unit in the network only affects as many output units as defined by the size of the kernel, which improves the computational efficiency of the network greatly. Furthermore, each member of the kernel is used across the entire image, which means that the parameters that define a convolution operation are shared alongside the different locations that are visited by $\vec{u}$. The way the kernel interacts with its respective tensor is usually defined by two additional components that both play an important role in the design of convolutional networks. The first of these components is \textcolor{RoyalBlue}{padding} which is a technique that adds some extra values around the perimeter of the input tensor $\vec{x}$, with the aim of preserving the information that is depicted around its corners. Second, there is the concept of \textcolor{RoyalBlue}{strides} which defines by how many elements at a time we wish to slide $\vec{u}$ over $\vec{x}$. As the goal of CNNs is that of downsampling the input tensor in a computationally efficient manner, it is usually good practice to have strides larger than one, albeit this comes at the cost of extracting features less thoroughly. 
 
-
+Convolutional networks typically perform several convolutions in parallel, as multiple kernels are used. The output of each convolution is then passed through a non linear activation function such as the ones that we represented in Fig. \ref{fig:activation_functions}. To downsample the resulting feature maps even further, a \textcolor{RoyalBlue}{pooling} function is usually adopted. Its idea is to summarize the output of the convolving process at a certain location of the feature map through a summary statistic. This reduces its size while at the same time preserves the presence of the detected features. There are two common pooling operations one can choose from: max-pooling \cite{zhou1988computation}, which given a three dimensional tensor $\vec{x}\in\mathds{R}^{C\times(rh)\times(sw)}$ produces a tensor $\vec{o}\in\mathds{R}^{C\times r\times s}$ by simply keeping the maximum value of a feature map within a certain rectangular neighborhood such that 
+\begin{equation}
+	\vec{o}_{c,j,i} = \underset{n<h,m<w}{\max} \vec{x}_{c,rj+n,si+m},
+\end{equation}
+and average pooling, which instead computes the mean of a feature map such that 
+\begin{equation}
+	\vec{o}_{c,j,i} = \frac{1}{hw} \sum_{n=0}^{h-1}\sum_{m=0}^{w-1} \vec{x}_{c,rj+n,si+m}.
+\end{equation}
+Besides reducing the size of a feature map, pooling operations have also the important benefit of making the representations learned by the network invariant to small translations. In fact, one could translate the input by a small amount and still obtain the same output after pooling. Note however, that albeit desirable in most cases, there are situations where adopting pooling strategies should be avoided \cite{sabatelli2018learning, bidoiadeep}.  
 
 
 \subsection{General Structure}

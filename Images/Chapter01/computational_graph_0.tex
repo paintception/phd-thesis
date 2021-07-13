@@ -1,0 +1,33 @@
+\tikzset{
+    ->, 
+    level distance = 22em,
+    minimum size=2em,
+    %edge from parent/.style={draw,thick},
+    level 1/.style={sibling distance=6em},
+    level 2/.style={sibling distance=3em},
+    thick/.style = {line width=1.5pt},
+    extra thick/.style = {line width=3.5pt},
+    red node/.style={shape=circle,draw=red,fill=red!40,thick,inner sep=1.2},
+    blue node/.style={shape=circle,draw=blue,fill=blue!40,thick,inner sep=1.2}
+}
+
+\tikzstyle{round}=[thick,draw=black,circle]
+
+ \begin{tikzpicture}[square/.style={regular polygon,regular polygon sides=4}]
+	 \node at (0,0) [circle,draw] (input) {$\vec{x}$};
+         \node at (1,0) [square,draw] (dot1) {$\cdot$};
+	 \node at (1,1) [circle,draw] (W1) {$\vec{w}$};
+	 \node at (2,1) [circle,draw] (bias) {$b$};
+                  
+	 \node at (2,0) [square,draw] (plus) {$+$};	 
+	 \node at (3,0) [square,draw] (sigmoid1) {$\sigma$};
+	 \node at (4,0) [circle,draw] (h1) {$h$};
+         
+	 \draw (W1) -> (dot1);
+	 \draw (bias) -> (plus);
+	 \draw (input) -> (dot1); 
+         \draw (dot1)-> (plus); 
+         \draw (plus)-> (sigmoid1); 
+	 \draw(sigmoid1) -> (h1);
+	 
+\end{tikzpicture}
