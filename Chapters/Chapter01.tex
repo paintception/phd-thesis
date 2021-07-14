@@ -56,7 +56,7 @@ So far we have defined the concepts of expected risk and empirical risk with res
 \begin{equation}
 	\ell(f(\vec{x},y)) = \mathbb{1}(f(\vec{x}\neq y)),
 \end{equation}
-while for regression problems $\ell$ comes either in the form of the squared error loss:
+while for regression problems $\ell$ can either come in the form of the squared error loss:
 \begin{equation}
 	\ell(f(\vec{x},y)=(y-f(\vec{x})))^2
 \end{equation}
@@ -66,7 +66,7 @@ or in the form of the absolute error loss
 \end{equation}
 depending on how much one wants to penalize the errors made by $f$.
 
-While several SL algorithms adopting empirical risk minimization principles exist, throughout this dissertation we will, however, only focus on artificial neural networks, a family of techniques that will be reviewed hereafter.  
+While several SL algorithms adopting empirical risk minimization principles exist, throughout this dissertation we will only focus on artificial neural networks, a family of techniques that will be reviewed hereafter.  
 
 \section{Neural Networks}
 \label{sec:neural_networks}
@@ -110,15 +110,15 @@ and to conveniently visualize its mathematical operations through a \textcolor{R
 \begin{figure}[ht!]
 	\centering
 	\input{Images/Chapter01/computational_graph_0.tex}
-	\caption{The computational graph representing the mathematical operations performed by the perceptron represented in Fig. \ref{fig:perceptron}.}
+	\caption{The computational graph representing the mathematical operations performed by the perceptron represented in Fig. \ref{fig:perceptron} and defined by Eq. \ref{eq:tensor_perceptron}.}
 \label{fig:computational_graph_0}
 \end{figure}
 
-Eq. \ref{eq:tensor_perceptron} summarizes the computations that are performed by one single input unit with respect to $\vec{x}\in\mathds{R}^{p}$, $\vec{w}\in\mathds{R}^{p}$ and $b\in\mathds{R}$. If such units are stacked in parallel they perform a layer with $q$ outputs defined as:
+Eq. \ref{eq:tensor_perceptron} summarizes the computations that are performed by one single input where $\vec{x}\in\mathds{R}^{p}$, $\vec{w}\in\mathds{R}^{p}$ and $b\in\mathds{R}$. However, the computation capabilities of such a single unit are very limited and can rarely be adopted to solve complex tasks. To overcome this, one can stack several units in parallel such that they create a layer with $q$ outputs defined as:
 \begin{equation}
 	\vec{h} = \sigma(\vec{W}^\intercal\vec{x}+\vec{b}),
 \end{equation}
-where $\vec{h}\in\mathds{R}^{q},\vec{x}\in\mathds{R}^{p},\vec{W}\in\mathds{R}^{p\times q},b\in\mathds{R}^{q}$. One can then compose a series of $L$ layers
+where $\vec{h}\in\mathds{R}^{q},\vec{x}\in\mathds{R}^{p},\vec{W}\in\mathds{R}^{p\times q},b\in\mathds{R}^{q}$. To increase the flexibility and capabilities of the model even further, one can then compose a sequence of $L$ layers
 \begin{equation}
 	\begin{split}
 		\vec{h}_0 & = \vec{x} \\ 
@@ -127,7 +127,7 @@ where $\vec{h}\in\mathds{R}^{q},\vec{x}\in\mathds{R}^{p},\vec{W}\in\mathds{R}^{p
 		\vec{h}_L & = \sigma(\vec{W}^{\intercal}_{L}\vec{h}_{L-1}+\vec{b}_{L})
 	\end{split}
 \end{equation}
-and define the \textcolor{RoyalBlue}{multilayer perceptron}, also known as feedforward neural network, $f(\vec{x};\theta)$ where $\theta=\{\vec{W}_k,\vec{b}_k,...|k=1,...,L\}$. 
+and define a \textcolor{RoyalBlue}{multilayer perceptron} (MLP), also known as feedforward neural network. From now on we will refer to an MLP as $f(\vec{x};\theta)$ where $\theta=\{\vec{W}_k,\vec{b}_k,...|k=1,...,L\}$. 
 
 Now that we defined the mathematical computations that are performed by a feedforward neural network we move on to explaining how one can train these kind of models to perform empirical risk minimization.
 
@@ -181,14 +181,14 @@ To this end let us define a simplified version of a two hidden layer perceptron 
 \begin{figure}[ht!]
 	\centering
 	\input{Images/Chapter01/computational_graph_1.tex}
-\caption{Computational graph 1}
+	\caption{The computational graph representing a simplified version of a multi-layer perceptron with one hidden layer. Note that no bias term is added after multiplying $\vec{x}$ and $\vec{h1}$ by $\vec{W_1}$ and $\vec{W}_2$ respectively.}
 \label{fig:computational_graph_1}
 \end{figure}
 During the traversal, also known as the \textcolor{RoyalBlue}{forward pass}, the result of each mathematical operation is stored within its own output variable $u$ (see Fig. \ref{fig:computational_graph_2}) 
 \begin{figure}[ht!]
 	\centering
 	\input{Images/Chapter01/computational_graph_2.tex}
-\caption{Computational graph 2}
+	\caption{The computational graph that results after having performed one forward pass through the network. We can see that the result of each mathematical operation is stored within a new node $\vec{u}$ that will be necessary for computing the partial derivatives required to perform stochastic gradient descent.}
 \label{fig:computational_graph_2}
 \end{figure}
 Having such an annotated graph it is now possible to compute all partial derivatives efficiently by traversing the graph backwards (\textcolor{RoyalBlue}{backward pass}), and by applying the chain rule which in its general form states that:
@@ -207,8 +207,35 @@ Therefore taking as example $\vec{W}_1$, the derivative of the network's output 
 
 \subsection{Loss Functions}
 \label{sec:loss_functions}
+Defining an appropriate loss function is a task that has important practical implications when it comes to the design of the neural architecture. Just like for any other type of machine learning model, the choice of which loss function to minimize depends from the SL task we would like to solve. Fortunately, since neural networks are parametric models, their loss functions are not too different from the ones that are typically used by e.g.,  linear models such as . The most important concept underlying the loss functions used by neural networks is that of \textcolor{RoyalBlue}{maximum likelihood estimation}. As many other parametric models, neural networks implicitly define a distribution $p(Y|\vec{x};\theta)$. This is convenient as it makes it possible to exploit the cross-entropy between the training data and the model's predictions. Therefore, no matter whether we are dealing with a classification problem or a regression one, the loss function that will be adopted by a neural network will always come in the following general form:
+\begin{equation}
+	\mathscr{L}(\theta) = - \mathds{E}_{(\vec{x},y)\sim P(X,Y)} \log p_\text{model} (Y|\vec{x}).
+	\label{eq:maximum_likelihood}
+\end{equation}
 
+Typical loss functions that derive from Eq. \ref{eq:maximum_likelihood} (see Chapter 5 of \cite{goodfellow2016deep} for the exact derivations) are the mean squared error (MSE) loss
+\begin{equation}
+	\mathscr{L}(\theta) = \frac{1}{2}\mathds{E}_{(\vec{x},y\sim P(X,Y))} ||y - f(\vec{x};\theta) ||^{2}
+	\label{eq:mean_squared_error}
+\end{equation}
+which is used for tackling regression problems, and the categorical cross-entropy loss
+\begin{equation}
+	\mathscr{L}(\theta) = - \mathds{E}_{(\vec{x},y\sim P(X,Y))} \sum_{i=1}^{C} y^{i} \log f(\vec{x};\theta)
+	\label{eq:cross_entropy}
+\end{equation}
+which is used for multi-class classification problems, where $C$ is the number of classes we would like to classify. 
 
+Based on whether Eq. \ref{eq:mean_squared_error} or Eq. \ref{eq:cross_entropy} is minimized, the final layer of a neural network comes in different forms. As the goal of a regression problem is to predict a single numerical value, it follows that the final layer simply consists of one individual unit that is necessary for estimating $\mathcal{Y}\in\mathds{R}$. One single output unit is also used for binary classification problems, where it is combined with the sigmoid activation function
+\begin{equation}
+	\sigma(x) = \frac{1}{1+\exp(-1)}
+	\label{eq:sigmoid}
+\end{equation}
+which allows to model a Bernoulli distribution over a binary variable. For classification problems, where $C>2$, and the goal is to represent the distribution over a discrete variable that can have $C$ possible values, the sigmoid function can be generalized to a softmax function by producing a vector for $i=1,...,C$ such that:
+\begin{equation}
+	\text{Softmax}(\vec{z})_i = \frac{\exp(z_i)}{\sum_{j=1}^{C} \exp(z_j)}.
+	\label{eq:softmax}
+\end{equation}
+We can observe that Eq. \ref{eq:softmax} makes the log probabilities, typically estimated by the second-last layer of a network, positive and sum up to one, therefore successfully modeling a multinoulli distribution. While the aforementioned output layers are arguably the most popular it is worth noting that several other types of output layers exist. Since throughout this dissertation none of these additional layers will be used in practice we will not describe them here and refer the reader to Chapter 6 of \cite{goodfellow2016deep} for more information about this topic.
 
 \subsection{Activation Functions}
 \label{sec:activation_functions}
