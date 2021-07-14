@@ -193,13 +193,13 @@ During the traversal, also known as the \textcolor{RoyalBlue}{forward pass}, the
 \end{figure}
 Having such an annotated graph it is now possible to compute all partial derivatives efficiently by traversing the graph backwards (\textcolor{RoyalBlue}{backward pass}), and by applying the chain rule which in its general form states that:
 \begin{equation}
-	\frac{\partial \ell}{\partial \theta_i} = \sum_{k\in\text{parents}(\ell)} \frac{\partial \ell}{\partial u_k} \frac{\partial u_k}{\partial \theta_i}.
+	\frac{\text{d} \ell}{\text{d} \theta_i} = \sum_{k\in\text{parents}(\ell)} \frac{\partial \ell}{\partial u_k} \frac{\partial u_k}{\partial \theta_i}.
 \end{equation}
 Therefore taking as example $\vec{W}_1$, the derivative of the network's output $\hat{y}$ with respect to this weight matrix is given by:
 \label{eq:general_chain_rule}
 \begin{equation}
 	\begin{split}
-	\frac{\partial \hat{y}}{\partial \vec{W}_1} & = \frac{\partial \hat{y}}{\partial u_2} \frac{\partial u_2}{\partial h_1} \frac{\partial h_1}{\partial u_1} \frac{\partial u_1}{\partial\vec{W}_1} \\
+		\frac{\text{d} \hat{y}}{\text{d} \vec{W}_1} & = \frac{\partial \hat{y}}{\partial u_2} \frac{\partial u_2}{\partial h_1} \frac{\partial h_1}{\partial u_1} \frac{\partial u_1}{\partial\vec{W}_1} \\
 	& = \frac{\partial\sigma(u_2)}{\partial u_2} \frac{\partial\vec{W}_2^{\intercal}h_1}{\partial h_1} \frac{\partial \sigma(u_1)}{\partial u_1} \frac{\partial \vec{W}_1^{\intercal}\vec{x}}{\partial{\vec{W}_1}}.
 	\end{split}
 	\label{eq:applied_chain_rule}
@@ -237,8 +237,17 @@ which allows to model a Bernoulli distribution over a binary variable. For class
 \end{equation}
 We can observe that Eq. \ref{eq:softmax} makes the log probabilities, typically estimated by the second-last layer of a network, positive and sum up to one, therefore successfully modeling a multinoulli distribution. While the aforementioned output layers are arguably the most popular it is worth noting that several other types of output layers exist. Since throughout this dissertation none of these additional layers will be used in practice we will not describe them here and refer the reader to Chapter 6 of \cite{goodfellow2016deep} for more information about this topic.
 
-\subsection{Activation Functions}
+\subsection{Vanishing Gradients and Activation Functions}
 \label{sec:activation_functions}
+
+A typical problem of neural networks that come with many hidden layers is given by vanishing gradients. Recall from Sec. \ref{sec:} that in order to perform SGD we first need to collect all the partial derivatives of the network's output with respect to its parameters. As we do this by applying the chain rule this has the drawback of making the gradient decrease exponentially with respect to the depth of the network. As a result deeper layers can become particularly hard to train, since no information necessary for updating the respective weights will be contained within the gradient. The most common cause of this problem is given by the activation function that is used for introducing non-linearity across the network. For example, let us consider the sigmoid function presented in Eq. \ref{eq:sigmoid} and its derivative which comes in the following form:
+\begin{equation}
+	\frac{\text{d}\sigma}{\text{d}x}(x) = \sigma(x)(1-\sigma(x)).
+	\label{eq:derivative_sigmoid}
+\end{equation}
+As we can see from the first image of Fig. \ref{fig:activation_functions}, the maximum value of Eq. \ref{eq:derivative_sigmoid} is 0.25. If we then use this value when adopting the chain rule as done in Eq. \ref{eq:applied_chain_rule}, and assume the network comes with a large number of hidden layers, it is easy to see that the gradient $\frac{\text{d}\hat{y}}{\text{d}\vec{W}_1}$ will shrink to zero as the number of layers increases.
+
+
 
 \begin{figure}[ht!]
 	\centering
@@ -283,11 +292,10 @@ and average pooling, which instead computes the mean of a feature map such that
 Besides reducing the size of a feature map, pooling operations have also the important benefit of making the representations learned by the network invariant to small translations. In fact, one could translate the input by a small amount and still obtain the same output after pooling. Note however, that albeit desirable in most cases, there are situations where adopting pooling strategies should be avoided \cite{sabatelli2018learning, bidoiadeep}.  
 
 
-\subsection{General Structure}
-\label{sec:general_structure}
-
 \subsection{Popular Architectures}
 \label{sec:architectures}
+
+Mention general structure here
 
 
 \section{Conclusion}

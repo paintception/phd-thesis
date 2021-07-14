@@ -1,17 +1,29 @@
-\begin{tikzpicture}[scale = 1]
+\begin{tikzpicture}[scale = 0.65]
+\begin{axis}[
+grid style={dashed,gray},
+grid = both, 
+  legend pos=north west]
+
+\addlegendentry{$\sigma(x) = \frac{1}{1+\exp(-1)}$}
+\addplot [ultra thick, blue] table [y=Sigmoid, x=P]{./Images/Chapter01/vanishing_gradient_example.dat};
+\addlegendentry{$\frac{\text{d}\sigma}{\text{d}x}(x) = \sigma(x)(1-\sigma(x))$}
+\addplot [ultra thick, dashed, blue] table [y=Derivative, x=P]{./Images/Chapter01/vanishing_gradient_example.dat};
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}[scale = 0.65]
 \begin{axis}[
 grid style={dashed,gray},
 grid = both, 
   legend pos=north west]
 
 \addlegendentry{ReLU}
-\addplot [ultra thick, blue] table [y=Relu, x=P]{./Images/Chapter01/activation_functions.dat};
+\addplot [ultra thick, green] table [y=Relu, x=P]{./Images/Chapter01/activation_functions.dat};
 \addlegendentry{Elu}
 \addplot [ultra thick, red] table [y=Elu, x=P]{./Images/Chapter01/activation_functions.dat};
 \addlegendentry{Tanh}
 \addplot [ultra thick, black] table [y=Tanh, x=P]{./Images/Chapter01/activation_functions.dat};
 \addlegendentry{Sigmoid}
-\addplot[ultra thick, green] table [y=Sigmoid, x=P]{./Images/Chapter01/activation_functions.dat};
+\addplot[ultra thick, blue] table [y=Sigmoid, x=P]{./Images/Chapter01/activation_functions.dat};
 \end{axis}
 \end{tikzpicture}
 
