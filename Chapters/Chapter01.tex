@@ -240,21 +240,34 @@ We can observe that Eq. \ref{eq:softmax} makes the log probabilities, typically 
 \subsection{Vanishing Gradients and Activation Functions}
 \label{sec:activation_functions}
 
-A typical problem of neural networks that come with many hidden layers is given by vanishing gradients. Recall from Sec. \ref{sec:} that in order to perform SGD we first need to collect all the partial derivatives of the network's output with respect to its parameters. As we do this by applying the chain rule this has the drawback of making the gradient decrease exponentially with respect to the depth of the network. As a result deeper layers can become particularly hard to train, since no information necessary for updating the respective weights will be contained within the gradient. The most common cause of this problem is given by the activation function that is used for introducing non-linearity across the network. For example, let us consider the sigmoid function presented in Eq. \ref{eq:sigmoid} and its derivative which comes in the following form:
+A typical problem of neural networks that come with many hidden layers is given by vanishing gradients. Recall from Sec. \ref{sec:backprop} that in order to perform SGD we first need to collect all the partial derivatives of the network's output with respect to its parameters. As we do this by applying the chain rule this can have the drawback of making the gradient decrease exponentially with respect to the depth of the network. As a result deeper layers can become particularly hard to train, since no information necessary for updating the respective weights will be contained within the gradient. The most common cause of this problem is given by the activation function that is used for introducing non-linearity across the network. For example, let us consider the sigmoid function presented in Eq. \ref{eq:sigmoid} and its derivative which comes in the following form:
 \begin{equation}
 	\frac{\text{d}\sigma}{\text{d}x}(x) = \sigma(x)(1-\sigma(x)).
 	\label{eq:derivative_sigmoid}
 \end{equation}
-As we can see from the first image of Fig. \ref{fig:activation_functions}, the maximum value of Eq. \ref{eq:derivative_sigmoid} is 0.25. If we then use this value when adopting the chain rule as done in Eq. \ref{eq:applied_chain_rule}, and assume the network comes with a large number of hidden layers, it is easy to see that the gradient $\frac{\text{d}\hat{y}}{\text{d}\vec{W}_1}$ will shrink to zero as the number of layers increases.
-
-
+As we can see from the first image of Fig. \ref{fig:activation_functions}, the maximum value of Eq. \ref{eq:derivative_sigmoid} is 0.25. If we then use this value when adopting the chain rule as done in Eq. \ref{eq:applied_chain_rule}, and assume the network comes with a large number of hidden layers, it is easy to see that the gradient $\frac{\text{d}\hat{y}}{\text{d}\vec{W}_1}$ will shrink to zero as the number of layers increases. The sigmoid function is not the only activation function which suffers from this phenomenon, which is also not restricted to feedforward neural networks. In fact as first presented by \citet{} another non-linear activation function suffering from the vanishing gradient problem is the hyperbolic tangent 
+\begin{equation}
+	\text{tanh}(x) = \frac{1-\exp(-2x)}{1+\exp(-2x)}.
+\end{equation}
+As can be seen in the second plot of Fig. \ref{fig:activation_functions} the tanh is very similar in shape to the sigmoid. This activation function is largely used within Recurrent Neural Networks (RNNs), a particular type of neural network that can be unfolded into very deep MLPs. For many years its vanishing gradient issues have questioned whether RNNs could be trained and used in practice, a problem which has been successfully solved with the introduction of the Long Short Term Memory (LSTM) cells \cite{hochreiter1997long}. 
 
 \begin{figure}[ht!]
 	\centering
 	\input{Images/Chapter01/activation_functions.tex}
-\caption{Activation functions}
+	\caption{In the left plot a visualization of the vanishing gradient problem that can come from using a sigmoid non-linear activation function throughout a network. In the right plot a representation of typical non-linear activation functions within the $[-3,3]$ range that are currently used by popular neural architectures.}
 \label{fig:activation_functions}
 \end{figure}
+
+Another solution to the vanishing gradient problem is to use the Rectified Linear Unit (ReLU) activation function (represented in green in Fig. \ref{fig:activation_functions}), which is arguably the most popular choice when it comes to the design of deep neural networks. This activation function is simply defined as
+\begin{equation}
+	\text{ReLU}(x) = \max(0,x).
+\end{equation}
+Its derivative has the appealing property of staying constant to 1 whenever a unit is activated as defined by: 
+\begin{equation}
+	\frac{\text{d}}{\text{d}x} \text{ReLU}(x) = \begin{cases} 0 & \text{if} x \seq 0 \\ 1 & \text{otherwise} \end{cases}
+\end{equation}
+
+A potential drawback of ReLU is that whenever its input is negative gradient based methods could not be used for learning, as the unit will have a value of 0. To overcome this several activation functions that generalize the ReLU to negative inputs have been proposed within the literature \cite{clevert2015fast, maas2013rectifier, he2015delving}, among which we mention the Elu \cite{clevert2015fast} that is visually represented in red in the last plot of Fig. \ref{fig:activation_functions}. 
 
 
 \section{Convolutional Neural Networks}

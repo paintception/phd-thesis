@@ -4,9 +4,9 @@ grid style={dashed,gray},
 grid = both, 
   legend pos=north west]
 
-\addlegendentry{$\sigma(x) = \frac{1}{1+\exp(-1)}$}
+\addlegendentry{$\sigma(x)$}
 \addplot [ultra thick, blue] table [y=Sigmoid, x=P]{./Images/Chapter01/vanishing_gradient_example.dat};
-\addlegendentry{$\frac{\text{d}\sigma}{\text{d}x}(x) = \sigma(x)(1-\sigma(x))$}
+\addlegendentry{$\frac{\text{d}\sigma}{\text{d}x}(x)$}
 \addplot [ultra thick, dashed, blue] table [y=Derivative, x=P]{./Images/Chapter01/vanishing_gradient_example.dat};
 \end{axis}
 \end{tikzpicture}
