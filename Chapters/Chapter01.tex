@@ -2,7 +2,7 @@
 \label{ch:supervised_learning}
 
 \begin{remark}{Outline}
-structure ...
+	In this first chapter we present Supervised Learning (SL), a branch of machine learning which aims to create statistical models that given a set of previously collected input-output observations, can learn how to predict the value of new unseen output variables. Throughout the chapter, as well as during this dissertation, we will focus on how one can represent such models through artificial neural networks, a family of algorithms that over the last decade has gained tremendous popularity within the artificial intelligence community. We start by providing a general overview of SL in Sec. \ref{sec:introduction01} where we describe the main ideas behind this machine learning paradigm, before characterizing it from a more mathematical perspective in Sec. \ref{sec:learning_from_data}. We then move on towards presenting artificial neural networks in Sec. \ref{sec:neural_networks} where we will describe how this kind of algorithms can be used for solving SL problems, as well as how these models are trained and designed. We then present convolutional neural networks, a particular type of artificial neural network that is particularly well suited for dealing with SL problems with high-dimensional inputs. We will do this in Sec. \ref{sec:convolutional_networks}, before ending this chapter with some concluding remarks in Sec. \ref{sec:conclusion01} where we will describe how the content of this chapter is going to play a role throughout the rest of this dissertation.   
 \end{remark}
 
 \section{Introduction}
@@ -12,7 +12,7 @@ structure ...
 \section{Statistical Learning Theory}
 \label{sec:learning_from_data}
 
-We start by defining a Supervised Learning (SL) problem with a triplet containing the following elements:
+We start by defining a Supervised Learning (SL) problem with a triplet containing the following elements \cite{friedman2001elements, louppe2014understanding}:
 \begin{itemize}
 	\item An input space $\mathcal{X}$,
 	\item An output space $\mathcal{Y}$,
@@ -25,7 +25,7 @@ This expectation is also known as the \textcolor{RoyalBlue}{expected risk}, or g
 	R(f) = \mathds{E}_{(\vec{x},y)\sim P(X,Y)} \big[\ell(y,f(\vec{x}))\big],
 \label{eq:expected_risk}
 \end{equation}
-where $f$ is built from a limited set of observations that define the SL problem we would like to solve. Such observations constitute the \textcolor{RoyalBlue}{learning set} $\mathcal{L}$ which is defined by $N$ pairs of input vectors and output values $(\vec{x}_1, y_1),...,(\vec{x}_N, y_N)$ where $\vec{x}_i \in \mathcal{X}$ and $y_i \in \mathcal{Y}$. 
+where $f$ is built from a limited set of observations that define the SL problem we would like to solve. Such observations constitute the \textcolor{RoyalBlue}{learning set} $\mathcal{L}$ which is defined by $N$ pairs of input vectors and output values $(\vec{x}_1, y_1),...,(\vec{x}_N, y_N)$ where $\vec{x}_i \in \mathcal{X}$ and $y_i \in \mathcal{Y}$ \cite{geurts2002contributions}. 
 
 As $P(X,Y)$ is unknown and $\mathcal{L}$ is finite, one cannot evaluate the quantity defined in Eq. \ref{eq:expected_risk}, however, one can compute an estimate of it instead. To this end it is common to use part of the learning set $\mathcal{L}$ for constructing a \textcolor{RoyalBlue}{training set} $\mathcal{L}_{\text{Train}}$, of size $M$, that can be used for computing the \textcolor{RoyalBlue}{empirical risk}, or training error, as follows:
 \begin{equation}
@@ -171,11 +171,11 @@ Before ending this section it is worth noting that next to SGD-like methods, the
 \subsection{Backpropagation}
 \label{sec:backprop}
 
-From Eq.\ref{eq:gradient_descent} we can note that a crucial role in the optimization process is played by the gradient $\nabla\ell(\theta)$. As we have seen in Sec. \ref{sec:general_architecture} neural networks can be considered as a composition of nested functions $k$ for $k=0,...,K-1$, where each function comes with its own parameters $\theta_k$. Therefore the gradient comes in the form of a vector which contains all the partial derivatives of the loss $\ell$ with respect to the weights $\theta$ that parametrize the neural network:
+From Eq. \ref{eq:gradient_descent} we can note that a crucial role in the optimization process is played by the gradient $\nabla\ell(\theta)$. As we have seen in Sec. \ref{sec:general_architecture} neural networks can be considered as a composition of nested functions $k$ for $k=0,...,K-1$, where each function comes with its own parameters $\theta_k$. Therefore the gradient comes in the form of a vector which contains all the partial derivatives of the loss $\ell$ with respect to the weights $\theta$ that parametrize the neural network:
 \begin{equation}
 	\nabla\ell(\theta) = \Big[\frac{\partial\ell}{\partial\theta_0}(\theta),...,\frac{\partial\ell}{\partial\theta_{K-1}}(\theta)\Big].
 \end{equation}
-As the number of functions increases, so does the complexity of the gradient, therefore an efficient way of calculating it is necessary. The backpropagation algorithm is a special case of a more general technique, called \textcolor{RoyalBlue}{automatic differentiation}, that allows to evaluate the gradient of complicated functions numerically and automatically. This is done by exploiting the chain rule, which can be applied recursively on the computation graph that keeps track of all the arithmetic operations that are performed by the network. 
+As the number of functions increases, so does the complexity of the gradient, therefore an efficient way of calculating it is necessary. The backpropagation algorithm \cite{linnainmaa1970representation,rumelhart1986learning} is a special case of a more general technique, called \textcolor{RoyalBlue}{automatic differentiation} (see \cite{baydin2018automatic} for a general review about the topic), that allows to evaluate the gradient of complicated functions numerically and automatically. This is done by exploiting the chain rule, which can be applied recursively on the computation graph that keeps track of all the arithmetic operations that are performed by the network. 
 
 To this end let us define a simplified version of a two hidden layer perceptron $f$ that is parametrized with weight matrices $\vec{W}_1$ and $\vec{W}_2$. When given input data $\vec{x}$ the network produces a prediction $\hat{y}$ which results from traversing the computational graph represented in Fig. \ref{fig:computational_graph_1}.  
 \begin{figure}[ht!]
@@ -191,7 +191,7 @@ During the traversal, also known as the \textcolor{RoyalBlue}{forward pass}, the
 	\caption{The computational graph that results after having performed one forward pass through the network. We can see that the result of each mathematical operation is stored within a new node $\vec{u}$ that will be necessary for computing the partial derivatives required to perform stochastic gradient descent.}
 \label{fig:computational_graph_2}
 \end{figure}
-Having such an annotated graph it is now possible to compute all partial derivatives efficiently by traversing the graph backwards (\textcolor{RoyalBlue}{backward pass}), and by applying the chain rule which in its general form states that:
+Having such an annotated graph it is now possible to compute all partial derivatives efficiently by traversing the graph backwards (\textcolor{RoyalBlue}{backward pass} \cite{linnainmaa1970representation}), and by applying the chain rule which in its general form states that:
 \begin{equation}
 	\frac{\text{d} \ell}{\text{d} \theta_i} = \sum_{k\in\text{parents}(\ell)} \frac{\partial \ell}{\partial u_k} \frac{\partial u_k}{\partial \theta_i}.
 \end{equation}
@@ -308,7 +308,15 @@ Besides reducing the size of a feature map, pooling operations have also the imp
 \subsection{Popular Architectures}
 \label{sec:architectures}
 
-Mention general structure here
+With all these concepts in place we can now define the general structure of a convolutional neural network. These models follow a general pattern, originally described in \cite{lecun1998gradient}, which is in principle very simple: an input tensor is processed by the aforementioned convolution operation, which is done for many times in parallel, as different kernels are typically used. The resulting feature map is then given as input to one of the non-linear activation functions described in Sec. \ref{sec:activation_functions}, among which the ReLU is by far the most popular choice, as it allows to overcome the vanishing gradient problem. The resulting feature map is then reduced by performing one of the aforementioned pooling operations. This process of convolving + ReLU + pooling is repeated several times, until the feature map is small enough to be reduced to a feature vector. This feature vector is finally processed by either a multilayer perceptron or directly by the last output layer of the network, which as described in Sec. \ref{sec:loss_functions}, changes with respect to the SL we would like to solve. While this general principle has arguably barely changed over the last two decades, it is worth noting that several design choices have been proposed over the years with the aim of creating better performing, and more efficient model. We will review some of the most important ones hereafter.  
+
+\paragraph{Image Classification Networks}
+
+
+
+
+\paragraph{Beyond Image Classification}
+
 
 
 \section{Conclusion}
