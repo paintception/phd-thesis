@@ -13,76 +13,11 @@
 This chapter is based on the following two publications: \citet{sabatelli2018deepqv} and \citet{sabatelli2020deep}
 \end{remark}
 
-\section{Introduction}
+\section{Motivation}
 \label{sec:ijcnn_introduction}
 
 In value-based Reinforcement Learning (RL) the aim is to construct algorithms which learn \textit{value functions} that are either able to estimate how good or bad it is for an agent to be in a particular state, or how good it is for an agent to perform a particular action in a given state. Such functions are respectively denoted as the state-value function $V(s)$, and the state-action value function $Q(s,a)$ \cite{sutton2018reinforcement}. In Deep Reinforcement Learning (DRL) the aim is to approximate these value functions with e.g. deep convolutional neural networks \cite{lecun2015deep}, which can serve as universal function approximators and powerful feature extractors. Classic model-free RL algorithms like Q-Learning \cite{watkins1992q}, Double Q-Learning \cite{hasselt2010double} and SARSA \cite{rummery1994line} have all led to the development of a ``deep" version of themselves in which the original RL update rules are expressed as objective functions that can be minimized by gradient descent \cite{mnih2015human, van2016deep, zhao2016deep}. Despite their successful applications \cite{li2017deep}, the aforementioned algorithms only aim at approximating the $Q$ function, while completely ignoring the $V$ function. This approach, however, is prone to issues that go back to standard RL literature. As shown by \citet{van2016deep} the DQN algorithm \cite{mnih2015human} is known to overestimate the values of the $Q$ function and requires an additional target network to not diverge (which role, as shown by \citet{achiam2019towards}, is not yet fully understood). These overestimations can partially be corrected by the DDQN \cite{van2016deep} algorithm, which, despite yielding stability improvements, does not always prevent its $Q$ networks from diverging \cite{van2018deep} and sometimes even underestimating the $Q$ function. Furthermore, DRL algorithms are also extremely slow to train. In what follows, we introduce a new family of DRL algorithms based on the key idea of simultaneously learning the $V$ function alongside the $Q$ function with two separate neural networks. Our main insight is that by jointly approximating the $V$ function and the $Q$ function, the task of learning one of these value functions can be sped up if the model that is responsible for learning it, can rely on what is being learned by the model responsible for learning the remaining value function. We show that this simple, yet effective idea yields faster, more robust and better model-free Deep Reinforcement Learning.
 
-\section{Preliminaries}
-\label{sec:ijcnn_preliminaries}
-
-We formally define the RL setting as a Markov Decision Process (MDP) where the main components are a finite set of states $\mathcal{S}$ $=\{s^{1}, s^{2},...,s^{n}\}$, a finite set of actions $\mathcal{A}$ and a time-counter variable $t$. In each state $s_{t}\in \mathcal{S}$, the RL agent can perform an action $a_{t} \in$ $\mathcal{A}(s_t)$ and transit to the next state as defined by a transition probability distribution $p(s_{t+1} | s_{t}, a_{t})$.
- When moving from $s_t$ to a successor state $s_{t+1}$ the agent receives a reward signal $r_t$ coming from the reward function $\Re (s_{t}, a_{t}, s_{t+1})$. The actions of the agent are selected based on its policy $\pi:\mathcal{S} \rightarrow \mathcal{A}$ that maps each state to a particular action. For every state $s \in \mathcal{S}$, under policy $\pi$ its \textit{value function} $V^{\pi}$ is defined as:
-\begin{align}
-    V^{\pi}(s)=\mathds{E}\bigg[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k}\bigg| s_t = s, \pi \bigg],
-\end{align}
-which denotes the expected cumulative discounted reward that the agent will get when starting in state $s$ and by following policy $\pi$ thereafter. Similarly, we can also define the \textit{state-action} value function $Q$ for denoting the value of taking action $a$ in state $s$ based on policy $\pi$ as:
-\begin{align}
-    Q^{\pi}(s,a)=\mathds{E}\bigg[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k} \bigg| s_t = s, a_t=a, \pi\bigg].
-\end{align}
-Both functions are computed with respect to the discount factor $\gamma \in [0,1]$ which controls the trade-off between immediate and long term rewards. The goal of an RL agent is to find a policy $\pi^{*}$ that realizes the optimal expected return:
-\begin{align}
- V^{*}(s)=\underset{\pi}{\max}\:V^{\pi}(s), \ \text{for all} \ s\in\mathcal{S}
-\end{align}
-and the optimal $Q$ value function:
-\begin{align}
-Q^{*}(s,a)= \underset{\pi}{\max}\:Q^{\pi}(s,a) \ \text{for all} \ s\in\mathcal{S} \ \text{and} \ a \in\mathcal{A}.
-\end{align}
-It is well-known that optimal value functions satisfy the Bellman optimality equation as given by
-\begin{align}
-    V^{*}(s_t) = \underset{a}{\max}\sum_{s_{t+1}}p(s_{t+1} | s_{t}, a) \bigg[\Re (s_{t}, a, s_{t+1}) + \gamma V^{*}(s_{t+1}) \bigg]
-\end{align}
-for the state-value function, and by
-\begin{multline}
-    Q^{*}(s_t,a_t)=\sum_{s_{t+1}}p(s_{t+1} | s_{t}, a_{t})  \bigg[\Re (s_{t}, a_{t}, s_{t+1}) + \gamma \: \underset{a}{\max} \: Q^{*}(s_{t+1}, a) \bigg],
-\end{multline}
-for the state-action value function. Both functions can either be learned via Monte Carlo methods or by Temporal-Difference (TD) learning \cite{sutton1988learning}, with the latter approach being so far the most popular choice among model-free RL algorithms \cite{watkins1992q, rummery1994line, hasselt2010double}. %We now present into detail some of the methods that have obtained state of the art performance on one of the most popular DRL benchmarks: the Atari Arcade Learning (ALE) \cite{bellemare2013arcade} environment.
-
-\section{Related Work}
-\label{sec:ijcnn_related_work}
-
-While RL algorithms have been successfully combined with shallow neural networks for over two decades \cite{tesauro1994td}, the use of these algorithms with deeper architectures is more recent. 
-The contribution which has established the potential of DRL can certainly be identified with the Deep-Q-Network (DQN), the first algorithm which uses a convolutional neural network for successfully learning an approximation of the $Q$ function from high dimensional inputs \cite{mnih2015human}. This approximation is learned by reshaping the popular Q-Learning algorithm introduced by \citet{watkins1992q} to an objective function which can be minimized by gradient descent. The original Q-Learning algorithm learns the state-action value function as follows
-\begin{multline}
-Q(s_{t}, a_{t}) := Q(s_{t}, a_{t}) + \alpha \big[r_{t} + \gamma \max_{a \in \cal A} Q(s_{t+1}, a) - Q(s_{t}, a_{t})\big]
-\label{eq:q_learning}
-\end{multline}
-where $\alpha$ corresponds to the learning rate. The DQN algorithm adapts this update rule to a differentiable loss function which can be used for training a neural network that is parametrized by $\theta$. This objective function comes in the following form: 
-\begin{multline}
-L(\theta) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}) - Q(s_{t}, a_{t}; \theta)\big)^{2}\bigg].
-\label{eq:dqn}
-\end{multline}
-Within this loss there are two components which ensure stable training. The first one is the Experience-Replay memory buffer ($D$), first introduced by \citet{lin1992self}, a buffer coming in the form of a queue which stores RL experiences $\langle s_{t},a_{t},r_{t},s_{t+1}\rangle$. When it comes to the popular Atari Arcade Learning (ALE) \cite{bellemare2013arcade} benchmark, the DQN algorithm uniformly samples mini-batches of 32 experiences for minimizing Eq. \ref{eq:dqn}, a procedure which starts as soon as at least 50.000 experiences are stored within the queue.
-Furthermore, there is a second component which ensures stable training denoted as the target-network. DQN learns an approximation of the $Q$ function via TD-Learning, meaning that the approximated Q-function is regressed towards TD-targets which are computed by the approximated $Q$ function itself. The TD-target, defined as $y^{DQN}_{t}$, is expressed as follows:
-\begin{equation}
-    y^{DQN}_{t} = r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}), 
-\label{eq:dqn_td}
-\end{equation}{}
-and is computed by the target network $\theta^{-}$ instead from the online Q-network $\theta$. 
-The online network, and its target counterpart, have the exact same structure, with the main difference being that the parameters of the latter do not get optimized each time a mini-batch of experiences is sampled from the memory buffer. On the contrary its weights are temporally frozen and are only periodically updated with the $\theta$ weights (as defined by an appropriate hyperparameter). Given a training iteration $i$, differentiating the objective function of Eq. \ref{eq:dqn} with respect to $\theta$ gives the following gradient: 
-\begin{multline}
-\nabla_{\theta_{i}}y^{DQN}_{t}(\theta_{i}) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \\ \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}_{i-1})  - Q(s_{t}, a_{t}; \theta_{i})\big)\nabla_{\theta_{i}} Q(s_{t}, a_{t}; \theta_{i})\bigg].
-\label{eq:dqn_gradient}
-\end{multline}
-Despite yielding super-human performance on most games coming from the ALE, DQN has shown to be suffering from the same issues which characterize the Q-Learning algorithm \cite{hasselt2010double}. Among these issues we mention the overestimation bias of the Q-function which has been well characterized in the tabular setting by \citet{hasselt2010double} and later in the deep learning context by \citet{van2016deep}.
-In short, DQN is prone to learn overestimated Q-values because the same values are used both for selecting an action ($\underset{a\in \mathcal{A}}{\max}$) and for evaluating it ($Q(s_{t+1},a;\theta^{-})$). As originally presented by \citet{van2016deep} this becomes clearer when re-writing Eq. \ref{eq:dqn_td} as:
-\begin{equation}
-    y^{DQN}_{t} = r_{t} + \gamma \: Q(s_{t+1}, \underset{a\in \mathcal{A}}{\argmax}\: Q(s_{t+1}, a; \theta); \theta^{-}). 
-\end{equation}{}
-
-As a result, DQN tends to approximate the expected maximum value of a state, instead of its maximum expected value. To solve this problem the DDQN algorithm untangles the selection of an action from its evaluation by taking advantage of the target network $\theta^{-}$. DDQN's target is the same as DQN's with the main difference being that the selection of an action, given by the online Q-network $\theta$, and the evaluation of the resulting policy, given by $\theta^{-}$, can get unbiased by symmetrically updating the two sets of weights ($\theta$ and $\theta^{-}$). This can be achieved by regularly switching their roles during training.
-
-Several extensions of DQN and DDQN have been proposed over the years, to make these algorithms learn faster and more data-efficient. We refer the reader to \cite{li2017deep} for a more in-depth review of these contributions. Within this chapter, we are only interested in synchronous DRL algorithms which learn an approximation of a value function. This is achieved by following the same experimental setups that have been used for DQN and DDQN, and that will be reviewed in Sec. \ref{sec:global_evaluation} of this chapter. Therefore, in what follows we will aim at comparing our novel DRL algorithms to DQN and DDQN only, while leaving their potential integration within more sophisticated DRL techniques as future work.
 
 \section{A Novel Family of Deep Reinforcement Learning Algorithms}
 \label{sec:dqv_family}
