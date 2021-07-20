@@ -223,7 +223,7 @@ Typical loss functions that derive from Eq. \ref{eq:maximum_likelihood} (see Cha
 \end{equation}
 which is used for tackling regression problems, and the categorical cross-entropy loss
 \begin{equation}
-	\mathscr{L}(\theta) = - \mathds{E}_{(\vec{x},y\sim P(X,Y))} \sum_{i=1}^{C} y^{i} \log f(\vec{x};\theta)
+	\mathscr{L}(\theta) = - \mathds{E}_{(\vec{x},y\sim P(X,Y))} \sum_{i=1}^{C} y^{i} \log p_\text{model} f(\vec{x};\theta)
 	\label{eq:cross_entropy}
 \end{equation}
 which is used for multi-class classification problems, where $C$ is the number of classes we would like to classify. 
