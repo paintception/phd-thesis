@@ -29,6 +29,7 @@ The \textcolor{RoyalBlue}{``Lottery-Ticket-Hypothesis"} (LTH) \cite{frankle2018l
 \end{figure*}
 
 \input{./Results/Chapter06/tex/lth_example.tex}
+%\input{./Results/Chapter06/tex/lth_example_shaded.tex}
 
 Since the introduction of the idea of the LTH, several research works have focused on understanding what makes some weights so special to be the winners of the initialization lottery. Among the different tested approaches, which will be reviewed in Sec. \ref{sec:related_work}, one research direction, in particular, has looked into how well winning ticket initializations can be transferred among different training settings (datasets and optimizers), an approach that aims at characterizing the winners of the LTH by studying to what extent their \textcolor{RoyalBlue}{inductive biases} are generic \cite{morcos2019one}. The most interesting findings of this study are that winning tickets generalize across datasets, within the natural image domain at least, and that tickets obtained from larger datasets typically generalize better. This opens the door to the transfer of winning tickets between datasets, which makes the high computational cost required to identify them much more acceptable in practice, as this cost has to be paid only once and can be shared across datasets.
 

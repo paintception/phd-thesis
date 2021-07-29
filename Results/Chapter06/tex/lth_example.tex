@@ -32,7 +32,12 @@
 	\addlegendentry{Random Ticket $f(x;m\odot\theta_r)$}
 
 \addplot [thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/mnist_example.txt};
+
 \addplot [thick, blue, mark=x] table [x expr=\coordindex, y=ticket]{./Results/Chapter06/logs/mnist_example.txt};
+%\addplot [name path=upper,draw=none] table[x expr=\coordindex,y expr=\thisrow{ticket}+\thisrow{std-ticket}] {./Results/Chapter06/logs/mnist_example.txt};
+%\addplot [name path=lower,draw=none] table[x expr=\coordindex,y expr=\thisrow{ticket}-\thisrow{std-ticket}] {./Results/Chapter06/logs/mnist_example.txt};
+%\addplot [fill=blue!10] fill between[of=upper and lower];
+
 \addplot [thick, orange, mark=x] table [x expr=\coordindex, y=random_weights]{./Results/Chapter06/logs/mnist_example.txt};
 
 \end{axis}
