@@ -11,6 +11,9 @@
 
 
 \section{A large-scale Empirical Study}
+\label{sec:empirical_study}
+
+# Mention similarities and dissimilarities among games
 
 \subsection{Experimental Setup}
 
@@ -19,21 +22,39 @@
 
 \section{Control Experiments}
 
-\subsection{Catcher Environments}
+The results presented in the previous section seem to be questioning the level of transferability of convolutional neural networks that get trained for solving RL tasks. In fact, the training strategy of fine-tuning a pre-trained model on $\mathcal{M}_T$ does not result in the same type of performance gains that we have extensively observed throughout the first part of this dissertation, when pre-trained models were transferred and fine-tuned in a supervised learning context. To better characterize the transfer learning properties of pre-trained convolutional neural networks for DRL, we have designed a set of simple control experiments that allow us to examine their transfer learning behavior in training conditions that are as similar as possible to the ones that have characterized the experimental setup adopted in Sec. \ref{sec:empirical_study}. The main difference, however, is that the RL tasks that will be considered from now on, are much simpler than the ones defined within the ALE environment, and therefore do not require extraordinarily long training times for learning an optimal policy.   
+
+\subsection{The Catch Environments}
+
+To this end we have implemented four different versions of the \texttt{Catch} game, a simple RL task that was first presented by \citet{mnih2014recurrent}, and that has been widely used within the literature for investigating the performance of DRL algorithms in a fast, and computationally less expensive manner than the one usually required by the \tattt{Atari} games \cite{vanjos2018deep, aittahar2020empirical}. In the game of \texttt{Catch}, an agent controls a paddle at the bottom of the environment, represented by a $21 \times 21$ grid, and has to catch a ball falling from top to bottom which can potentially bounce off walls. At each time-step, the agent can choose between three different actions: move the paddle one pixel to the right, move it to the left, or do not perform any of the aforementioned actions, therefore keeping its paddle in the same position in the grid. A RL episode ends either when the agent manages to catch the ball, in which case it receives a reward of $1$, or when it misses the ball, which naturally results in a reward of $0$. Following the design choices presented in \cite{vanjos2017deep}, we model the ball to have vertical speed of $v_y=-1 \: cell/s$ and horizontal speed of $v_x \in \{-2,-1,0,1,2\}$. From now on we will refer to this version of the game as \texttt{Catch-v0}, as it is the most basic and simplest form of the game that will be used throughout our experiments (see first image of Fig. \ref{fig:catch_versions} for an impression of the game). Next to \texttt{Catch-v0} we have implemented three, slightly different and arguably more complex versions of the game as well. The first of such versions is \texttt{Catch-v1}, visually represented in the second image of Fig. \ref{fig:catch_versions}, where the complexity of the game is increased by reducing the size of the paddle that is controlled by the agent. While for \texttt{Catch-v0} its size is of five pixels, in \texttt{Catch-v1} it is of two pixels, therefore requiring the agent to be more precise if it wants to successfully catch the falling ball. The second alternative version of \texttt{Catch} is \texttt{Catch-v2}. In this case, the dynamics of the game are identical to the ones that define \texttt{Catch-v0}, however, as can be seen by the third image of Fig. \ref{fig:catch_versions} the way the $21 \times 21$ grid is represented changes. While in \texttt{Catch-v0} as well as in \texttt{Catch-v1} the state is represented by a binary grid where all pixels, but the ones representing the paddle and the ball have a value of $0$, in \texttt{Catch-v3} the cells around the paddle and the ball can have a random value between $0$ and $255$. This design choice makes it much harder for a convolutional network to correctly locate and identify the position of the paddle and of the falling ball, and makes \texttt{Catch-v2} the arguably most complex version among the different \texttt{Catch} versions of the game. Lastly we have implemented \texttt{Catch-v3}, a version of \texttt{Catch} which is identical to the one that is modeled by \texttt{Catch-v0} with the main difference that the representation of the state is now mirrored (see last image of Fig. \ref{fig:catch_versions}), therefore requiring the agent to look at different parts of the grid if it wants to locate the paddle, and understand that the ball is unnaturally moving from the bottom to the top.  
+
+
 \begin{figure}%
     \centering
-    \subfloat[\centering label 1]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v0} }}%
+    \subfloat[\centering \texttt{Catch-v0}]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v0} }}%
     \qquad
-    \subfloat[\centering label 2]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v2} }}%
+    \subfloat[\centering \texttt{Catch-v1}]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v2} }}%
      \qquad
-    \subfloat[\centering label 3]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v3} }}%
+     \subfloat[\centering \texttt{Catch-v2}]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v3} }}%
      \qquad
-    \subfloat[\centering label 4]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v1} }}% 
+     \subfloat[\centering \texttt{Catch-v3}]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v1} }}% 
     \caption{2 Figures side by side}%
-    \label{fig:example}%
+    \label{fig:catch_versions}%
 \end{figure}
 
 
-\subsection{From one Catcher to Another}
+\subsection{From one Catch to Another}
+
+# Replicate the study obtained when fine-tuning on Atari. Hypothesis that PT should be observed as 
+# similar games are considered. Only once PT is observed when harder -> simpler, yet unstable performance.
 
 \subsection{Self-Transfer}
+
+# What happens if we perform self-transfer?
+# When fine-tuned networks do not even self-transfer
+
+\section{Deep-Q Networks Are Poor Feature Extractors}
+
+# Explain the experiment designed with Pierre
+# Results performance goes down and back up
+# Conclusion has to be discussed with Pierre
