@@ -7,6 +7,8 @@
 \end{remark}
 
 
+
+
 \section{Motivation}
 
 
@@ -19,6 +21,18 @@
 
 \subsection{Results}
 
+When analyzing the performance of fine-tuned models, more exciting results have been obtained. Specifically, we have noticed that this approach can result in one out of three possible TL types. We classify them as follows:
+
+\begin{itemize}
+	\item\textcolor{RoyalBlue}{Negative-TL}: this is a training scenario in which it is counterproductive to start solving the problem modeled by $\mathcal{M}_t$ with a network that is pre-trained on $\mathcal{M}_s$. The most beneficial strategy instead is to train a randomly initialized network from scratch. We can visually observe how this type of TL presents itself in the first plot of Fig. \ref{fig:types_of_tl}, where we report the TL performance of a model which is pre-trained on \texttt{BankHeist} and is fine-tuned on \texttt{FishingDerby}.
+   We can observe that over $\approx 3000$ training episodes, the cumulative reward obtained by the \texttt{BankHeist} model is significantly lower than the one obtained by a randomly initialized model.        
+    
+    \item\textcolor{RoyalBlue}{Absent-TL}: this training scenario does not present significant benefits, nor particular drawbacks when a pre-trained network is trained on $\mathcal{M}_t$ instead of a randomly initialized one. We report an example of this TL scenario in the central plot of Fig. \ref{fig:types_of_tl} where a \texttt{BankHeist} model gets fine-tuned on the \texttt{Boxing} game. We can easily observe that there are no significant differences between the performance of the two networks. While the final network's performance is not as bad as the one obtained when the previous TL scenario occurs, Absent-TL is still not desirable since there are no practical benefits that can motivate the effort required for pre-training a Deep Q-Network on a source-task.
+    
+    \item\textcolor{RoyalBlue}{Positive-TL}: this corresponds to the most desirable outcome that can be achieved when a pre-trained network gets fine-tuned on the target-task. As reviewed in Chapter \ref{ch:transfer_learning} TL has three main objectives: `Learning speed Improvements", `Asymptotic Improvements" and `Jumpstart Improvements". We show how the first two of these improvements can appear in DRL in the last plot of Fig. \ref{fig:types_of_tl}, where a model pre-trained on \texttt{BankHeist} can significantly outperform a model that is trained from scratch on the \texttt{Enduro} environment. We can observe a \textit{Learning speed Improvement} since the \texttt{BankHeist} model starts improving its policy already after $\approx 50$ epochs, while at the same time, there also is \textit{Asymptotic Improvement} since the cumulative reward that is obtained by the networks is significantly higher than the one that is obtained by an agent trained from scratch. 
+\end{itemize}
+
+
 
 \section{Control Experiments}
 
@@ -27,6 +41,7 @@ The results presented in the previous section seem to be questioning the level o
 \subsection{The Catch Environments}
 
 To this end we have implemented four different versions of the \texttt{Catch} game, a simple RL task that was first presented by \citet{mnih2014recurrent}, and that has been widely used within the literature for investigating the performance of DRL algorithms in a fast, and computationally less expensive manner than the one usually required by the \tattt{Atari} games \cite{vanjos2018deep, aittahar2020empirical}. In the game of \texttt{Catch}, an agent controls a paddle at the bottom of the environment, represented by a $21 \times 21$ grid, and has to catch a ball falling from top to bottom which can potentially bounce off walls. At each time-step, the agent can choose between three different actions: move the paddle one pixel to the right, move it to the left, or do not perform any of the aforementioned actions, therefore keeping its paddle in the same position in the grid. A RL episode ends either when the agent manages to catch the ball, in which case it receives a reward of $1$, or when it misses the ball, which naturally results in a reward of $0$. Following the design choices presented in \cite{vanjos2017deep}, we model the ball to have vertical speed of $v_y=-1 \: cell/s$ and horizontal speed of $v_x \in \{-2,-1,0,1,2\}$. From now on we will refer to this version of the game as \texttt{Catch-v0}, as it is the most basic and simplest form of the game that will be used throughout our experiments (see first image of Fig. \ref{fig:catch_versions} for an impression of the game). Next to \texttt{Catch-v0} we have implemented three, slightly different and arguably more complex versions of the game as well. The first of such versions is \texttt{Catch-v1}, visually represented in the second image of Fig. \ref{fig:catch_versions}, where the complexity of the game is increased by reducing the size of the paddle that is controlled by the agent. While for \texttt{Catch-v0} its size is of five pixels, in \texttt{Catch-v1} it is of two pixels, therefore requiring the agent to be more precise if it wants to successfully catch the falling ball. The second alternative version of \texttt{Catch} is \texttt{Catch-v2}. In this case, the dynamics of the game are identical to the ones that define \texttt{Catch-v0}, however, as can be seen by the third image of Fig. \ref{fig:catch_versions} the way the $21 \times 21$ grid is represented changes. While in \texttt{Catch-v0} as well as in \texttt{Catch-v1} the state is represented by a binary grid where all pixels, but the ones representing the paddle and the ball have a value of $0$, in \texttt{Catch-v3} the cells around the paddle and the ball can have a random value between $0$ and $255$. This design choice makes it much harder for a convolutional network to correctly locate and identify the position of the paddle and of the falling ball, and makes \texttt{Catch-v2} the arguably most complex version among the different \texttt{Catch} versions of the game. Lastly we have implemented \texttt{Catch-v3}, a version of \texttt{Catch} which is identical to the one that is modeled by \texttt{Catch-v0} with the main difference that the representation of the state is now mirrored (see last image of Fig. \ref{fig:catch_versions}), therefore requiring the agent to look at different parts of the grid if it wants to locate the paddle, and understand that the ball is unnaturally moving from the bottom to the top.  
+
 
 
 \begin{figure}%
@@ -38,7 +53,7 @@ To this end we have implemented four different versions of the \texttt{Catch} ga
      \subfloat[\centering \texttt{Catch-v2}]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v3} }}%
      \qquad
      \subfloat[\centering \texttt{Catch-v3}]{{\includegraphics[width=3cm]{./Images/Chapter08/catch_v1} }}% 
-    \caption{2 Figures side by side}%
+    \caption{2 Figures side by side}
     \label{fig:catch_versions}%
 \end{figure}
 
@@ -48,18 +63,24 @@ Given the overall simplicity of the different \texttt{Catch} environments, we no
 \paragraph{DQN Performance}
 As we can see from the results reported in Fig. \ref{}, the DQN agent described above is able to successfully learn a near optimal policy for all \texttt{Catch} versions. When it comes to \texttt{Catch-v0}, \texttt{Catch-v2} and \texttt{Catch-v3} we can observe that by the end of training the agent is able to catch $\approx 100\%$ of the falling balls, whereas its performance is slightly worse ($\approx 90\%$) when it comes to \texttt{Catch-v1} \footnote{Please note that the performance on \texttt{Catch-v1} can be improved by increasing the complexity of the DQN agent by adding one more convolutional layer. However, as the goal is to transfer the same type of model across \texttt{Catch} games we did not modify the architecture of the DQN agent, at the cost of having a slightly worse performing model.}. We can also observe that among the different \texttt{Catch} versions, \texttt{Catch-v0} and \texttt{Catch-v3} appear to be the easiest ones, as the agent requires significantly less training iterations to converge when compared to \texttt{Catch-v1} and \texttt{Catch-v2}. Furthermore, in line with the explanation presented beforehand, our results also confirm the hypothesis that \texttt{Catch-v2} is the overall most complicated \texttt{Catch} version, as learning requires significantly more, and potentially unstable, training iterations.
 
+\input{./Results/Chapter08/tex/catch_baselines.tex}
+
 \subsection{From one Catch to Another}
 
-# Replicate the study obtained when fine-tuning on Atari. Hypothesis that PT should be observed as 
-# similar games are considered. Only once PT is observed when harder -> simpler, yet unstable performance.
+ Replicate the study obtained when fine-tuning on Atari. Hypothesis that PT should be observed as 
+
+\input{./Results/Chapter08/tex/catch_tl_experiments.tex}
+
 
 \subsection{Self-Transfer}
 
-# What happens if we perform self-transfer?
-# When fine-tuned networks do not even self-transfer
+ What happens if we perform self-transfer?
+ When fine-tuned networks do not even self-transfer
 
 \section{Deep-Q Networks Are Poor Feature Extractors}
 
-# Explain the experiment designed with Pierre
-# Results performance goes down and back up
-# Conclusion has to be discussed with Pierre
+ Explain the experiment designed with Pierre
+ Results performance goes down and back up
+ Conclusion has to be discussed with Pierre
+
+

@@ -1,0 +1,171 @@
+\begin{figure}[ht]
+  \centering
+ \resizebox{\columnwidth}{!}{%
+\begin{tikzpicture}
+\begin{axis}
+[	
+	name=ax1,	
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	title = \texttt{Catch-v0},
+	legend pos=south east,	
+]
+
+
+\addlegendentry{\texttt{Catch-v0}}
+\addplot[blue, ultra thick] table[x=epochs,y=target_catch] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{target_catch}+\thisrow{std_target_catch}] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{target_catch}-\thisrow{std_target_catch}] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v1}}
+\addplot[ultra thick, red] table[x=epochs,y=Catch_v2] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v2}+\thisrow{Catch_v2_std}] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v2}-\thisrow{Catch_v2_std}] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v2}}
+\addplot[ultra thick, green] table[x=epochs,y=Catch_v3] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v3}+\thisrow{Catch_v3_std}] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v3}-\thisrow{Catch_v3_std}] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [fill=green!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v3}}
+\addplot[ultra thick, yellow] table[x=epochs,y=Catch_v4] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v4}+\thisrow{Catch_v4_std}] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v4}-\thisrow{Catch_v4_std}] {./Results/Chapter08/logs/catch_v0.dat};
+\addplot [fill=yellow!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\begin{axis}
+[	
+	at={(ax1.south east)},
+	xshift=2cm,
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	title = \texttt{Catch-v1},
+	legend pos=south east,
+]
+
+\addlegendentry{\texttt{Catch-v0}}
+
+\addplot[blue, ultra thick] table[x=epochs,y=target_catch] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{target_catch}+\thisrow{std_target_catch}] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{target_catch}-\thisrow{std_target_catch}] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v2}}
+\addplot[ultra thick, red] table[x=epochs,y=Catch_v0] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v0}+\thisrow{Catch_v0_std}] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v0}-\thisrow{Catch_v0_std}] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v1}}
+\addplot[ultra thick, green] table[x=epochs,y=Catch_v2] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v2}+\thisrow{Catch_v2_std}] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v2}-\thisrow{Catch_v2_std}] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [fill=green!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v3}}
+\addplot[ultra thick, yellow] table[x=epochs,y=Catch_v3] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v3}+\thisrow{Catch_v3_std}] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v3}-\thisrow{Catch_v3_std}] {./Results/Chapter08/logs/catch_v1.dat};
+\addplot [fill=yellow!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\end{tikzpicture}%
+}
+
+ \resizebox{\columnwidth}{!}{%
+\begin{tikzpicture}
+\begin{axis}
+[	
+	name=ax1,	
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	legend pos=south east,	
+	title = \texttt{Catch-v2}
+]
+
+
+\addlegendentry{\texttt{Catch-v0}}
+\addplot[blue, ultra thick] table[x=epochs,y=target_catch] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{target_catch}+\thisrow{std_target_catch}] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{target_catch}-\thisrow{std_target_catch}] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v1}}
+\addplot[ultra thick, red] table[x=epochs,y=Catch_v0] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v0}+\thisrow{Catch_v0_std}] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v0}-\thisrow{Catch_v0_std}] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v2}}
+\addplot[ultra thick, green] table[x=epochs,y=Catch_v3] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v3}+\thisrow{Catch_v3_std}] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v3}-\thisrow{Catch_v3_std}] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [fill=green!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v3}}
+\addplot[ultra thick, yellow] table[x=epochs,y=Catch_v4] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v4}+\thisrow{Catch_v4_std}] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v4}-\thisrow{Catch_v4_std}] {./Results/Chapter08/logs/catch_v2.dat};
+\addplot [fill=yellow!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\begin{axis}
+[	
+	at={(ax1.south east)},
+	xshift=2cm,
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	legend pos=south east,
+	title= \texttt{Catch-v3}
+]
+
+\addlegendentry{\texttt{Catch-v0}}
+
+\addplot[blue, ultra thick] table[x=epochs,y=target_catch] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{target_catch}+\thisrow{std_target_catch}] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{target_catch}-\thisrow{std_target_catch}] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v2}}
+\addplot[ultra thick, red] table[x=epochs,y=Catch_v0] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v0}+\thisrow{Catch_v0_std}] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v0}-\thisrow{Catch_v0_std}] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v1}}
+\addplot[ultra thick, green] table[x=epochs,y=Catch_v2] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v2}+\thisrow{Catch_v2_std}] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v2}-\thisrow{Catch_v2_std}] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [fill=green!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v3}}
+\addplot[ultra thick, yellow] table[x=epochs,y=Catch_v4] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{Catch_v4}+\thisrow{Catch_v4_std}] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{Catch_v4}-\thisrow{Catch_v4_std}] {./Results/Chapter08/logs/catch_v3.dat};
+\addplot [fill=yellow!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\end{tikzpicture}%
+}
+\caption{hello}
+\end{figure}
