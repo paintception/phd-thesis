@@ -1,0 +1,148 @@
+\begin{figure}[ht]
+  \centering
+ \resizebox{\columnwidth}{!}{%
+\begin{tikzpicture}
+\begin{axis}
+[	
+	name=ax1,	
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	ylabel = $\%$ of caught balls,
+	title = \texttt{Catch-v0},
+	legend pos=south east,	
+]
+
+\addlegendentry{\texttt{Catch-v0}}
+\addplot[blue, ultra thick] table[x=epochs,y=baseline] {./Results/Chapter08/logs/self_transfer_catch_v0.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{baseline}+\thisrow{std_baseline}] {./Results/Chapter08/logs/self_transfer_catch_v0.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{baseline}-\thisrow{std_baseline}] {./Results/Chapter08/logs/self_transfer_catch_v0.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Only Head}}
+\addplot[ultra thick, red] table[x=epochs,y=only_head] {./Results/Chapter08/logs/self_transfer_catch_v0.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{only_head}+\thisrow{std_only_head}] {./Results/Chapter08/logs/self_transfer_catch_v0.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{only_head}-\thisrow{std_only_head}] {./Results/Chapter08/logs/self_transfer_catch_v0.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Full Fine-Tuning}}
+\addplot[ultra thick, green] table[x=epochs,y=self_transfer_full_fine_tuning] {./Results/Chapter08/logs/self_transfer_catch_v0.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}+\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/self_transfer_catch_v0.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}-\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/self_transfer_catch_v0.dat};
+\addplot [fill=green!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\begin{axis}
+[	
+	at={(ax1.south east)},
+	xshift=2cm,	
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	ylabel = $\%$ of caught balls,
+	title = \texttt{Catch-v0},
+	legend pos=south east,	
+]
+
+\addlegendentry{\texttt{Catch-v0}}
+\addplot[blue, ultra thick] table[x=epochs,y=baseline] {./Results/Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{baseline}+\thisrow{std_baseline}] {./Results/Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{baseline}-\thisrow{std_baseline}] {./Results/Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Only Head}}
+\addplot[ultra thick, red] table[x=epochs,y=only_head] {./Results/Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{only_head}+\thisrow{std_only_head}] {./Results/Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{only_head}-\thisrow{std_only_head}] {./Results/Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Full Fine-Tuning}}
+\addplot[ultra thick, green] table[x=epochs,y=self_transfer_full_fine_tuning] {./Results/Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}+\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}-\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [fill=green!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\end{tikzpicture}%
+}
+
+ \resizebox{\columnwidth}{!}{%
+\begin{tikzpicture}
+\begin{axis}
+[	
+	name=ax1,	
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	ylabel = $\%$ of caught balls,
+	title = \texttt{Catch-v0},
+	legend pos=south east,	
+]
+
+\addlegendentry{\texttt{Catch-v0}}
+\addplot[blue, ultra thick] table[x=epochs,y=baseline] {./Results/Chapter08/logs/self_transfer_catch_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{baseline}+\thisrow{std_baseline}] {./Results/Chapter08/logs/self_transfer_catch_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{baseline}-\thisrow{std_baseline}] {./Results/Chapter08/logs/self_transfer_catch_v2.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Only Head}}
+\addplot[ultra thick, red] table[x=epochs,y=only_head] {./Results/Chapter08/logs/self_transfer_catch_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{only_head}+\thisrow{std_only_head}] {./Results/Chapter08/logs/self_transfer_catch_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{only_head}-\thisrow{std_only_head}] {./Results/Chapter08/logs/self_transfer_catch_v2.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Full Fine-Tuning}}
+\addplot[ultra thick, green] table[x=epochs,y=self_transfer_full_fine_tuning] {./Results/Chapter08/logs/self_transfer_catch_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}+\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/self_transfer_catch_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}-\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/self_transfer_catch_v2.dat};
+\addplot [fill=green!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\begin{axis}
+[	
+	at={(ax1.south east)},
+	xshift=2cm,	
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	ylabel = $\%$ of caught balls,
+	title = \texttt{Catch-v0},
+	legend pos=south east,	
+]
+
+\addlegendentry{\texttt{Catch-v0}}
+\addplot[blue, ultra thick] table[x=epochs,y=baseline] {./Results/Chapter08/logs/self_transfer_catch_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{baseline}+\thisrow{std_baseline}] {./Results/Chapter08/logs/self_transfer_catch_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{baseline}-\thisrow{std_baseline}] {./Results/Chapter08/logs/self_transfer_catch_v3.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Only Head}}
+\addplot[ultra thick, red] table[x=epochs,y=only_head] {./Results/Chapter08/logs/self_transfer_catch_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{only_head}+\thisrow{std_only_head}] {./Results/Chapter08/logs/self_transfer_catch_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{only_head}-\thisrow{std_only_head}] {./Results/Chapter08/logs/self_transfer_catch_v3.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Full Fine-Tuning}}
+\addplot[ultra thick, green] table[x=epochs,y=self_transfer_full_fine_tuning] {./Results/Chapter08/logs/self_transfer_catch_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}+\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/self_transfer_catch_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}-\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/self_transfer_catch_v3.dat};
+\addplot [fill=green!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\end{tikzpicture}%
+}
+\caption{hello}
+\label{fig:catch_self_transfer}
+\end{figure}
