@@ -21,7 +21,17 @@
 
 \subsection{Results}
 
-When analyzing the performance of fine-tuned models, more exciting results have been obtained. Specifically, we have noticed that this approach can result in one out of three possible TL types. We classify them as follows:
+Following \citet{} we assess the transfer learning performance of each $\mathcal{M}_S/\mathcal{M}_T$ pair by computing the area ratio metric $r$ for each learning curve as follows:
+\begin{equation}
+	r = \frac{\text{area of $\mathcal{M}_S$ $-$ area of $\mathcal{M}_T$}}{\text{area of $\mathcal{M}_T$}},
+\label{eq:area_ratio_metric}
+\end{equation}
+where the area under the curve is approximated via trapezoidal numerical integration
+\begin{equation}
+	\int^{b}_{a}f(x)\:dx \approx(b-a) \cdot \frac{1}{2}(f(a)+f(b))
+\end{equation}
+and $a$ and $b$ correspond to the first and last training epochs respectively (see Fig. \ref{} for a visualization of $r$). Our results are presented in Tables \ref{} and \ref{}, where we report for all different $\mathcal{M}_S/\mathcal{M}_T$ pairs the performance obtained after fini-tuning a DQV pre-trained agent, and a DDQN pre-trained agent respectively.  
+
 
 \begin{itemize}
 	\item\textcolor{RoyalBlue}{Negative-TL}: this is a training scenario in which it is counterproductive to start solving the problem modeled by $\mathcal{M}_t$ with a network that is pre-trained on $\mathcal{M}_s$. The most beneficial strategy instead is to train a randomly initialized network from scratch. We can visually observe how this type of TL presents itself in the first plot of Fig. \ref{fig:types_of_tl}, where we report the TL performance of a model which is pre-trained on \texttt{BankHeist} and is fine-tuned on \texttt{FishingDerby}.
@@ -98,19 +108,27 @@ Surprisingly we found that fine-tuning a pre-trained DQN agent never resulted in
 
 \input{./Results/Chapter08/tex/catch_tl_experiments.tex}
 
+\begin{table}
+	\input{./Tables/Chapter08/catch_tl_results.tex}
+\end{table}
+
 
 \subsection{Self-Transfer}
 
-The surprisingly poor transfer learning performance observed in the previous experiment made us question the level of transferability of Deep-Q Networks even more. To further characterize their TL properties we decided to investigate whether pre-trained DRL agents are at least able to transfer to themselves. To this end we studied what happens when a DQN agent gets transferred to a version of \texttt{Catch} that matches with the version of the game that was also used during the pre-training stage. This experiment is in large part identical to the one presented in Sec. \ref{sec:from_one_catch_to_another}, with the only difference being that now $\mathcal{M}_S = \mathcal{M}_T$. Moreover, differently from the previous study, we now also investigate what happens if instead of fine-tuning the network completely we just use the pre-trained DQN agent as a simple feature extractor, therefore only training its last layer responsible for estimating the different state-action values. Our results are presented in Fig. \ref{fig:catch_self_transfer}, where for each \texttt{Catch} version the full lines represent the performance of a network that is trained from scratch, whereas the dashed and dotted lines report the performance that is obtained when the network is either used as simple feature extractor or entirely fine-tuned respectively. We can see that if a pre-trained Deep-Q Network is used as a simple feature extractor, then the agent is able to converge to the optimal policy almost immediately. In fact as can consistently be observed in all plots of Fig. \ref{fig:catch_self_transfer} and from the results presented in Table \ref{}, training only the last layer of a pre-trained network does yield positive transfer for all different \texttt{Catch} versions. However, when a fine-tuning training strategy is adopted much more surprising results have been obtained. First, and perhaps more importantly, we can see that despite all models showing some learning speed improvements at early training iterations, their final performance is never on par with the one that is obtained when the same kind of model is either used as a feature extractor or trained from scratch (the dotted lines are consistently below the dashed and full lines). While when it comes to \texttt{Catch-v0} the policy learned by a fine-tuned model still allows the agent to successfully catch $\approx 95\%$ of the falling balls, the same cannot be said when the models are tested on \texttt{Catch-v1, Catch-v2} and \texttt{Catch-v3}, where the difference in terms of performance between a model trained from scratch and a fine-tuned one is much more significant. Second, as highlighted by the large variance across different training runs, fine-tuning on \texttt{Catch-v1} and \texttt{Catch-v3} resulted in highly unstable learning as well.    
+The surprisingly poor transfer learning performance observed in the previous experiment made us question the level of transferability of Deep-Q Networks even more. To further characterize their TL properties we decided to investigate whether pre-trained DRL agents are at least able to transfer to themselves. To this end we studied what happens when a DQN agent gets transferred to a version of \texttt{Catch} that matches with the version of the game that was also used during the pre-training stage. This experiment is in large part identical to the one presented in Sec. \ref{sec:from_one_catch_to_another}, with the only difference being that now $\mathcal{M}_S = \mathcal{M}_T$. Moreover, differently from the previous study, we now also investigate what happens if instead of fine-tuning the network completely we just use the pre-trained DQN agent as a simple feature extractor, therefore only training its last layer responsible for estimating the different state-action values. Our results are presented in Fig. \ref{fig:catch_self_transfer}, where for each \texttt{Catch} version the full lines represent the performance of a network that is trained from scratch, whereas the dashed and dotted lines respectively report the performance that is obtained when the network is either used as simple feature extractor or entirely fine-tuned. We can see that if a pre-trained Deep-Q Network is used as a simple feature extractor, then the agent is able to converge to the optimal policy almost immediately. In fact as can consistently be observed in all plots of Fig. \ref{fig:catch_self_transfer} and from the results presented in Table \ref{}, training only the last layer of a pre-trained network yields positive transfer for all different \texttt{Catch} versions. However, when a fine-tuning training strategy is adopted much more surprising results have been obtained. First, and more importantly, we can see that despite all models showing some learning speed improvements at early training iterations, their final performance is never on par with the one that is obtained when the same kind of model is either used as a feature extractor or trained from scratch (the dotted lines are consistently below the dashed and full lines). While when it comes to \texttt{Catch-v0} the policy learned by a fine-tuned model still allows the agent to successfully catch $\approx 95\%$ of the falling balls, the same cannot be said when the models are tested on \texttt{Catch-v1, Catch-v2} and \texttt{Catch-v3}, where the difference in terms of performance between a model trained from scratch and a fine-tuned one is much more significant. Second, as highlighted by the large variance across different training runs, fine-tuning on \texttt{Catch-v1} and \texttt{Catch-v3} resulted in highly unstable learning as well.    
 
 
 \input{./Results/Chapter08/tex/catch_self_tl_experiments.tex}
+
+\begin{table}
+	\input{./Tables/Chapter08/catch_self_tl_results.tex}
+\end{table}
 
 
 \section{Deep-Q Networks Are Poor Feature Extractors}
 
 \begin{figure}[ht]
-\centering
+	\centering
 \begin{minipage}[b]{0.32\linewidth}
 \centering
 \includegraphics[width=\textwidth]{./Images/Chapter08/pre_trained_network.pdf}
