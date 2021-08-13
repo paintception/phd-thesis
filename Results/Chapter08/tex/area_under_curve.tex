@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\begin{axis}
+[	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	ylabel = Reward,
+]
+
+\addlegendentry{DQV-Learning}
+
+\addplot[blue, ultra thick] table[x=episodes,y=DQV] {./Results/Chapter07/logs/pong_results.txt};
+
+\end{axis}
+\end{tikzpicture}
+

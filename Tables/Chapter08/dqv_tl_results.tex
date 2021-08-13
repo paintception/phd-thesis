@@ -1,0 +1,28 @@
+\newcommand*{\MinNumber}{-1}%
+\newcommand*{\MaxNumber}{1}%
+
+\newcommand{\ApplyGradient}[1]{%
+  \pgfmathsetmacro{\PercentColor}{100.0*(#1-\MaxNumber)/(\MinNumber-\MaxNumber)}%
+  %\textcolor{black!\PercentColor}{#1}
+  \edef\x{\noexpand\cellcolor{red!\PercentColor}}\x\textcolor{black}{#1}%
+}
+\newcolumntype{R}{>{\collectcell\ApplyGradient}{c}<{\endcollectcell}}
+
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{c|R|R|R|R|R|R|R|R|R|R}
+\hline 
+{} & BankHeist & Boxing & CrazyClimber & Enduro & FishingDerby & Frostbite & JamesBond & MsPacman &   Pong & Zaxxon \\
+\hline \hline 
+BankHeist    &     -      & -0.019 &           -1 & -0.317 &          0.5 &     0.729 &     0.973 &   -0.089 & -1.238 & -0.998 \\
+Boxing       &    -0.494 &    -    &       -0.278 & -0.852 &        0.552 &     -0.01 &     0.247 &   -0.184 & -0.841 & -0.999 \\
+CrazyClimber &    -0.569 & -0.261 &           -   & -0.593 &         0.19 &     0.277 &     0.621 &   -0.111 & -1.206 & -0.178 \\
+Enduro       &    -0.571 & -0.018 &        -0.25 &     -   &        0.726 &    -0.017 &     -0.41 &    -0.08 & -0.466 & -0.164 \\
+FishingDerby &        -1 & -0.893 &       -0.093 &  -0.45 &            -  &     0.068 &     0.197 &   -0.136 & -3.083 & -0.999 \\
+Frostbite    &    -0.933 &  0.024 &           -1 & -0.348 &        0.222 &        -   &     0.569 &    0.009 & -0.663 & -0.076 \\
+JamesBond    &    -0.123 & -0.106 &       -0.131 & -0.033 &        0.519 &     0.262 &         -  &    0.218 & -1.329 &     -1 \\
+MsPacman     &    -0.985 & -0.219 &       -0.012 & -0.494 &          0.6 &     0.346 &     0.398 &        -  & -1.646 & -0.997 \\
+Pong         &        -1 & -0.083 &       -0.428 & -0.476 &        0.725 &    -0.024 &     0.896 &    0.123 &    -    & -0.729 \\
+Zaxxon       &     -0.76 & -0.028 &        0.037 & -0.116 &        0.385 &      0.16 &    -0.253 &     0.06 & -1.602 &   -     \\
+\end{tabular}%
+}
+
