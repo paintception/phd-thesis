@@ -1,6 +1,15 @@
-\begin{tabular}{c|c|c|c|c}
-\centering
-           &  \texttt{Catch-v0} & \texttt{Catch-v1} & \texttt{Catch-v2} & \texttt{Catch-v3} \\ \hline \hline
+\newcommand*{\MinNumber}{-0.3}%
+\newcommand*{\MaxNumber}{0.5}%
+
+\newcommand{\ApplyGradient}[1]{%
+  \pgfmathsetmacro{\PercentColor}{100.0*(#1-\MaxNumber)/(\MinNumber-\MaxNumber)}%
+  %\textcolor{black!\PercentColor}{#1}
+  \edef\x{\noexpand\cellcolor{red!\PercentColor}}\x\textcolor{black}{#1}%
+}
+\newcolumntype{R}{>{\collectcell\ApplyGradient}{c}<{\endcollectcell}}
+\begin{tabular}{c|R|R|R|R}
+\hline 
+           &  Catch-v0 & Catch-v1 & Catch-v2 & Catch-v3 \\ \hline \hline
 Only-Head   & 0.05     & 0.141    & 0.674    & 0.059    \\
 Fine-Tuning & 0.017    & -0.218   & 0.393    & -0.236   \\   
-\end{tabular}
+\end{tabular}	

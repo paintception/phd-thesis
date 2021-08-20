@@ -1,0 +1,80 @@
+\begin{figure}[ht!]
+  \centering
+ \resizebox{\columnwidth}{!}{%
+\begin{tikzpicture}
+\begin{axis}
+[	
+	name=ax1,	
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	ylabel = $\%$ of caught balls,
+	title = \texttt{Catch-v2},
+	legend pos=south east,	
+]
+
+\addlegendentry{\texttt{Catch-v0}}
+\addplot[blue, ultra thick] table[x=epochs,y=baseline] {./Results/Chapter08/logs/hybrid_self_tl_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{baseline}+\thisrow{std_baseline}] {./Results/Chapter08/logs/hybrid_self_tl_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{baseline}-\thisrow{std_baseline}] {./Results/Chapter08/logs/hybrid_self_tl_v2.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+
+\addlegendentry{\texttt{Full Fine-Tuning}}
+\addplot[dashed, ultra thick,blue] table[x=epochs,y=self_transfer_full_fine_tuning] {./Results/Chapter08/logs/hybrid_self_tl_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}+\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/hybrid_self_tl_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}-\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/hybrid_self_tl_v2.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+
+\addlegendentry{\texttt{Hybrid Fine-Tuning}}
+\addplot[dashed, ultra thick,black] table[x=epochs,y=hybrid_self_transfer] {./Results/Chapter08/logs/hybrid_self_tl_v2.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{hybrid_self_transfer}+\thisrow{std_hybrid_self_transfer}] {./Results/Chapter08/logs/hybrid_self_tl_v2.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{hybrid_self_transfer}-\thisrow{std_hybrid_self_transfer}] {./Results/Chapter08/logs/hybrid_self_tl_v2.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\begin{axis}
+[	
+	at={(ax1.south east)},
+	xshift=2cm,	
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	ylabel = $\%$ of caught balls,
+	title = \texttt{Catch-v3},
+	legend pos=south east,	
+]
+
+\addlegendentry{\texttt{Catch-v0}}
+\addplot[red, ultra thick] table[x=epochs,y=baseline] {./Results/Chapter08/logs/hybrid_self_tl_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{baseline}+\thisrow{std_baseline}] {./Results/Chapter08/logs/hybrid_self_tl_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{baseline}-\thisrow{std_baseline}] {./Results/Chapter08/logs/hybrid_self_tl_v3.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+
+\addlegendentry{\texttt{Full Fine-Tuning}}
+\addplot[dashed, ultra thick,red] table[x=epochs,y=self_transfer_full_fine_tuning] {./Results/Chapter08/logs/hybrid_self_tl_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}+\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/hybrid_self_tl_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}-\thisrow{std_self_transfer_full_fine_tuning}] {./Results/Chapter08/logs/hybrid_self_tl_v3.dat};
+\addplot [fill=red!10] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Hybrid Fine-Tuning}}
+\addplot[dashed, ultra thick,black] table[x=epochs,y=hybrid_self_transfer] {./Results/Chapter08/logs/hybrid_self_tl_v3.dat};
+\addplot [name path=upper,draw=none] table[x=epochs,y expr=\thisrow{hybrid_self_transfer}+\thisrow{std_hybrid_self_transfer}] {./Results/Chapter08/logs/hybrid_self_tl_v3.dat};
+\addplot [name path=lower,draw=none] table[x=epochs,y expr=\thisrow{hybrid_self_transfer}-\thisrow{std_hybrid_self_transfer}] {./Results/Chapter08/logs/hybrid_self_tl_v3.dat};
+\addplot [fill=blue!10] fill between[of=upper and lower];
+
+\end{axis}
+
+
+\end{tikzpicture}%
+}
+
+\caption{The results of our self-transfer experiments. In clockwise order the performance obtained on \texttt{Catchv-0}, \texttt{Catch-v1}, \texttt{Catch-v2} and \texttt{Catch-v3} after either training only the last linear layer of a pre-trained Deep-Q Network (dotted lines), or after wholly fine-tuning the model (dashed lines). We can see that the former transfer learning strategy yields significantly better results and that a fine-tuning approach results in networks that in three cases out of four are not even able to transfer to themselves.}
+\label{fig:hybrid_self_transfer}
+\end{figure}

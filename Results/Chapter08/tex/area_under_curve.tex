@@ -9,7 +9,7 @@
 
 \addlegendentry{DQV-Learning}
 
-\addplot[blue] table[x=episodes,y=DQV] {./Results/Chapter07/logs/pong_results.txt};
+\addplot+[name path=dqv, blue] table[x=episodes,y=DQV] {./Results/Chapter07/logs/pong_results.txt};
 
 \end{axis}
 \end{tikzpicture}
