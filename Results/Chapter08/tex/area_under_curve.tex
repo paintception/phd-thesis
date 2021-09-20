@@ -1,4 +1,4 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.5]
 \begin{axis}
 [	grid style={dashed,gray},
 	grid = both, 
@@ -9,7 +9,7 @@
 
 \addlegendentry{DQV-Learning}
 
-\addplot+[name path=dqv, blue] table[x=episodes,y=DQV] {./Results/Chapter07/logs/pong_results.txt};
+\addplot+[name path=dqv, blue] table[x=episodes,y=DQV] {./Results/logs/pong_results.txt};
 
 \end{axis}
 \end{tikzpicture}
