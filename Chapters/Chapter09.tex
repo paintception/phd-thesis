@@ -1,62 +1,65 @@
 %Chapter 7
 
-\chapter{Future Perspectives \& Concluding Remarks} % Chapter title
+\chapter{Concluding Remarks} % Chapter title
 \label{ch:upside_down_rl} % For referencing the chapter elsewhere, use \autoref{ch:introduction} 
 
 \begin{remark}{Outline}
-
-	
-
-
+This is the final chapter of this dissertation which is divided in two parts: we start by answering the research questions that were presented at the beginning of this work in Chapter \ref{ch:introduction} in Sec. \ref{sec:answers}. Each question is answered with respect to the research that has been presented throughout the earlier chapters of this work and is followed by a brief critical conclusion. We then move to the second part of this chapter presented in Sec. \ref{sec:critical_discussion}, where we will critically analyze how over the last decade, the fields of supervised learning and reinforcement learning have been affected by the rise of deep neural networks and describe what the future of both research fields could look like in the coming years. 
 \end{remark}
 
 
-
 \section{Answers to the Original Research Questions}
+\label{sec:answers}
 
 We now answer the research questions that we have originally introduced in Chapter \ref{ch:introduction} and that have served as inspiration for all the work presented throughout this thesis.
 
 \begin{enumerate}
 	\item \textit{"Can convolutional neural networks be transferred and trained across different source and target domains? if so which target domains could be of interest for investigating their transfer learning properties?"}
 	
-	The research presented in Chapters \ref{ch:}, \ref{ch:} and \ref{ch:} shows that when it comes to supervised learning problems, convolutional neural networks exhibit strong transfer learning properties. In Chapter \ref{ch:} we have in fact seen that five popular neural architectures, originally designed for tackling computer vision problems on datasets containing natural images, can be transferred for targetting classification problems that come from the field of digital heritage. Furthermore, we have also empirically shown that all such pre-trained architectures, are able to learn features on datasets of natural images that generalize to the non natural image domain. Similar conclusions can also be drawn from the results presented in Chapter \ref{ch:}, where we have shown that the good transfer learning properties of convolutional neural networks go beyond the computer vision task of classification, and also hold for object detection problems. Similarly to the research presented in Chapter \ref{ch:} we have again considered the field of digital heritage as target domain, as it offers numerous potentially interesting practical applications such as e.g., the one described by the MINERVA dataset. In Chapter \ref{ch:} we have then seen that an equally important target domain for exploiting the transfer learning properties of pre-trained image classifiers is that of digital pathoology, as it is a field characterized by a lack of appropriate training data, a hurdle that can strongly limit the training process of a convolutional neural network.
+	The research presented in Chapters \ref{ch:tl_natural_to_non_natural}, \ref{ch:minerva} and \ref{ch:tl_lth} shows that when it comes to supervised learning problems, convolutional neural networks exhibit strong transfer learning properties. In Chapter \ref{ch:tl_natural_to_non_natural} we have in fact seen that five popular neural architectures, originally designed for tackling computer vision problems on datasets containing natural images, can be transferred for targetting classification problems that come from the field of digital heritage. Furthermore, we have also empirically shown that all such pre-trained architectures, are able to learn features on datasets of natural images that generalize to the non natural image domain. Similar conclusions can also be drawn from the results presented in Chapter \ref{ch:minerva}, where we have shown that the good transfer learning properties of convolutional neural networks go beyond the computer vision task of classification, and also hold for object detection problems. Similarly to the research presented in Chapter \ref{ch:tl_natural_to_non_natural} we have again considered the field of digital heritage as target domain, as it offers numerous potentially interesting practical applications such as e.g., the one described by the MINERVA dataset. In Chapter \ref{ch:tl_lth} we have then seen that an equally important target domain for exploiting the transfer learning properties of pre-trained image classifiers is that of digital pathoology, as it is a field that is potentially characterized by a lack of appropriate training data, a hurdle that can strongly limit the training process of a convolutional neural network.
 
-	While all the research presented in the second part of this thesis provides strong evidence in favour of transferring, and potentially fine-tuning, pre-trained convolutional neural networks, the same cannot be said for the results obtained in Chapter \ref{ch:}, where we have instead seen that the transfer learning potential of such models can be much more limiting when it comes to the reinforcement learning domain. 
+	While all the research presented in the second part of this thesis provides strong evidence in favour of transferring, and potentially fine-tuning, pre-trained convolutional neural networks, the same can however not be said for the results obtained in Chapter \ref{ch:dqn_transfer}, where we have instead seen that the transfer learning potential of such models can be much more limiting when it comes to the reinforcement learning domain. 
 
 	
 	\item \textit{"What Transfer Learning training strategy should be adopted to maximize the performance of pre-trained networks?"}
 
-	As presented in Chapter \ref{ch:}, there are two main approaches for performing transfer learning in the context of convolutional neural networks: an off-the-shelf feature extraction approach, and a fully fine-tuning approach. The research presented in Chapter \ref{ch:} clearly show that when it comes to image classification problems, the latter training strategy significantly results in better final performance. 
+	As presented in Chapter \ref{ch:transfer_learning}, there are two main approaches for performing transfer learning in the context of convolutional neural networks: an off-the-shelf feature extraction approach, and a fully fine-tuning approach. The research presented in Chapter \ref{ch:tl_natural_to_non_natural} clearly shows that when it comes to image classification problems, the latter training strategy results in significantly better final performance, as it allows networks to better adapt to the target domain, and therefore learn new feature representations that are relevant for the target task. The results of this study served as inspiration for the research presented in Chapter \ref{ch:minerva} where a fine-tuning training strategy was preferred over an off-the-shelf approach when tackling object detection problems and, in the end, resulted in models that were able to successfully detect musical instruments in paintings. Surprisingly, however, in Chapter \ref{ch:dqn_transfer} we have then seen that a fine-tuning transfer learning approach can be detrimental in the context of model-free deep reinforcement learning, as deep reinforcement learning agents transfer very poorly across tasks and even to themselfes. In the case of the latter, however, this only happens if a fine-tuning training strategy is adopted and not if the networks are used as simple feature extractors.   
+
+Despite the negative performance presented in Chapter \ref{ch:dqn_transfer} we overall still believe that if enough computational resources are available, pre-trained convolutional neural networks should always be fine-tuned, especially when it comes to supervised learning problems.
 
 	\item \textit{"Can Transfer Learning be a valuable tool for better understanding convolutional neural networks?"}
 	
-	Throughout this thesis we have argued that convolutional neural networks should be studied from a transfer learning perspective, not only because this would allow practictioners to know whether such algorithms could be deployed to real world applications, but also because by understanding their transfer learning performance, novel insights about their inner properties can be discovered. The research presented in Chapters \ref{ch:} and \ref{ch:} is a clear example that shows that a better understanding of convolutional neural networks can be obtained thanks to transfer learning. In Chapter \ref{ch:} we have used transfer learning as a tool for better understanding the phenomenon of the Lottery Ticket Hypothesis (LTH). This allowed us to show that pruned convolutional neural networks winners of the LTH contain inductive biases that are generic at least to some extent, and therefore gain a deeper understanding of this deep learning phenomenon. In Chapter \ref{ch:} we have instead discovered that convolutional neural networks transfer very poorly when they get trained for solving reinforcement learning tasks in a model-free deep reinforcement learning setting. With the intent of understanding why their transfer learning potential was not on par with the one that was extensively observed in Chapters \ref{ch:} and \ref{ch:}, we have gained novel insights around their training process, which in turn allowed us to show that models commonly denoted as Deep-Q Networks go through two very distinct training phases. 
+	Throughout this thesis we have argued that convolutional neural networks should be studied from a transfer learning perspective, not only because this would allow practictioners to know whether such algorithms could be deployed to real world applications, but also because their transfer learning properties could deliver novel insights into their inner properties. The research presented in Chapters \ref{ch:tl_lth} and \ref{ch:dqn_transfer} is a clear example that shows that a better understanding of convolutional neural networks can be obtained thanks to transfer learning. In Chapter \ref{ch:tl_lth} we have used transfer learning as a tool for better understanding the phenomenon of the Lottery Ticket Hypothesis (LTH). This allowed us to show that pruned convolutional neural networks winners of the LTH contain inductive biases that are generic at least to some extent, and therefore gain a deeper understanding of this deep learning phenomenon. In Chapter \ref{ch:dqn_transfer} we have instead discovered that convolutional neural networks transfer very poorly when they get trained for solving reinforcement learning tasks in a model-free deep reinforcement learning setting. With the intent of understanding why their transfer learning potential was not on par with the one that was extensively observed in Chapters \ref{ch:tl_natural_to_non_natural} and \ref{ch:minerva}, we have gained novel insights that allowed us to show that models commonly denoted as Deep-Q Networks go through two very distinct training phases. 
 
-We therefore believe that transfer learning is an extremely valuable tool for better understanding neural networks, as it allows to study their training process from a perspective which is unique and that results in potential insights that could not be observed when simply observing the training performance of models that are just trained from scratch.  
+We therefore believe that transfer learning is an extremely valuable tool for better understanding neural networks, as it allows to study their training process from a perspective which is unique and that goes beyond that of models that get trained from scratch.  
 
 	
-	\item \textit{"Do different machine learning tasks result in convolutional neural networks with different transfer learning properties?"}
+	\item \textit{"Do different machine learning paradigms result in convolutional neural networks with different transfer learning properties?"}
+
+	Based on the significant gap in terms of performance between the results obtained in the second part of this dissertation, and the results obtained in the third part of this thesis, we strongly believe that the answer to this research question is \textit{yes}. Specifically, we have seen that as long as convolutional neural networks are trained for solving supervised learning tasks, then they will very likely exhibit strong transfer learning properties (see Chapters \ref{ch:tl_natural_to_non_natural} and \ref{ch:minerva}). However, if such models will be used for tackling deep reinforcement learning problems in a model-free reinforcemnt learning context, then their transfer learning potential will be much more limited. The reason of this is that when it comes to supervised learnig, convolutional neural networks will only have to serve as feature extractors, whereas the same cannot be said for model-free deep reinforcement learning, where such models have also to serve as optimal value function approximators. 
+
+The transfer learning potential of convolutional networks is therefore highly dependant from the machine learning problem at hand, although we also believe that the poor transfer learning properties observed in Chapter \ref{ch:dqn_transfer} are inherent to model-free deep reinforcement learning algorithms only.
+
 
 \end{enumerate}
 
 
+\section{Critical Discussion}
+\label{sec:critical_discussion}
+
+\subsection{Deep Supervised Learning}
 
 
 
+\subsection{Deep Reinforcement Learning}
+\paragraph{Tedious Hyperparameters}
 
-\section{On the Future of Convolutional Neural Networks}
+Unfortunately, the intuition of even the most expert practitioner is not enough for identifying which learning parameters work best. As an example, let us consider the previously described Rainbow agent \cite{hessel2018rainbow}. The learning rate that yields successful training is set to $0.0000625$, clearly this is a value that could only be identified after performing an exhaustive grid search over a large set of potential learning rates. If on top of this, we also consider that training a DRL agent is a process that can last from taking days to even weeks \cite{kaiser2019model}, it is clear that  It is, therefore, desirable to develop algorithms that do not require extraordinary computational costs for training.
 
+\paragraph{The Deadly Triad}
+However, if an agent can bypass the need to rely on either one of these elements, then instability can already be prevented. Several work has addressed the `Deadly Triad" of DRL \cite{van2018deep_triad,hernandez2019understanding,fedus2020revisiting} to answer the natural question \textit{`which element can be given up when developing DRL algorithms?"} So far, the community seems to agree that giving up on function approximators is clearly not possible. As discussed in Sec. \ref{sec:function_approximators} even linear functions can already play a crucial role in developing algorithms that deal with large and complex MDPs. On the other hand, it is not yet known what to give up between off-policy learning and bootstrapping; what is known however, is that also because of the `Deadly Triad", successfully training DRL solutions can be computationally very expensive since long training times are required for training agents which constantly try not to diverge. 
 
-\section{On the Limitations of Deep Reinforcement Learning}
+\paragraph{Towards More Transferable Agents}
 
-\begin{itemize}
-\item Unfortunately, the intuition of even the most expert practitioner is not enough for identifying which learning parameters work best. As an example, let us consider the previously described Rainbow agent \cite{hessel2018rainbow}. The learning rate that yields successful training is set to $0.0000625$, clearly this is a value that could only be identified after performing an exhaustive grid search over a large set of potential learning rates. If on top of this, we also consider that training a DRL agent is a process that can last from taking days to even weeks \cite{kaiser2019model}, it is clear that  It is, therefore, desirable to develop algorithms that do not require extraordinary computational costs for training.
-\item However, if an agent can bypass the need to rely on either one of these elements, then instability can already be prevented. Several work has addressed the `Deadly Triad" of DRL \cite{van2018deep_triad,hernandez2019understanding,fedus2020revisiting} to answer the natural question \textit{`which element can be given up when developing DRL algorithms?"} So far, the community seems to agree that giving up on function approximators is clearly not possible. As discussed in Sec. \ref{sec:function_approximators} even linear functions can already play a crucial role in developing algorithms that deal with large and complex MDPs. On the other hand, it is not yet known what to give up between off-policy learning and bootstrapping; what is known however, is that also because of the `Deadly Triad", successfully training DRL solutions can be computationally very expensive since long training times are required for training agents which constantly try not to diverge. 
-\end{itemize}
+\paragraph{Reinforcement Learning Upside Down}
 
-
-\section{Towards More Transferable Agents}
-
-
-
-\section{A note on Unsupervised Learning}
