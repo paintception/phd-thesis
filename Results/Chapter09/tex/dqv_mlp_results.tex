@@ -1,0 +1,49 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.65]
+      \begin{axis}[
+	name=ax1,
+	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Cartpole,
+        xlabel=Episodes,
+        ylabel= Reward,
+      ]
+
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Results/Chapter09/logs/cartpole_results.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=DQN, x=episodes]{./Results/Chapter09/logs/cartpole_results.txt};
+      \addplot [ultra thick, green, mark=.] table [y=DDQN, x=episodes]{./Results/Chapter09/logs/cartpole_results.txt};
+      \addplot [ultra thick, cyan, mark=.] table [y=Upside-Down, x=episodes]{./Results/Chapter09/logs/cartpole_results.txt};
+      \end{axis}
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=2cm,
+	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Pong,
+        xlabel=Episodes,
+        ylabel= Reward,
+        legend columns=4, 
+        legend style={font=\Large, at={(-0.9,-0.3,-0.4)},anchor=north west,legend columns=4},
+      ]
+
+      \addlegendentry{DQV}
+      \addlegendentry{DQN}
+      \addlegendentry{DDQN}
+	\addlegendentry{Upside-Down RL} 
+
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Results/Chapter09/logs/pong_results.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=DQN, x=episodes]{./Results/Chapter09/logs/pong_results.txt};
+      \addplot [ultra thick, green, mark=.] table [y=DDQN, x=episodes]{./Results/Chapter09/logs/pong_results.txt};
+      \addplot [ultra thick, cyan, mark=.] table [y=Upside-Down, x=episodes]{./Results/Chapter09/logs/pong_results.txt};
+ 
+      \end{axis}
+	\end{tikzpicture}
+	\caption{Two examples of an UDRL agent described by \citet{schmidhuber2019reinforcement}. When combined with a multi-layer perceptron the agent significantly outperforms the DQV, DQN and DDQN agents on the Cartpole environment (left figure). However, it is unable to improve its policy over time at all when trained on the Pong game and combined with a convolutional neural network (right figure).}
+	\label{fig:upside_down_results} 
+\end{figure}
+

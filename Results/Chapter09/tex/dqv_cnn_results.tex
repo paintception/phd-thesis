@@ -1,0 +1,29 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}
+      \begin{axis}[
+	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Pong,
+        xlabel=Episodes,
+        ylabel= Reward,
+        legend pos=south west,
+      ]
+
+      \addlegendentry{DQV}
+      \addlegendentry{DQN}
+      \addlegendentry{DDQN}
+	\addlegendentry{Upside-Down RL} 
+
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./experiments/pong_results.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=DQN, x=episodes]{./experiments/pong_results.txt};
+      \addplot [ultra thick, green, mark=.] table [y=DDQN, x=episodes]{./experiments/pong_results.txt};
+      \addplot [ultra thick, cyan, mark=.] table [y=Upside-Down, x=episodes]{./experiments/pong_results.txt};
+ 
+      \end{axis}
+	\end{tikzpicture}
+	\caption{}
+	\label{fig:mlp_dqv_results} 
+\end{figure}
+
