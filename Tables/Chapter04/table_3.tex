@@ -1,11 +1,11 @@
 
 \begin{table}[ht]
-	\caption{The results obtained on the classification experiments performed on the Antwerp dataset with models that have been initially pre-trained on ImageNet ($\theta^{i}$) and the same architectures which have been fine tuned on the Rijksmuseum dataset ($\theta^{r}$). Our results show that the latter pre-trained networks yield better results both if used as off the shelf feature extractors and if fine tuned.}
+	\caption{The results obtained on the classification experiments performed on the Antwerp dataset with models that have been initially pre-trained on ImageNet ($\theta_{i}$) and the same architectures which have been fine tuned on the Rijksmuseum dataset ($\theta_{r}$). Our results show that the latter pre-trained networks yield better results both if used as off the shelf feature extractors and if fine tuned.}
     \resizebox{\columnwidth}{!}{%
     \label{tab:Antwerpen_dataset}
     \centering
     \begin{tabular}{c|c|c|c|c|c}
-	    $\mathcal{T}_T$ &model & $\theta^{i}$ + off the shelf & $\theta^{r}$ + off the shelf & $\theta^{i}$ + fine tuning & $\theta^{r}$ + fine tuning  \\
+	    $\mathcal{T}_T$ &model & $\theta_{i}$ + off the shelf & $\theta_{r}$ + off the shelf & $\theta_{i}$ + fine tuning & $\theta_{r}$ + fine tuning  \\
         \hline \hline
 	\circled{2} & Xception  & 42.01\% &  \cellcolor{yellow!25}62.92\% &69.74\% & 72.03\%       \\
         \circled{2} & InceptionV3  & 43.90\% & 57.65\% &70.58\%  & 71.88\%    \\
