@@ -1,17 +1,33 @@
-\newcommand*{\MinNumber}{-3.1}%
-\newcommand*{\MaxNumber}{1}%
+\newcommand*{\MinNumber}{-1.0}%
+\newcommand*{\MidNumber}{0.0}%
+\newcommand*{\MaxNumber}{1.0}%
 
 \newcommand{\ApplyGradient}[1]{%
-  \pgfmathsetmacro{\PercentColor}{100.0*(#1-\MaxNumber)/(\MinNumber-\MaxNumber)}%
-  %\textcolor{black!\PercentColor}{#1}
-  \edef\x{\noexpand\cellcolor{red!\PercentColor}}\x\textcolor{black}{#1}%
+  \IfDecimal{#1}{
+    \ifdim #1 pt > \MidNumber pt%
+    \pgfmathsetmacro{\PercentColor}{max(min(100.0*(#1-\MidNumber)/(\MaxNumber-\MidNumber),100.0),0.0)}%
+    \edef\x{\noexpand\cellcolor{\colorpos!\PercentColor!white}}\x\textcolor{black}{#1}%
+    \else%
+    \pgfmathsetmacro{\PercentColor}{max(min(100.0*(\MidNumber-#1)/(\MidNumber-\MinNumber),100.0),0.0)}%
+    \edef\x{\noexpand\cellcolor{\colorneg!\PercentColor!white}}\x\textcolor{black}{#1}%
+    \fi%
+    }{#1}
 }
+
+%% \newcommand{\ApplyGradient}[1]{%
+%%   \IfDecimal{#1}{
+%%   \pgfmathsetmacro{\PercentColor}{100.0*(#1-\MaxNumber)/(\MinNumber-\MaxNumber)}%
+%%   %\textcolor{black!\PercentColor}{#1}
+%%   \edef\x{\noexpand\cellcolor{red!\PercentColor}}\x\textcolor{black}{#1}%
+%%   }{#1}
+%% }
+
 \newcolumntype{R}{>{\collectcell\ApplyGradient}{c}<{\endcollectcell}}
 
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{c|R|R|R|R|R|R|R|R|R|R}
 \hline 
-{} & BankHeist & Boxing & CrazyClimber & Enduro & FishingDerby & Gopher & IceHockey & Jamesbond & MsPacman & Pong \\
+{DDQN} & BankHeist & Boxing & CrazyClimber & Enduro & FishingDerby & Gopher & IceHockey & Jamesbond & MsPacman & Pong \\
 \hline\hline
 BankHeist    &       -                    &                  0.121 &                       -0.378 &                 -0.006 &                       -0.107 &                  0.042 &                    -0.006 &                    -0.058 &                    0.001 &               -3.013 \\
 Boxing       &                    -0.316 &     -                   &                       -0.104 &                     -0 &                        0.038 &                   0.06 &                     0.015 &                    -0.225 &                   -0.027 &                0.936 \\

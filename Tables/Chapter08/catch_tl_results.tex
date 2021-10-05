@@ -1,11 +1,27 @@
-\newcommand*{\MinNumber}{-0.479}%
-\newcommand*{\MaxNumber}{0.1}%
+\newcommand*{\MinNumber}{-0.49}%
+\newcommand*{\MidNumber}{0.0}%
+\newcommand*{\MaxNumber}{0.49}%
+
+%% \newcommand{\ApplyGradient}[1]{%
+%%   \IfDecimal{#1}{
+%%   \pgfmathsetmacro{\PercentColor}{100.0*(#1-\MaxNumber)/(\MinNumber-\MaxNumber)}%
+%%   %\textcolor{black!\PercentColor}{#1}
+%%   \edef\x{\noexpand\cellcolor{red!\PercentColor}}\x\textcolor{black}{#1}%
+%%   }{#1}
+%% }
 
 \newcommand{\ApplyGradient}[1]{%
-  \pgfmathsetmacro{\PercentColor}{100.0*(#1-\MaxNumber)/(\MinNumber-\MaxNumber)}%
-  %\textcolor{black!\PercentColor}{#1}
-  \edef\x{\noexpand\cellcolor{red!\PercentColor}}\x\textcolor{black}{#1}%
+  \IfDecimal{#1}{
+    \ifdim #1 pt > \MidNumber pt%
+    \pgfmathsetmacro{\PercentColor}{max(min(100.0*(#1-\MidNumber)/(\MaxNumber-\MidNumber),100.0),0.0)}%
+    \edef\x{\noexpand\cellcolor{\colorpos!\PercentColor!white}}\x\textcolor{black}{#1}%
+    \else%
+    \pgfmathsetmacro{\PercentColor}{max(min(100.0*(\MidNumber-#1)/(\MidNumber-\MinNumber),100.0),0.0)}%
+    \edef\x{\noexpand\cellcolor{\colorneg!\PercentColor!white}}\x\textcolor{black}{#1}%
+    \fi%
+    }{#1}
 }
+
 \newcolumntype{R}{>{\collectcell\ApplyGradient}{c}<{\endcollectcell}}
 \begin{tabular}{c|R|R|R|R}
 \hline 
