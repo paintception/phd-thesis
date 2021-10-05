@@ -34,11 +34,11 @@
 	\addlegendentry{50\% of training data}
 	\addlegendentry{25\% of training data}
 
-\addplot [thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
-\addplot [thick, blue, mark=x] table [x expr=\coordindex, y=100]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
-\addplot [thick, green, mark=x] table [x expr=\coordindex, y=75]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
-\addplot [thick, red, mark=x] table [x expr=\coordindex, y=50]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
-\addplot [thick, purple, mark=x] table [x expr=\coordindex, y=25]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+\addplot [ultra thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+\addplot [ultra thick, blue, mark=x] table [x expr=\coordindex, y=100]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+\addplot [ultra thick, green, mark=x] table [x expr=\coordindex, y=75]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+\addplot [ultra thick, red, mark=x] table [x expr=\coordindex, y=50]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+\addplot [ultra thick, purple, mark=x] table [x expr=\coordindex, y=25]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
 
 \legend{}
 \end{axis}
@@ -76,11 +76,11 @@
 	\addlegendentry{50\% of training data}
 	\addlegendentry{25\% of training data}
 
-\addplot [thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
-\addplot [thick, blue, mark=x] table [x expr=\coordindex, y=100]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
-\addplot [thick, green, mark=x] table [x expr=\coordindex, y=75]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
-\addplot [thick, red, mark=x] table [x expr=\coordindex, y=50]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
-\addplot [thick, purple, mark=x] table [x expr=\coordindex, y=25]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+\addplot [ultra thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+\addplot [ultra thick, blue, mark=x] table [x expr=\coordindex, y=100]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+\addplot [ultra thick, green, mark=x] table [x expr=\coordindex, y=75]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+\addplot [ultra thick, red, mark=x] table [x expr=\coordindex, y=50]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+\addplot [ultra thick, purple, mark=x] table [x expr=\coordindex, y=25]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
 
 
 
@@ -90,6 +90,6 @@
     \end{tikzpicture}
 
 
-    \caption{Our study showing that the robustness to large pruning rates of lottery winners does not depend from the size of the training dataset. We can observe that even when lottery tickets after are trained on only $25\%$ of the dataset their performance remains stable with respect to the fraction of pruned weights. These results suggest that the less stable performance of \texttt{Bone-Marrow} lottery tickets observed in Fig. \ref{fig:tl_learning_with_lottery_tickets_results} does not depend from the small training set.}
+    \caption{Our study showing that the robustness to large pruning rates of lottery winners does not depend from the size of the training dataset. We can observe that even when lottery tickets are trained on only $25\%$ of the dataset their performance remains stable with respect to the fraction of pruned weights. These results suggest that the less stable performance of \texttt{Bone-Marrow} lottery tickets observed in Fig. \ref{fig:tl_learning_with_lottery_tickets_results} does not depend from the small training set.}
     \label{fig:training_data_study}
 \end{figure} 

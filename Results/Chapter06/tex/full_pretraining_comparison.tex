@@ -32,9 +32,9 @@
 	\addlegendentry{Winning Ticket $f(x;m\odot\theta_k)$}
 	\addlegendentry{CIFAR-10 $f(x;m\odot\theta_i)$}
 	
-\addplot [thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/human_lba_fine_tuning_study.txt};
-\addplot [thick, green, mark=x] table [x expr=\coordindex, y=winning_ticket]{./Results/Chapter06/logs/human_lba_fine_tuning_study.txt};
-\addplot [thick, green, mark=*] table [x expr=\coordindex, y=fine_tuned_pruned_model]{./Results/Chapter06/logs/human_lba_fine_tuning_study.txt};
+\addplot [ultra thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/human_lba_fine_tuning_study.txt};
+\addplot [ultra thick, green, mark=x] table [x expr=\coordindex, y=winning_ticket]{./Results/Chapter06/logs/human_lba_fine_tuning_study.txt};
+\addplot [ultra thick, green, mark=*] table [x expr=\coordindex, y=fine_tuned_pruned_model]{./Results/Chapter06/logs/human_lba_fine_tuning_study.txt};
 
 \end{axis}
 \end{tikzpicture}
@@ -70,9 +70,9 @@
 	\addlegendentry{Winning Ticket $f(x;m\odot\theta_k)$}
 	\addlegendentry{CIFAR-100 $f(x;m\odot\theta_i)$}
 	
-\addplot [thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/human_lba_fine_tuning_study_cif.txt};
-\addplot [thick, red, mark=x] table [x expr=\coordindex, y=winning_ticket]{./Results/Chapter06/logs/human_lba_fine_tuning_study_cif.txt};
-	\addplot [thick, red, mark=*] table [x expr=\coordindex, y=fine_tuned_pruned_model]{./Results/Chapter06/logs/human_lba_fine_tuning_study_cif.txt};
+\addplot [ultra thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/human_lba_fine_tuning_study_cif.txt};
+\addplot [ultra thick, red, mark=x] table [x expr=\coordindex, y=winning_ticket]{./Results/Chapter06/logs/human_lba_fine_tuning_study_cif.txt};
+	\addplot [ultra thick, red, mark=*] table [x expr=\coordindex, y=fine_tuned_pruned_model]{./Results/Chapter06/logs/human_lba_fine_tuning_study_cif.txt};
 
 \end{axis} 
 
