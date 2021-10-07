@@ -1,6 +1,8 @@
 \begin{figure}[ht!]
-\begin{tikzpicture}[scale=0.65]
-\begin{axis}[	
+\resizebox{0.45\textwidth}{!}{  \centering
+\begin{tikzpicture}
+\begin{axis}
+[	
 	name=ax1,	
 	grid style={dashed,gray},
 	grid = both, 
@@ -8,6 +10,7 @@
   	xlabel=Epochs,
 	ylabel = $\%$ of caught balls,
 	title = \texttt{Catch-v0},
+	legend pos=south east,	
 ]
 
 
@@ -38,15 +41,17 @@
 \end{axis}
 
 
-\begin{axis}[	
+\begin{axis}
+[	
 	at={(ax1.south east)},
-	xshift=2cm,
+	xshift=1cm,
 	grid style={dashed,gray},
 	grid = both, 
 	tick style=black,
   	xlabel=Epochs,
 	%ylabel = $\%$ of caught balls,
 	title = \texttt{Catch-v1},
+	legend pos=south east,
 ]
 
 %\addlegendentry{\texttt{Catch-v0}}
@@ -76,19 +81,17 @@
 
 \end{axis}
 
-\end{tikzpicture}
 
-\begin{tikzpicture}[scale=0.65]
 \begin{axis}
 [	at={(ax1.south east)},
-	xshift=-8.5cm,
-	yshift=-1cm,
+	xshift=9cm,
     grid style={dashed,gray},
 	grid = both, 
 	tick style=black,
   	xlabel=Epochs,
-	ylabel = $\%$ of caught balls,
-	title = \texttt{Catch-v2},
+	%ylabel = $\%$ of caught balls,
+	legend pos=south east,	
+	title = \texttt{Catch-v2}
 ]
 
 
@@ -117,19 +120,19 @@
 \addplot [fill=yellow!10, forget plot] fill between[of=upper and lower];
 
 \end{axis}
+
+
 \begin{axis}
 [	
     at={(ax1.south east)},
-	xshift=1cm,
-	yshift=-1cm,
+	xshift=17cm,
     grid style={dashed,gray},
 	grid = both, 
 	tick style=black,
   	xlabel=Epochs,
 	%ylabel = $\%$ of caught balls,
-	legend pos=outer north east,
-	legend style={at={(-0.5,-0.8,-1.4)},anchor=south,legend columns=4},
-	title= \texttt{Catch-v3},
+	%legend style={at={(-1,-0.4,-1.4)},anchor=south,legend columns=4},
+	title= \texttt{Catch-v3}
 ]
 
 \addlegendentry{\texttt{Catch-v0}}
@@ -161,7 +164,10 @@
 
 
 \end{axis}
-\end{tikzpicture}
+
+
+\end{tikzpicture}%
+}
 \caption{The results obtained after using a pre-trained \texttt{Catch} agent and fine-tuning it on a different \texttt{Catch} version. We can observe that despite all \texttt{Catch} versions being very similar no positive transfer is ever observed, as a model trained from scratch always outperforms a pre-trained, fine-tuned network.}
 \label{fig:catch_transfer}
 \end{figure}
