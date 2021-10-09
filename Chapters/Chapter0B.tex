@@ -5,9 +5,70 @@
 
 
 \section{The Deep Quality-Value Learning Algorithms}
+
+In this section we report the pseudocode of the DQV-Learning and DQV-Max Learning algorithms described in Sec. \ref{sec:dqv_family} of Chapter \ref{ch:dqv_family_of_algorithms}. The DQV-Learning algorithm is also used for the transfer learning studies presented in Sec. \ref{sec:empirical_study} of Chapter \ref{ch:dqn_transfer}. 
+
+In Tables \ref{tab:table_1}, \ref{tab:table_2} and \ref{tab:table_3} we also summarize all the hyper-parameters that we have used during the experiments reported in Chapters \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}, ranging from the pre-processing values to the neural architectures. We have followed the typical experimental setup that is usually reported in the DRL literature \cite{mnih2015human, van2015deep, wang2016dueling, castro2018dopamine, sabatelli2020deep} that trains Deep Q-Networks on the Atari 2600 testbed.
+
+\begin{table}[ht!]
+\centering
+\caption{Hyper-parameters used in all our experiments that use the DQV and DQV-Max algorithms. All hyper-parameters coincide with the ones used by e.g. DQN and DDQN with the only difference being the epsilon greedy parameter $\epsilon$ that is set to 0.5 instead of 1.0. DQV-Learning is known to converge faster than these algorithms \cite{sabatelli2018deepqv}, since it is based on an on-policy learning algorithm \cite{wiering2005qv}. Therefore it requires to explore less than typical off-policy models.}
+\begin{tabular}{c | c |  }
+Hyperparameter \\
+\hline \hline
+Atari Arcade Learning Version  & \texttt{Deterministic-v4} \\
+Frame-Skipping & True \\ 
+Reward Clipping & $[-1,1]$ \\ 
+Epsilon Greedy $\epsilon$ & 0.5 \\
+Discount Factor $\gamma$ & 0.99 \\ 
+Pre-processing scheme & $84\times84\times4$ \\ 
+$Q$-optimizer & RMSprop \\ 
+$Q$ Learning rate & 0.00025 \\ 
+$V$-optimizer & SGD \\ 
+$V$ Learning rate & 0.001 \\
+Optimizer $\rho$ & 0.95 \\ 
+Optimizer $\epsilon$ & 0.01 \\ 
+Memory size $S$ & 1M trajectories 
+\end{tabular}
+\label{tab:table_1}
+\end{table}
+
+\begin{table}[ht!]
+\centering
+\caption{Architecture used by DQV-Learning for estimating the $Q$ function, the n parameter in the last layer of the network changes with respect to the number of actions that is required by each different Atari game. Please note that this architecture corresponds to a typical Q network that is also used by popular algorithms like DQN \cite{mnih2015human}, DDQN \cite{van2015deep} and Rainbow \cite{hessel2018rainbow}}.
+\begin{tabular}{c | c | c | }
+Layer & Output Shape & Param \\
+\hline \hline 
+Conv2D & (None, 20, 20, 32) & 8224 \\     
+Conv2D & (None, 9, 9, 64) & 32832 \\ 
+Conv2D & (None, 7, 7, 64)  & 36928 \\ 
+Flatten & (None, 3136) & 0 \\
+Dense & (None, 512) & 1606144 \\
+Dense & (None, $n$) & 1539 \\
+Activations & ReLU & \\
+
+\end{tabular}
+\label{tab:table_2}
+\end{table}
+
+\begin{table}[ht!]
+\centering
+\caption{Architecture used for estimating the $V$ function. This architecture corresponds exactly to the one presented in Table \ref{tab:table_2} with the only difference being the last output layer which in this case is set to one.}
+\begin{tabular}{c | c | c | }
+Layer & Output Shape & Param \\
+\hline \hline 
+Conv2D & (None, 20, 20, 32) & 8224 \\     
+Conv2D & (None, 9, 9, 64) & 32832 \\ 
+Conv2D & (None, 7, 7, 64)  & 36928 \\ 
+Flatten & (None, 3136) & 0 \\
+Dense & (None, 512) & 1606144 \\
+Dense & (None, 1) & 1539 \\
+Activations & ReLU & \\
+
+\end{tabular}
+\label{tab:table_3}
+\end{table}
+
+
 \input{./Pseudocode/dqv_family.tex}
 
-
-%----------------------------------------------------------------------------------------
-
-% Content begins here

@@ -183,7 +183,7 @@ We can now clearly see that differently from what happens in the MC update prese
 	\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t).
 \end{equation}
 where $r_t + \gamma V(s_{t+1})$ is also known as the TD-target.
-If we again consider the simple MDP represented in Fig. \ref{fig:mdp} and assume that the value of each state of the process is set to $0$ while the discount factor $\gamma$ is again set to $0.5$, a TD update for $V(s_0)$ based on action $a_3$ will result into the new value estimate of $1.5$. 
+If we again consider the simple MDP represented in Fig. \ref{fig:mdp} and assume that the value of each state of the process is set to $0$ while the discount factor $\gamma$ is this time set to $0.5$ and $\alpha$ is again $0.5$, a TD update for $V(s_0)$ based on a policy resulting in state $s_2$ will result into the new value estimate of $1.5$. 
 TD-Learning is a very effective strategy for building algorithms that can learn in an online, fully incremental fashion as one only needs to wait for a single time-step before updating the considered value function. Due to its striking simplicity, TD-Learning has been widely adopted by RL practitioners developing algorithms for learning the $Q$ function. We will present some of the most important algorithms hereafter. 
 
 \paragraph{Q-Learning:} introduced by \citet{watkins1992q} is arguably the most popular model-free RL algorithm. It works by keeping track of an estimate of the state-action value function $Q: \mathcal{S} \times \mathcal{A} \rightarrow \Re$ and updates each visited state-action pair with the following update rule:
