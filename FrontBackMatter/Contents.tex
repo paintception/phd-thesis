@@ -65,8 +65,6 @@
 
 \chapter*{Symbols and Notation}
 
-We hereafter report the mathematical symbols used throughout this dissertation.
-
 \begin{tabularx}{\textwidth}{ l X }
 
  $\mathcal{X}$ & input space \\
@@ -85,10 +83,11 @@ We hereafter report the mathematical symbols used throughout this dissertation.
  $\mathbf{W}$ & weight matrix \\ 
  $\theta$ & neural network parameters \\ 
  $\mathscr{L}$ & loss function \\ 
- $\gamma$ & learning rate \\  
- $\alpha$ & momentum \\ 
+ $\eta$ & learning rate \\  
+ $\rho$ & momentum \\ 
  $\circledast$ & cross convolution operator \\ 
  $\vec{o}$ & feature map \\
+$\mathcal{M}$ & Markov Decision Process \\ 
 $\mathcal{S}$ & state space \\ 
 $\mathcal{A}$ & action space \\
 $\mathcal{P}$ & transition function \\ 
@@ -96,17 +95,71 @@ $t$ & time-step \\
 $\Re$ & reward function \\ 
 $\gamma$ & discount factor \\ 
 $\pi$ & policy \\ 
-$\tau$ & trajectory \\ 
+$\tau = \langle s_t,a_t,r_t,s_{t+1}\rangle$ & trajectory \\ 
 $G$ & goal \\ 
 $V^{\pi}(s)$ & state-value function \\
 $Q^{\pi}(s,a)$ & state-action value function \\ 
+$A^{\pi}(s,a)$ & advantage function \\
 $\pi^{*}$ & optimal policy \\ 
 $V^{*}(s)$ & optimal state-value function \\
 $Q^{*}(s,a)$ & optimal state-action value function \\
-$\delta_t$ & temporal-difference error \\ 
+	
+\end{tabularx}
+\clearpage
+
+
+\begin{tabularx}{\textwidth}{ l X }
+	$\delta_t$ & temporal-difference error \\ 
 $y_t$ & temporal-difference target \\ 
+$\epsilon$ & epislon-greedy exploration parameter \\
+$e(t)$ & eligibility traces for state $s$ \\
+$D$ & experience replay buffer \\
+$h(s,a;\theta)$ & generic function approximator \\ 	
+	$\mathcal{D}$ & domain \\ 
+	$\mathcal{T}$ & task \\ 
+	$\mathcal{D}_S$ & source domain \\ 
+	$\mathcal{D}_T$ & target domain \\ 
+	$\mathcal{T}_S$ & source task \\
+	$\mathcal{T}_T$ & target task \\
+	$f$ & decison function \\ 
+	$f_T(\cdot)$ & target predictive function \\
+	$\mathcal{K}$ & knowledge \\ 
+	$\mathcal{K}_S$ & source knowledge \\
+	$\mathcal{K}_T$ & target knowledge \\
+	$\theta_S$ & source neural network parameters \\ 
+	$\theta_T$ & target neural network parameters \\
+	$\mathcal{X}_S$ & source input space \\
+	$\mathcal{X}_T$ & target input space \\ 
+	$\mathcal{Y}_S$ & source output space \\
+	$\mathcal{Y}_T$ & target output space \\
+	$N_T$ & number of samples in target dataset \\ 
+	$Q_T$ & number of classes in target dataaset \\	
+	$\mathscr{X}$ & feature vector \\
+	$\theta_i$ & ImageNet pre-trained parameters \\ 
+	$\theta_r$ & Rijksmuseum pre-trained parameters \\
+	$I_t$ & number of instruments in MINERVA \\ 
+	$m$ & mask \\
+	$k$ & late resetting epochs \\
+	$f(x;m\odot\theta_0)$ & winning ticket \\
+	$f(x;m\odot\theta_r)$ & random ticket \\ 
+	$f(x;m\odot\theta_k)$ & winning ticket obtained through late resetting \\
+	$\mathbf{T}$ & tensor \\ 
+		
+\end{tabularx}
+\clearpage
 
 
+\begin{tabularx}{\textwidth}{ l X }
+	$\mathscr{D}$ & He-Uniform weight distribution \\
+	$V(s;\Phi)$ & state-value network \\
+	$V(s;\Phi^{-})$ & state-value target network \\ 
+	$Q(s,a;\theta)$ & state-action value network \\ 
+	$Q(s,a;\theta^{-})$ & state-action value target network \\
+	$N$ & capacity of the memory buffer \\
+	$\mathcal{M}_S$ & source Markov Decision Process \\ 
+	$\mathcal{M}_T$ & target Markov Decision Process \\
+	$\mathscr{R}$ & area ratio score \\
+	
 \end{tabularx}
 
 
