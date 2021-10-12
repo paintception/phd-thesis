@@ -62,7 +62,7 @@
         scaled ticks=true,
 	/pgf/number format/fixed,
         %log ticks with fixed point,
-  	legend pos= north east,
+  	legend p= north east,
 	%legend style={font=\Large, at={(-0.8,-0.2,-0.2)},anchor=north west, legend columns = 2}
 	]
 

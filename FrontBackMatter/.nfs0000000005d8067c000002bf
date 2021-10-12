@@ -133,7 +133,7 @@ $h(s,a;\theta)$ & generic function approximator \\
 	$\mathcal{Y}_S$ & source output space \\
 	$\mathcal{Y}_T$ & target output space \\
 	$N_T$ & number of samples in target dataset \\ 
-	$Q_T$ & number of classes in target dataset \\	
+	$Q_T$ & number of classes in target dataaset \\	
 	$\mathscr{X}$ & feature vector \\
 	$\theta_i$ & ImageNet pre-trained parameters \\ 
 	$\theta_r$ & Rijksmuseum pre-trained parameters \\

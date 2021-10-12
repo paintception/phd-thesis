@@ -46,7 +46,7 @@ With these concepts in place, we can summarize the goal of SL as finding a funct
 	R_B = \underset{f\in\mathcal{Y}^{\mathcal{X}}}{\min} R(f),
 	\label{eq:bayes_risk}
 \end{equation}
-and is called the \textcolor{RoyalBlue}{Bayes risk}. When minimized, the quantity defined in Eq. \ref{eq:bayes_risk} results in the best possible function $f_B$, which is called the Bayes model. If the capacity of the hypothesis space $\mathcal{F}$ chosen for finding $f$ is too low, then it follows that $R(f)-R_B$ will be large for any $f\in\mathcal{F}$, including $f^{*}$ and $f^{*}_{\mathcal{L}_{\text{Train}}}$. Similarly, if the capacity of $\mathcal{F}$ is too high then although $R(f)-R_B$ will be small, $f^{*}_{\mathcal{L}_\text{Train}}$ can fit 
+and is called the \textcolor{RoyalBlue}{Bayes risk}. When minimized, the quantity defined in Eq. \ref{eq:bayes_risk} results in the best possible function $f_B$, which is called the Bayes model. If the capacity of the hypothesis space $\mathcal{F}$ chosen for finding $f$ is too low, then it follows that $R(f)-R_B$ will be large for any $f\in\mathcal{F}$, including $f^{*}$ and $f^{*}_{\mathcal{L}_{\text{Train}}}$. Similarly, if the capacity of $\mathcal{F}$ is too high then although $R(f)-R_B$ will be small, $f^{*}_\mathcal{L}_\text{Train}$ can fit 
 $\mathcal{L}_{\text{Train}}$ arbitrarily well such that:
 \begin{equation}
 	R(f^{*}_{\mathcal{L}_{\text{Train}}}) \geq R_B \geq \hat{R}(f^{*}_{\mathcal{L}_{\text{Train}}},\mathcal{L}_{\text{Train}}) \geq 0.

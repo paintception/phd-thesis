@@ -96,10 +96,8 @@ We are now ready to introduce the arguably most important concept underlying man
 \end{align}
 $V^{\pi}(s)$ is also known as the state-value function and intuitively tells us how good or how bad it is for an agent to be in a certain state. While this function is only conditioned on the state that is being visited by the agent, we can also condition it on the actions that the agent takes. By doing so we will quantify how good or bad it is for the agent to take a certain action $a$ in a certain state. This function comes with the name of state-action value function and is defined as follows:
 \begin{align}
-\begin{split}
-     Q^{\pi}(s,a)=\mathds{E}\bigg[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k} \bigg| s_t = s, a_t=a, \pi\bigg].
-\end{split}
- \end{align}
+     	Q^{\pi}(s,a)=\mathds{E}\bigg[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k} \bigg| s_t = s, a_t=a, \pi\bigg].
+\end{align}
 Both value functions are very powerful as they allow to characterize an agent's behavior by quantitatively assessing its interaction with the environment. They can be seen as the agent's knowledge and represent its desirability of being in a specific state. As we will see in the coming sections, accurately modeling these value functions is one of RL's major goals.  
 
 A key property of $V^{\pi}(s)$ and $Q^{\pi}(s,a)$ is that both value functions satisfy a consistency condition that allows us to define both functions recursively. For example let us consider the state-value function $V^{\pi}(s)$ presented in Eq. \ref{eq:state_value_function}, we can rewrite it as:
@@ -312,7 +310,7 @@ The DQN algorithm showcased its entire potential in \cite{mnih2015human} where M
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=10cm]{./Images/Chapter02/atari_games}
-  \caption{A visual representation of some of the \texttt{Atari} games that are part of the Arcade Learning Environment (ALE) \cite{bellemare2013arcade}. From left to right \texttt{Breakout, Seaquest, Qbert, Pong, MsPacman, KungFu-Master, Enduro} and \texttt{Space Invaders}. Most of these games will be of interest in chapters \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}.}
+  \caption{A visual representation of some of the \texttt{Atari} games that are part of the Arcade Learning Environment (ALE) \cite{bellemare2013arcade}. From left to right \texttt{Breakout, Seaquest, Qbert, Pong, MsPacman, KungFu-Master, Enduro} and \texttt{Space Invaders}. Most of these games will be of interest in Chapter \ref{ch:dqv_family_of_algorithms} and Chapter \ref{ch:dqn_transfer}.}
   \label{fig:atari_games}
 \end{figure}
 

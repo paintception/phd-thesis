@@ -30,7 +30,7 @@ Throughout the Ph.D. several other peer-reviewed papers have been published, how
 	\item \citet{sabatelli2019approximating}  \textit{"Approximating two value functions instead of one: towards characterizing a new family of Deep Reinforcement Learning algorithms"} Advances in Neural Information Processing Systems (NeurIPS), Deep Reinforcement Learning Workshop, 2019
 	\item \citet{leroy21qvmix} \textit{"QVMix and QVMix-Max: Extending the Deep Quality-Value Family of Algorithms to Cooperative Multi-Agent Reinforcement Learning."} Proceedings of the AAAI-21 Workshop on Reinforcement Learning in Games, 2021. 
 	\item \citet{hammond2020forest} \textit{"Forest Fire Control with Learning from Demonstration and Reinforcement Learning".} Proceedings of the International Joint Conference on Neural Networks (IJCNN). IEEE, 2020.
-	\item \citet{banartransfer} \textit{"Transfer Learning with Style Transfer between the Photorealistic and Artistic Domain."} IS\&T International Symposium on Electronic Imaging. Computer Vision and Image Analysis of Art, 2021.
+	\item \citet{banartransfer} \textit{"Transfer Learning with Style Transfer between the Photorealistic and Artistic Domain."} IS&T International Symposium on Electronic Imaging. Computer Vision and Image Analysis of Art, 2021.
 	\item \citet{sasso2021fractional} \textit{"Fractional Transfer Learning for Deep Model-Based Reinforcement Learning."} \\ ArXiv preprint arXiv:2108.06526. 
 
 \end{itemize}

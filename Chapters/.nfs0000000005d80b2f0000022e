@@ -44,7 +44,7 @@ The first two definitions that we provide are borrowed from \citet{zhuang2020com
 \end{definition}
 Examples of domains can be natural images, time-series data, biomedical markers, etc. In supervised learning, we know that each domain is associated with its respective task, representing the problem we would like to solve. A task is defined as follows:
 \begin{definition}
-	A task $\mathcal{T}$ consists of a label space $\mathcal{Y}$ and a decision function $f$, i.e., $\mathcal{T}=\{\mathcal{Y},f\}$. The decision function $f$ is implicit and can only be learned by sampling data from $\mathcal{X}$ which comes in the form of $\{x_i,y_i \}$ pairs where $x_i\in X$ and $y_i \in \mathcal{Y}$.
+	A task $\mathcal{T}$ consists of a label space $\mathcal{Y}$ and a decision function $f$, i.e., $\mathcal{T}=\{\mathcal{Y},f\}$. The decision function $f$ is implicit and can only be learned by sampling data from $\mathcal{X}$ which comes in the form of $\{x_i,y_i\}$ pairs where $x_i\inX$ and $y_i \in \mathcal{Y}$.
 \end{definition}
 Examples of possible decision functions $f$ can be classifiers that categorize natural images in their respective classes or regressors that can predict future values in a time series. 
 The key concept underlying TL is that, differently from the common supervised learning scenario,
