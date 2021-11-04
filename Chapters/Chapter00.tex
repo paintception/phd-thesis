@@ -1,8 +1,13 @@
 \chapter*{Introduction}
 \label{ch:introduction}
 
-While when it comes to scientific research we usually end up with having more questions than the ones we started with, in this work we do our best to give an answer which is as clear as possible to the following research questions:
+The ability of linking novel, potentially problematic situations to events that we have already observed in our past is at the center of human intelligence. Throughout our lifetime we constantly need to deal with unforeseen events, which sometimes can be so overwhelming to look insurmountable. A common strategy that humans as well as animals have learned to adopt throughout millions of years of evolution, is to start tackling novel, unseen situations by re-using knowledge that in the past resulted in successfull solutions. Being able of recognizing patterns across similar settings, as well as the capacity of re-using and potentially adapting an already established skill set, is by many cognitive scientists considered one of the main intellectual feats underlying intelligence. It is in fact easy to think of day to day examples where instead of learning how to solve a problem from scratch it is by far more beneficial to start from an already known solution. For example, it is much easier to learn how to play a musical instrument if we already possess some musical knowledge, or it is much more convenient to learn a new language that is as close as possible to our mothertongue.
 
+The field of Artificial Intelligence (AI) aims to create computer programs that are able of mimicking, at least in part the cognitive abilities underlying human intelligence. As a result, it follows that among such abilities, there is also that of being capable of adapting to new unseen situations and to potentially learn how to solve new tasks whilst exploiting some previously acquired knowledge. This capacity comes with the name of Transfer Learning. Having computer programs that are transferable is by many considered one of the most complicated challenges of all AI, which if overcome should open the door towards Artificial General Intelligence (AGI). 
+
+The most popular AI computer programs are nowadays the result of machine learning based techniques. Among the different families of machine learning based algorithms, deep neural networks, and convolutional neural networks specifically, are at the present moment by far the most successful ones. Hence, understanding whether convolutional neural networks are able of generalizing across different tasks and domains is key towards the developent of AGI. The work presented in this thesis, therefore, aims at better characterizing the Transfer Learning properties of convolutional neural networks by giving an answer to a set of research questions that places this kind of artificial neural networks at the center of all the scientific contributions that will be presented throughout this dissertation. While it is true that when it comes to scientific research we usually end up with having more questions than the ones we started with, in this work we give an answer to the following research questions:
+
+\begin{remark}{Research Questions}
 \begin{enumerate}
 	\item \textit{"Can convolutional neural networks be transferred and trained across different source and target domains? \\ if so, which target domains could be of interest for investigating their transfer learning properties?"}
 		
@@ -12,25 +17,30 @@ While when it comes to scientific research we usually end up with having more qu
 	
 	\item \textit{"Do different machine learning tasks result in convolutional neural networks with different transfer learning properties?"}
 \end{enumerate}
+\end{remark}
 
-All research questions are placed within the deep transfer learning literature, a research direction that studies the generalization properties of convolutional neural networks as well as their degree of transferability across different domains and tasks. We answer these questions through the work that has been presented in several peer-reviewed publications. The main contributions underlying this thesis are:
+As we will see throughout this work, all research questions are placed within the deep transfer learning literature, a research field that focuses on identifying the generalization properties of convolutional neural networks as well as their degree of transferability across different domains and tasks. The aforementioned research questions are answered thanks to the work that has been presented in several peer-reviewed publications. The main contributions underlying this thesis are:
 
+\begin{remark}{Main Publications}
 \begin{itemize}
 	\item \citet{sabatelli2018deep} \textit{"Deep transfer learning for art classification problems."} Proceedings of the European Conference on Computer Vision (ECCV) Workshops, 2018.
 	\item \citet{sabatelli2018deepqv} \textit{Deep Quality Value (DQV) Learning."} Advances in Neural Information Processing Systems (NeurIPS), Deep Reinforcement Learning Workshop, 2018.
-\item \citet{sabatelli2020transferability} \textit{"On the transferability of winning tickets in non-natural image datasets.} Proceedings of the 16th International Joint Conference on Computer Vision, Imaging and Computer Graphics Theory and Applications (VISAPP), 2021.
+	\item \citet{sabatelli2019approximating}  \textit{"Approximating two value functions instead of one: towards characterizing a new family of Deep Reinforcement Learning algorithms"} Advances in Neural Information Processing Systems (NeurIPS), Deep Reinforcement Learning Workshop, 2019	
+	\item \citet{sabatelli2020transferability} \textit{"On the transferability of winning tickets in non-natural image datasets.} Proceedings of the 16th International Joint Conference on Computer Vision, Imaging and Computer Graphics Theory and Applications (VISAPP), 2021.
 	\item \citet{sabatelli2020deep} \textit{"The deep quality-value family of deep reinforcement learning algorithms"} Proceedings of the International Joint Conference on Neural Networks (IJCNN). IEEE, 2020.
 	\item \citet{sabatelli2021advances} \textit{"Advances in Digital Music Iconography: Benchmarking the detection of musical instruments in unrestricted, non-photorealistic images from the artistic domain."} DHQ: Digital Humanities Quarterly 15.1 2021.
 	\item \citet{sabatelli2021transferability} \textit{"On the Transferability of Deep-Q Networks."} Under Review. 
 \end{itemize}
+\end{remark}
 
-Throughout the Ph.D. several other peer-reviewed papers have been published, however these are not directly presented in this thesis. The following works are either the result of external collaborations, or have served for reporting preliminary results of ongoing research:
+Throughout the Ph.D. several other peer-reviewed papers have been published, however these are not directly presented in this thesis as tehy are either the result of external collaborations, or have served for reporting preliminary results of ongoing research:
 
+\begin{takeaway}{Additional Publications}
 \begin{itemize}
-	\item \citet{sabatelli2019approximating}  \textit{"Approximating two value functions instead of one: towards characterizing a new family of Deep Reinforcement Learning algorithms"} Advances in Neural Information Processing Systems (NeurIPS), Deep Reinforcement Learning Workshop, 2019
 	\item \citet{leroy21qvmix} \textit{"QVMix and QVMix-Max: Extending the Deep Quality-Value Family of Algorithms to Cooperative Multi-Agent Reinforcement Learning."} Proceedings of the AAAI-21 Workshop on Reinforcement Learning in Games, 2021. 
 	\item \citet{hammond2020forest} \textit{"Forest Fire Control with Learning from Demonstration and Reinforcement Learning".} Proceedings of the International Joint Conference on Neural Networks (IJCNN). IEEE, 2020.
 	\item \citet{banartransfer} \textit{"Transfer Learning with Style Transfer between the Photorealistic and Artistic Domain."} IS\&T International Symposium on Electronic Imaging. Computer Vision and Image Analysis of Art, 2021.
 	\item \citet{sasso2021fractional} \textit{"Fractional Transfer Learning for Deep Model-Based Reinforcement Learning."} \\ ArXiv preprint arXiv:2108.06526. 
 
 \end{itemize}
+\end{takeaway}
