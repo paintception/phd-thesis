@@ -18,7 +18,7 @@ We start by defining a Supervised Learning (SL) problem with a quadruplet contai
 	\item An input space $\mathcal{X}$,
 	\item An output space $\mathcal{Y}$,
 	\item A joint probability distribution $P(X,Y)$.
-	\item A loss function $\ell(y \times y) \rightarrow \Re$
+	\item A loss function $\ell(\mathcal{Y} \times \mathcal{Y}) \rightarrow \Re$
 \end{itemize}
 Let us define with $\mathcal{F}$ the set of all functions $f$ that a certain learning algorithm can produce. In SL the main goal is to find a function $f:\mathcal{X}\rightarrow\mathcal{Y} \in \mathcal{F}$ that minimizes the expectation over $P(X,Y)$ of a certain loss $\ell$, based on the predictions made by $f$ and the correct outputs defined in $\mathcal{Y}$.
 
@@ -52,13 +52,13 @@ $\mathcal{L}_{\text{Train}}$ arbitrarily well such that:
 \begin{equation}
 	R(f^{*}_{\mathcal{L}_{\text{Train}}}) \geq R_B \geq \hat{R}(f^{*}_{\mathcal{L}_{\text{Train}}},\mathcal{L}_{\text{Train}}) \geq 0.
 \end{equation}
-When $f$ is too simple, then it is said to \textcolor{RoyalBlue}{underfit} the data, whereas it said to \textcolor{RoyalBlue}{overfit} it when it is too complex. As a result, one wants both the expected risk $R$ and the empirical risk $\hat{R}$ minimizers to be as low as possible. To achieve this we can again evaluate the performance of $f^{*}_{\mathcal{L}_{\text{Train}}}$ by computing the empirical risk defined in Eq. \ref{eq:empirical_risk} on a separate independent dataset known as the \textcolor{RoyalBlue}{testing set} $\mathcal{L}_{\text{Test}}$. Note, however, that this quantity should be used for model evaluation purposes only and not for model selection ones, which is usually done through a separate dataset called the \textcolor{RoyalBlue}{validation set}. 
+When $f$ is too simple, then it is said to \textcolor{RoyalBlue}{underfit} the data, whereas it said to \textcolor{RoyalBlue}{overfit} it when it is too complex. As a result, one wants both the expected risk $R$ and the empirical risk $\hat{R}$ minimizers to be as low as possible. To achieve this we can again evaluate the performance of $f^{*}_{\mathcal{L}_{\text{Train}}}$ by computing the empirical risk defined in Eq. \ref{eq:empirical_risk} on a separate independent dataset known as the \textcolor{RoyalBlue}{testing set} $\mathcal{L}_{\text{Test}}$. Note, however, that this quantity should be used for model evaluation purposes only and not for model selection ones as this would lead to some bias, which is usually done through a separate dataset called the \textcolor{RoyalBlue}{validation set}. 
 
 So far we have defined the concepts of expected risk and empirical risk with respect to a loss function $\ell$. However, we have not yet seen what this loss function looks like in practice. In SL $\ell$ changes based on the characteristics of $Y$. This allows us to distinguish between two different SL problems: \textcolor{RoyalBlue}{classification} and \textcolor{RoyalBlue}{regression}. In the first case $\mathcal{Y}$ comes in the form of a finite set of classes $\{c_1, c_2,...,c_i\}$, whereas in the latter case $\mathcal{Y}\in\mathds{R}$. For classification the arguably most straightforward loss function is the $0-1$ loss defined as 
 \begin{equation}
 	\ell(f(\vec{x}),y)) = \mathbb{1}(f(\vec{x})\neq y)),
 \end{equation}
-while for regression problems $\ell$ can either come in the form of the squared error loss:
+while for regression problems $\ell$ can for example come in the form of the squared error loss:
 \begin{equation}
 	\ell(f(\vec{x}),y))=(y-f(\vec{x}))^2
 \end{equation}
@@ -130,7 +130,7 @@ where $\vec{h}\in\mathds{R}^{q},\vec{x}\in\mathds{R}^{p},\vec{W}\in\mathds{R}^{p
 		\vec{h}_L & = \sigma(\vec{W}^{\intercal}_{L}\vec{h}_{L-1}+\vec{b}_{L})
 	\end{split}
 \end{equation}
-that define a \textcolor{RoyalBlue}{multilayer perceptron} (MLP), also known as feedforward neural network. From now on we will refer to an MLP as $f(\vec{x};\theta)$ where $\theta=\{\vec{W}_k,\vec{b}_k,...|k=1,...,L\}$. 
+that define a \textcolor{RoyalBlue}{multilayer perceptron} (MLP), also known as feedforward neural network. From now on we will refer to an MLP as $f(\vec{x};\theta)$ where $\theta=\{\vec{W}_k,\vec{b}_k|k=1,...,L\}$. 
 
 Now that we defined the mathematical computations that are performed by a feedforward neural network we move on to explaining how one can train these kind of models to perform empirical risk minimization.
 
@@ -219,12 +219,12 @@ Defining an appropriate loss function is a task that has important practical imp
 
 Typical loss functions that derive from Eq. \ref{eq:maximum_likelihood} (see Chapter 5 of \cite{goodfellow2016deep} for the exact derivations) are the mean squared error (MSE) loss
 \begin{equation}
-	\mathscr{L}(\theta) = \frac{1}{2}\mathds{E}_{(\vec{x},y\sim P(X,Y))} ||y - f(\vec{x};\theta) ||^{2}
+	\mathscr{L}(\theta) = \frac{1}{2}\mathds{E}_{(\vec{x},y)\sim P(X,Y)} ||y - f(\vec{x};\theta) ||^{2}
 	\label{eq:mean_squared_error}
 \end{equation}
 which is used for tackling regression problems, and the categorical cross-entropy loss
 \begin{equation}
-	\mathscr{L}(\theta) = - \mathds{E}_{(\vec{x},y)\sim P(X,Y)} \sum_{i=1}^{C} y^{i} \log p_\text{model} f(\vec{x};\theta)
+	\mathscr{L}(\theta) = - \mathds{E}_{(\vec{x},y)\sim P(X,Y)} \sum_{i=1}^{C} 1(y=i) \log p_\text{model} f_i(\vec{x};\theta)
 	\label{eq:cross_entropy}
 \end{equation}
 which is used for multi-class classification problems, where $C$ is the number of classes we would like to classify. 
