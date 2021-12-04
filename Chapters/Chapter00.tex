@@ -3,33 +3,55 @@
 
 The ability of linking novel, potentially problematic situations to events that we have already observed in our past is at the center of human intelligence. Throughout our lifetime we constantly need to deal with unforeseen events, which sometimes can be so overwhelming to look insurmountable. A common strategy that humans as well as animals have learned to adopt throughout millions of years of evolution, is to start tackling novel, unseen situations by re-using knowledge that in the past resulted in successfull solutions. Being able of recognizing patterns across similar settings, as well as the capacity of re-using and potentially adapting an already established skill set, is by many cognitive scientists considered one of the main intellectual feats underlying intelligence. It is in fact easy to think of day to day examples where instead of learning how to solve a problem from scratch it is by far more beneficial to start from an already known solution. For example, it is much easier to learn how to play a musical instrument if we already possess some musical knowledge, or it is much more convenient to learn a new language that is as close as possible to our mothertongue.
 
-The field of Artificial Intelligence (AI) aims to create computer programs that are able of mimicking, at least in part the cognitive abilities underlying human intelligence. As a result, it follows that among such abilities, there is also that of being capable of adapting to new unseen situations and to potentially learn how to solve new tasks whilst exploiting some previously acquired knowledge. This capacity comes with the name of Transfer Learning. Having computer programs that are transferable is by many considered one of the most complicated challenges of all AI, which if overcome should open the door towards Artificial General Intelligence (AGI). 
+The field of Artificial Intelligence (AI) aims to create computer programs, typically built on top of mathematical models, that are able of mimicking, at least in part the cognitive abilities underlying human intelligence. As a result, it follows that among such abilities, there is also that of being capable of adapting to new unseen situations and to potentially learn how to solve new tasks whilst exploiting some previously acquired knowledge. This capacity comes with the name of Transfer Learning. Having computer programs that are transferable is by many considered one of the most complicated challenges of all AI, which if overcome should open the door towards Artificial General Intelligence (AGI). 
 
-The most popular AI computer programs are nowadays the result of machine learning based techniques. Among the different families of machine learning based algorithms, deep neural networks, and convolutional neural networks specifically, are at the present moment by far the most successful ones. Hence, understanding whether convolutional neural networks are able of generalizing across different tasks and domains is key towards the developent of AGI. The work presented in this thesis, therefore, aims at better characterizing the Transfer Learning properties of convolutional neural networks by giving an answer to a set of research questions that places this kind of artificial neural networks at the center of all the scientific contributions that will be presented throughout this dissertation. While it is true that when it comes to scientific research we usually end up with having more questions than the ones we started with, in this work we give an answer to the following research questions:
+The most popular AI computer programs are nowadays the result of machine learning based techniques. Among the different families of machine learning based algorithms, deep neural networks, and convolutional neural networks specifically, are at the present moment by far the most successful ones. Hence, understanding whether convolutional neural networks are able of generalizing across different tasks and domains is key towards the developent of AGI. 
 
-\begin{remark}{Research Questions}
+The field of machine learning is typically divided into three distinct types: 1) supervised and 2) unsupervised learning, which are learning paradigms where the models goal is to learn from labeled or unlabelled datasets respectively; and 3) reinforcement learning, a learning situation where algorithms need to learn while interacting with an environment. Based on this distinction, in the quest of better characterizing and understanding the transfer learning properties of convolutional neural networks, throught this dissertation we will adopt a twofold perspective. We will in fact study the degree of transferability of convolutional neural networks both in a supervised learning scenario as well as in a reinforcement learning one. To this end, we will start this work by thoroughly reviewing both learning paradigms in Chapters \ref{ch:supervised_learning} and \ref{ch:reinforcement_learning} respectively, before placing both machine learning approaches under the lens of transfer learning in Chapter \ref{ch:transfer_learning}. These first three chapters will constitute Part I of this dissertation.
+
+After having introduced all the necessary machine learning preliminaries, we will move on towards presenting the main scientific contributions of this work, which are motivated by the following general research question:
+\begin{center}
+	\textit{Can convolutional neural networks be transferred and trained across different source and target domains? if so, which target domains could be of interest for investigating their transfer learning properties?}	
+\end{center}    
+
+We will answer this research question by adressing a set of three, arguably more specific, research questions which are:
 \begin{enumerate}
-	\item \textit{"Can convolutional neural networks be transferred and trained across different source and target domains? \\ if so, which target domains could be of interest for investigating their transfer learning properties?"}
-		
 	\item \textit{"What Transfer Learning training strategy should be adopted to maximize the performance of pre-trained networks?"}
 
 	\item \textit{"Can Transfer Learning be a valuable tool for better understanding convolutional neural networks?"}
 	
-	\item \textit{"Do different machine learning tasks result in convolutional neural networks with different transfer learning properties?"}
+	\item \textit{"Do different machine learning paradigms result in convolutional neural networks with different transfer learning properties?"}
 \end{enumerate}
-\end{remark}
 
-As we will see throughout this work, all research questions are placed within the deep transfer learning literature, a research field that focuses on identifying the generalization properties of convolutional neural networks as well as their degree of transferability across different domains and tasks. The aforementioned research questions are answered thanks to the work that has been presented in several peer-reviewed publications. The main contributions underlying this thesis are:
+As mentioned earlier, all research questions will be studied both from a supervised learning perspective as well as from a reinforcement learning one. It naturally follows that the rest of this dissertation will be divided into two additional parts: Part II, including Chapters \ref{ch:tl_natural_to_non_natural}, \ref{ch:minerva} and \ref{ch:tl_lth}, which will focus on studying the transfer learning potential of convolutional neural networks within supervised learning; and Part III, made of Chapters \ref{ch:dqv_family_of_algorithms}, \ref{ch:dqn_transfer} and \ref{ch:upside_down_rl}, which will focus on the reinforcement learning scenario instead.
+
+All the aforementioned research questions will be answered thanks to the work that has been presented in several peer-reviewed publications. These contributions, together with the role they play throughout this dissertation, are presented in chronological order hereafter:
+
+\bigskip
 
 \begin{remark}{Main Publications}
 \begin{itemize}
 	\item \citet{sabatelli2018deep} \textit{"Deep transfer learning for art classification problems."} Proceedings of the European Conference on Computer Vision (ECCV) Workshops, 2018.
+	\\ This publication will be mainly reviewed in Chapter \ref{ch:tl_natural_to_non_natural}, and will be of interest in Chapters \ref{ch:minerva}, \ref{ch:tl_lth} and \ref{ch:dqn_transfer}.
+
 	\item \citet{sabatelli2018deepqv} \textit{Deep Quality Value (DQV) Learning."} Advances in Neural Information Processing Systems (NeurIPS), Deep Reinforcement Learning Workshop, 2018.
-	\item \citet{sabatelli2019approximating}  \textit{"Approximating two value functions instead of one: towards characterizing a new family of Deep Reinforcement Learning algorithms"} Advances in Neural Information Processing Systems (NeurIPS), Deep Reinforcement Learning Workshop, 2019	
+	\\ This publication is of interest in Chapter \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}.
+
+	\item \citet{sabatelli2019approximating}  \textit{"Approximating two value functions instead of one: towards characterizing a new family of Deep Reinforcement Learning algorithms"} Advances in Neural Information Processing Systems (NeurIPS), Deep Reinforcement Learning Workshop, 2019. \\
+	This publication is of interest in Chapter \ref{ch:dqv_family_of_algorithms}.
+	
 	\item \citet{sabatelli2020transferability} \textit{"On the transferability of winning tickets in non-natural image datasets.} Proceedings of the 16th International Joint Conference on Computer Vision, Imaging and Computer Graphics Theory and Applications (VISAPP), 2021.
+	\\ Chapter \ref{ch:tl_lth} is based on this publication.
+
 	\item \citet{sabatelli2020deep} \textit{"The deep quality-value family of deep reinforcement learning algorithms"} Proceedings of the International Joint Conference on Neural Networks (IJCNN). IEEE, 2020.
+	\\ This is the main publication underlying Chapter \ref{ch:dqv_family_of_algorithms}, which will also be of interest in Chapter \ref{ch:dqn_transfer}.
+
 	\item \citet{sabatelli2021advances} \textit{"Advances in Digital Music Iconography: Benchmarking the detection of musical instruments in unrestricted, non-photorealistic images from the artistic domain."} DHQ: Digital Humanities Quarterly 15.1 2021.
-	\item \citet{sabatelli2021transferability} \textit{"On the Transferability of Deep-Q Networks."} Under Review. 
+	\\ Chapter \ref{ch:minerva} extends this publication.
+
+	\item \citet{sabatelli2021transferability} \textit{"On the Transferability of Deep-Q Networks."} Under \\
+	Chapter \ref{ch:dqn_transfer} is based on this publication.
+ 
 \end{itemize}
 \end{remark}
 
