@@ -63,9 +63,13 @@
 \end{shaded}%
 }
 
-	
+
+
+\numberwithin{figure}{chapter}
+\numberwithin{table}{chapter}
 
 \begin{document}
+
 
 \frenchspacing % Reduces space after periods to make text more compact
 
@@ -100,7 +104,7 @@
 
 \pagestyle{scrheadings} % Show chapter titles as headings
 
-%\cleardoublepage\include{FrontBackMatter/Contents} % Contents, list of figures/tables/listings and acronyms
+\cleardoublepage\include{FrontBackMatter/Contents} % Contents, list of figures/tables/listings and acronyms
 
 \cleardoublepage
 
@@ -141,9 +145,9 @@
 
 \part{Transfer Learning for Deep Reinforcement Learning} % Second part of the thesis
 
-%\include{Chapters/Chapter07} % NeurIPS DRLW + IJCNN paper
-%\include{Chapters/Chapter08} % ICML (under review) paper?
-%\include{Chapters/Chapter09} % Upside-Down RL + critical discussion
+\include{Chapters/Chapter07} % NeurIPS DRLW + IJCNN paper
+\include{Chapters/Chapter08} % ICML (under review) paper?
+\include{Chapters/Chapter09} % Upside-Down RL + critical discussion
 
 
 
