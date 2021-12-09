@@ -1,6 +1,6 @@
 \begin{figure}[ht!]
 \centering
-	\begin{tikzpicture}[scale = 0.45]
+	\begin{tikzpicture}[scale = 0.5]
 
 \begin{axis}[
 	name=ax1,
@@ -44,7 +44,8 @@
 \end{axis}
 \begin{axis}[
 	at={(ax1.south east)},
-	xshift=2cm,
+	xshift=-16cm,
+	yshift=-11cm,
 	grid style={dashed,gray},
 	grid = both, 
 	tick style=black,
@@ -67,7 +68,7 @@
 	/pgf/number format/fixed,
         %log ticks with fixed point,
   	legend pos= north east,
-	legend style={font=\Large, at={(-0.8,-0.35,-0.2)},anchor=north west, legend columns = 3}
+	legend style={font=\Large, at={(0,-0.35,-0.2)},anchor=north west, legend columns = 3}
 	]
 	
 	\addlegendentry{Baseline}
