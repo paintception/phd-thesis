@@ -238,7 +238,7 @@ The most straightforward type of function approximator one can use is a linear f
 \begin{equation}
 	Q(s,a) = \sum_i \theta_{i,a} \vec{x}_i(s).
 \end{equation}
-Given a trajectory $\langle s_t,a_t,r_t,s_{t+1}\rangle$ the Q-Learning algorithm presented in Eq. \ref{eq:dqn} can now be used for updating the parameters $\theta$ for all $i$ with the following update rule:
+Given a trajectory $\langle s_t,a_t,r_t,s_{t+1}\rangle$ the Q-Learning algorithm presented in Eq. \ref{eq:q_learning} can now be used for updating the parameters $\theta$ for all $i$ with the following update rule:
 \begin{equation}
 	\theta_{i,a_t} := \theta_{i,a_t} + \alpha(r_t +\gamma\:\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t))\vec{x}_i(s_t).
 	\label{eq:q_learning_fa}
