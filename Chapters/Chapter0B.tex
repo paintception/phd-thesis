@@ -4,6 +4,35 @@
 \label{ch:appendix}
 
 
+\section{How to Identify Lottery Winners}
+
+We hereafter report all the hyperparameters that have guided the research presented in Chapter \ref{ch:tl_lth} and that could be of interest for researchers interested in identifying pruned models winners of the Lottery Ticket Hypothesis.
+In all of our experiments we have used a ResNet-50 convolutional neural network which has the same structure as the one presented in \cite{han2015deep}.
+We have chosen this specific architecture since it has proven to be successful both when used on DP data \cite{mormont2018comparison} as on DH datasets \cite{sabatelli2018deep}. Specifically when it comes to the amount of strides, the sizes of the filters, and the number of output channels, the residual blocks of the network come in the following form:  ($1\times1$, 64, 64, 256) $\times$ 3, (2$\times$2, 128, 128, 512) $\times$ 4, (2$\times$2, 256, 256, 1024) $\times$ 6, (2$\times$2, 512, 512, 2048) $\times$ 3. The last convolution operation of the network is followed by an average pooling layer and a final linear classification layer which has as many output nodes as there is classes to classify in our datasets. Since we only considered classification problems, the model always minimizes the categorical-crossentropy loss function. When feeding the model with the images of the datasets discussed in Chapter \ref{ch:tl_lth} we extract a random crop of size $224\times224$ and used mini-batches of size 64. No data-augmentation was used. We train the neural network with the Stochastic Gradient Descent (SGD) algorithm with an initial learning rate of $10^{-1}$. SGD is used in combination with Nesterov Momentum $\rho$, set to 0.9, and a weight decay factor $\alpha$ set to $10^{-5}$. Training is controlled by the early-stopping regularization method which stops the training process as soon as the validation loss does not decrease for five epochs in a row. When it comes to the parameters used for pruning we follow a magnitude pruning scheme as the one presented in \cite{han2015learning} which has a pruning-rate of $20\%$. In order to construct winning-tickets we have used the late-resetting procedure with $k=2$. We summarize all this information in Table \ref{tab:hyperparameters}. 
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l | c |  }
+Hyperparameter \\
+\hline \hline
+Neural Network & ResNet-50 \\ 
+Weight-Initialization & Xavier \\
+Optimizer & SGD \\
+Size of the mini-batches & 64 \\ 
+Learning-rate & $10^{-1}$ \\
+Momentum $\rho$ & 0.9 \\
+Decay-Factor $\alpha$ & $10^{-5}$ \\
+Annealing-epochs & $[50,60,75]$\\
+Early-Stopping & 5 \\ 
+Pruning-Rate & 0.20 \\
+Late-resetting $k$ & 2 \\ 
+\end{tabular}
+\caption{Hyperparameters for the experimental setup adopted in Chapter \ref{ch:tl_lth}.}
+\label{tab:hyperparameters}
+\end{table}
+
+
+
 \section{The Deep Quality-Value Learning Algorithms}
 
 In this section we report the pseudocode of the DQV-Learning and DQV-Max Learning algorithms described in Sec. \ref{sec:dqv_family} of Chapter \ref{ch:dqv_family_of_algorithms}. The DQV-Learning algorithm is also used for the transfer learning studies presented in Sec. \ref{sec:empirical_study} of Chapter \ref{ch:dqn_transfer}. 
