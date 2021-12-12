@@ -1,10 +1,9 @@
 % Appendix X
 
-\chapter*{Appendix}
+%\chapter*{Appendix}
 \label{ch:appendix}
 
-
-\section{How to Identify Lottery Winners}
+\chapter{How to Identify Lottery Winners}\label{ch:appendixlottery}
 
 We hereafter report all the hyperparameters that have guided the research presented in Chapter \ref{ch:tl_lth} and that could be of interest for researchers interested in identifying pruned models winners of the Lottery Ticket Hypothesis.
 In all of our experiments we have used a ResNet-50 convolutional neural network which has the same structure as the one presented in \cite{han2015deep}.
@@ -33,9 +32,9 @@ Late-resetting $k$ & 2 \\
 
 
 
-\section{The Deep Quality-Value Learning Algorithms}
+\chapter{The Deep Quality-Value Learning Algorithms}\label{ch:appendixDQV}
 
-In this section we report the pseudocode of the DQV-Learning and DQV-Max Learning algorithms described in Sec. \ref{sec:dqv_family} of Chapter \ref{ch:dqv_family_of_algorithms}. The DQV-Learning algorithm is also used for the transfer learning studies presented in Sec. \ref{sec:empirical_study} of Chapter \ref{ch:dqn_transfer}. 
+In this appendix, we report the pseudocode of the DQV-Learning and DQV-Max Learning algorithms described in Sec. \ref{sec:dqv_family} of Chapter \ref{ch:dqv_family_of_algorithms}. The DQV-Learning algorithm is also used for the transfer learning studies presented in Sec. \ref{sec:empirical_study} of Chapter \ref{ch:dqn_transfer}. 
 
 In Tables \ref{tab:table_1}, \ref{tab:table_2} and \ref{tab:table_3} we also summarize all the hyper-parameters that we have used during the experiments reported in Chapters \ref{ch:dqv_family_of_algorithms} and \ref{ch:dqn_transfer}, ranging from the pre-processing values to the neural architectures. We have followed the typical experimental setup that is usually reported in the DRL literature \cite{mnih2015human, van2015deep, wang2016dueling, castro2018dopamine, sabatelli2020deep} that trains Deep Q-Networks on the Atari 2600 testbed.
 
@@ -102,8 +101,9 @@ Activations & ReLU & \\
 \input{./Pseudocode/dqv_family.tex}
 
 
-\section{Reinforcement Learning Upside Down}
-In this section we report some preliminary experiments that we have performed in the context of Upside-Down Reinforcement Learning and reflect on the potential that this learning paradigm can offer to the reinforcement learning community. 
+\chapter{Reinforcement Learning Upside Down}\label{ch:appendixupsidedown}
+
+In this appendix, we report some preliminary experiments that we have performed in the context of Upside-Down Reinforcement Learning and reflect on the potential that this learning paradigm can offer to the reinforcement learning community. 
 
 Despite many successes, it is clear that the combination of reinforcement learning algorithms and deep neural networks can present some significant limitations. Throughout this dissertation we have mainly focused on the aforementioned Deadly Triad phenomenon and on the poor transfer learning properties of Deep-Q Networks which both can limit the development of robust and general agents. Next to these issues, DRL algorithms are characterized by numerous other problems as well (the discussion of which is out of the scope of this thesis) and that all mainly arise because tabular RL algorithms are combined with function approximators \cite{tsitsiklis1997analysis,van2016deep,anschel2017averaged,fujimoto2018addressing,fujimoto2019benchmarking, kumar2019stabilizing, marklundexact}. Although the DRL community has been able to address most of such issues successfully, we believe that the way optimal control problems are currently being solved by the DRL community might need revision. In fact, we argue that most of the current DRL research focuses on introducing solutions that, albeit valuable, are only able to solve very specific and limited problems to a (sometimes very) small extent. As a result, very few DRL practitioners have been critically questioning the long term value of modern DRL algorithms, and the way RL problems are currently being addressed. An exception to this common trend, however, has recently been introduced by \citet{schmidhuber2019reinforcement} who proposed the idea of "Upside-Down Reinforcement Learning" (UDRL). In UDRL the main goal is to solve typical Markovian control problems via classic supervised learning techniques, and to replace common RL concepts such as value function approximation and policy search, through maximum likelihood estimation techniques. In principle this should be done by learning a mapping from states to actions (see \cite{srivastava2019training} for all the mathematical details), which could overcome the need of learning an optimal value function or stochastic policy. We agree with Schmidhuber's ideas, and support the goal of potentially solving optimal control problems via supervised learning techniques. In fact we strongly believe that DRL in its current form is already reducing reinforcement learning problems to supervised learning problems. As an example let us consider the role of the experience replay memory buffer reviewed in Chapter \ref{ch:reinforcement_learning} and adopted by the DQV and DQV-Max Learning algorithms presented in Chapter \ref{ch:dqv_family_of_algorithms}. We have seen that the role of experience replay is that of storing RL trajectories which can in a later moment be sampled and used for minimizing the objective function of a Deep-Q Network. By taking a critical look at this buffer, we can see that it is in large part equivalent to the datasets that are typically used in supervised learning: it needs to store a large amount of RL trajectories which can then be used for modeling the task of learning a value function as a regression problem where $\mathcal{Y}$ is modeled by the space of all TD-errors stored within the buffer. The idea of constructing a dataset of previous trajectories is very far from the ideal RL setting reviewed at the beginning of Chapter \ref{ch:reinforcement_learning}, where we have indeed seen that a RL agent should be able to learn in an online fashion based on the last trajectory only. We therefore believe that the successess obtained by DRL stem from the fact that RL problems have been modeled as supervised learning ones, which as discussed in Sec. \ref{sec:supervised_learning} are well suited for deep neural networks.
 

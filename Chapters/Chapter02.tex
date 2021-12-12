@@ -217,12 +217,12 @@ where $a^{*}=\argmax_{a\in \mathcal{A}}(Q_1(s_{t+1}))$. Note that at each time s
 \paragraph{\textbf{\uppercase{QV}($\lambda$)-\uppercase{L}earning}} First introduced by \citet{wiering2005qv} and further developed by \citet{wiering2009qv} is an on-policy RL algorithm which differently from the previously introduced methods keeps track of an estimate of the state-value function $V:\mathcal{S}\rightarrow\Re$ alongside the usual estimate of the state-action value function $Q:\mathcal{S}\times\mathcal{A}\rightarrow\Re$. Since the goal is to jointly learn two value functions, QV($\lambda$)-Learning requires two separate update rules. The $V$ function is learned via the same form of TD-Learning that we introduced in Eq. \ref{eq:td_learning_v}, with the only difference being the addition of the eligibility traces $e_t(s)$ at the end of the update rule (an RL technique that we will review in Chapter \ref{ch:dqv_family_of_algorithms}). QV($\lambda$)-Learning, therefore, learns the $V$ function with the following update rule:
 \begin{equation}
 V(s):= V(s) + \alpha \big[ r_{t} + \gamma V(s_{t+1}) - V(s_t) \big] e_{t}(s).
-\label{eq:qv_lambda_v_update}
+\label{eqch02:qv_lambda_v_update}
 \end{equation}
 Since as discussed earlier only learning the $V$ function is not sufficient for deriving an optimal policy one needs to learn the $Q$ function as well. In QV($\lambda$)-Learning this is done as follows:
 \begin{equation}
 Q(s_{t}, a_{t}):= Q(s_{t}, a_{t}) + \alpha \big[r_{t} + \gamma V(s_{t+1}) - Q(s_{t}, a_{t}) \big].
-\label{eq:qv_lambda_q_update}
+\label{eqch02:qv_lambda_q_update}
 \end{equation}
 An attractive property of the algorithm is that it uses the same TD-target ($r_t + \gamma V(s_{t+1})$) for defining the two different TD-errors that are required for learning the state-value and the state-action value functions. Among the main insights that motivate learning two value functions over one, \citet{wiering2005qv} mentions the possibility that the $V$ function, since it does not depend on the agent's actions, might converge faster than the $Q$ function. As described earlier, the $V$ function only depends on the state space of the MDP, which by definition is smaller than the state-action space. For a more in-depth and formal presentation of the conditions that show the benefits of jointly learning the $V$ function alongside the $Q$ function, we refer the reader to chapter 5 of \cite{van2011insights}.
 
