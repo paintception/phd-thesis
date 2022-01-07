@@ -109,7 +109,7 @@ A key property of $V^{\pi}(s)$ and $Q^{\pi}(s,a)$ is that both value functions s
  & =\mathds{E}\big[r_{t}+\gamma r_{t+1}+\gamma^{2}r_{t+2}+\ldots \big| s_t =s , \pi \big] \\ 
  & =\mathds{E}\big[r_{t}+\gamma(r_{t+1}+\gamma r_{t+2}+\ldots)\big| s_t =s , \pi \big] \\
  & =\mathds{E}\big[r_{t}+\gamma V^{\pi}(s_{t+1}) \big| s_t =s , \pi \big] \\
- & =\sum_a \pi(a|s) \sum_{s+1} p(s_{t+1}|s,a)\big[\Re(s_t, a, s_{t+1}) + \gamma V^{\pi}(s_{t+1}) \big].
+ & =\sum_a \pi(a|s) \sum_{s_{t+1}} p(s_{t+1}|s,a)\big[\Re(s_t, a, s_{t+1}) + \gamma V^{\pi}(s_{t+1}) \big].
 \end{split}
 \label{eq:state_value_derivation}
 \end{equation}
