@@ -266,21 +266,8 @@ Linear functions can yield successful results \cite{lane1992theory, park1993appr
 \label{sec:deep_reinforcement_learning}
 Before looking into how RL algorithms should be integrated within deep neural networks, it is important to mention that RL techniques have been successfully combined with (less powerful) neural networks for over three decades. In fact, the field known as \textcolor{RoyalBlue}{Connectionist Reinforcement Learning} (CRL) resulted in the very first algorithms that managed to outperform human experts on specific tasks. Among the multiple possible examples of this family of techniques, we mention the TD-Gammon program introduced by \citet{tesauro1994td}. TD-Gammon successfully learns an approximation of the popular Backgammon boardgame's evaluation function through the same TD-Learning methods that we presented in Sec. \ref{sec:td_learning}. Tesauro's program achieved a level of play comparable to the one of the top human Backgammon players of its time and is even nowadays considered one of the most important RL breakthroughs. For a more detailed presentation about the successful applications of CRL algorithms, we refer the reader to \cite{bucsoniu2011approximate}.  
 
-While certainly successful for a certain set of problems (see for example chapter $1$ of \cite{sabatelli2017learning}), CRL techniques also present severe limitations. Since they only use multi-layer perceptrons as function approximators, these algorithms cannot be used for tackling problems where the state representation of the MDP is highly dimensional. To overcome this, more complicated and powerful networks are required. \textcolor{RoyalBlue}{Deep Reinforcement Learning} (DRL) \cite{arulkumaran2017deep, li2017deep, franccois2018introduction} is a research field that combines RL algorithms with deeper and more complex neural architectures. In value based model-free DRL we are interested in learning an approximation of an optimal value function with a deep neural network that comes with parameters $\theta$
-\noindent
-\begin{tabularx}{\linewidth}{@{}XX@{}}
-\begin{equation}
-	  V(s;\theta)\approx V^{*}(s)
-	  \label{eq:v_approx}
-  \end{equation}
-&
-\begin{equation}  
-	Q(s,a;\theta)\approx Q^{*}(s,a)
-	\label{eq:q_approx}
-  \end{equation}
-\end{tabularx}
+While certainly successful for a certain set of problems (see for example chapter $1$ of \cite{sabatelli2017learning}), CRL techniques also present severe limitations. Since they only use multi-layer perceptrons as function approximators, these algorithms cannot be used for tackling problems where the state representation of the MDP is highly dimensional. To overcome this, more complicated and powerful networks are required. \textcolor{RoyalBlue}{Deep Reinforcement Learning} (DRL) \cite{arulkumaran2017deep, li2017deep, franccois2018introduction} is a research field that combines RL algorithms with deeper and more complex neural architectures. In value based model-free DRL we are interested in learning an approximation of either the optimal state-value function $V(s;\theta)\approx V^{*}(s)$ or the optimal state-action value function $ Q(s,a;\theta)\approx Q^{*}(s,a)$ with a deep neural network that comes with parameters $\theta$
 and that usually comes in the form of a convolutional neural network. We now describe some of the algorithms which have contributed to the development of DRL the most. 
-
 
 \paragraph{\textbf{\uppercase{D}eep \uppercase{Q}-\uppercase{L}earning (\uppercase{DQN})}} Just like Q-Learning is arguably the most important tabular model-free RL algorithm, so is DQN when it comes to DRL. First introduced by \citet{mnih2013playing} and then made popular by the work presented in \cite{mnih2015human} this algorithm can certainly be considered as the very first successful example of a neural network that is able to learn an approximation of the optimal state-action value function just from high sensory inputs (in this case images). As the name suggests, Deep Q-Learning (DQN)\footnote{In DQN the `N" in the acronym stays for `Network" and replaces what could have been the, arguably more intuitive, `L" of Learning.} is based upon the Q-Learning algorithm and aims at learning an approximation of the optimal state-action value function $Q$. This is done by reshaping Q-Learning's update rule, presented in Eq. \ref{eq:q_learning}, into a differentiable loss function that can be used for training a convolutional network. This is achieved through the following objective function:
 \begin{multline}
