@@ -1,0 +1,96 @@
+\begin{figure}[ht!]
+\centering
+	\begin{tikzpicture}[scale = 0.5]
+
+\begin{axis}[
+	name=ax1,
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+	xlabel=Fraction of Weights Pruned,
+  	ylabel= Accuracy ($\%$),
+	title=Lung-Tissues,
+	%width=1,
+	xtick=data,
+	label style={font=\scriptsize},
+	xticklabels = {0.0,0.2,0.36,0.488,0.59,0.672,0.738,0.79,0.832,0.866,0.893,0.914,0.931,0.945,0.956,0.965,0.972,0.977,0.982,0.986,0.988,0.991,0.993,0.994,0.995,0.996,0.997,0.998,0.998,0.998,0.999},
+	x=4.5mm,
+	ymin=70,
+    	ymax=95,
+	scale only axis,
+	xticklabel style={rotate=90},
+        %log ticks with fixed point,
+        scaled ticks=true,
+	/pgf/number format/fixed,
+        %log ticks with fixed point,
+  	legend pos= north east,
+	%legend style={font=\small, at={(-0.8,-0.2,-0.2)},anchor=north west, legend columns = 1}
+	]
+
+	\addlegendentry{Baseline}
+	\addlegendentry{100\% of training data}
+	\addlegendentry{75\% of training data}
+	\addlegendentry{50\% of training data}
+	\addlegendentry{25\% of training data}
+
+\addplot [ultra thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+\addplot [ultra thick, blue, mark=x] table [x expr=\coordindex, y=100]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+\addplot [ultra thick, green, mark=x] table [x expr=\coordindex, y=75]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+\addplot [ultra thick, red, mark=x] table [x expr=\coordindex, y=50]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+\addplot [ultra thick, purple, mark=x] table [x expr=\coordindex, y=25]{./Results/Chapter06/logs/lung_tissues_percentage_study.txt};
+
+\legend{}
+\end{axis}
+\begin{axis}[
+	at={(ax1.south east)},
+	xshift=-16cm,
+	yshift=-11cm,
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+	x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+	y label style={font=\Large},
+  	xlabel=Fraction of Weights Pruned,
+  	ylabel= Accuracy ($\%$),
+	title=Human-LBA,
+	%width=1,
+	xtick=data,
+	label style={font=\scriptsize},
+	xticklabels = {0.0,0.2,0.36,0.488,0.59,0.672,0.738,0.79,0.832,0.866,0.893,0.914,0.931,0.945,0.956,0.965,0.972,0.977,0.982,0.986,0.988,0.991,0.993,0.994,0.995,0.996,0.997,0.998,0.998,0.998,0.999},
+	x=4.5mm,
+	ymin=40,
+    	ymax=90,
+	scale only axis,
+	xticklabel style={rotate=90},
+        %log ticks with fixed point,
+        scaled ticks=true,
+	/pgf/number format/fixed,
+        %log ticks with fixed point,
+  	legend pos= north east,
+	legend style={font=\Large, at={(0,-0.35,-0.2)},anchor=north west, legend columns = 3}
+	]
+	
+	\addlegendentry{Baseline}
+	\addlegendentry{100\% of training data}
+	\addlegendentry{75\% of training data}
+	\addlegendentry{50\% of training data}
+	\addlegendentry{25\% of training data}
+
+\addplot [ultra thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+\addplot [ultra thick, blue, mark=x] table [x expr=\coordindex, y=100]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+\addplot [ultra thick, green, mark=x] table [x expr=\coordindex, y=75]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+\addplot [ultra thick, red, mark=x] table [x expr=\coordindex, y=50]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+\addplot [ultra thick, purple, mark=x] table [x expr=\coordindex, y=25]{./Results/Chapter06/logs/human_lba_percentage_study.txt};
+
+
+
+\end{axis} 
+
+
+    \end{tikzpicture}
+
+
+    \caption{Our study showing that the robustness to large pruning rates of lottery winners does not depend from the size of the training dataset. We can observe that even when lottery tickets are trained on only $25\%$ of the dataset their performance remains stable with respect to the fraction of pruned weights. These results suggest that the less stable performance of \texttt{Bone-Marrow} lottery tickets observed in Fig. \ref{fig:tl_learning_with_lottery_tickets_results} does not depend from the small training set.}
+    \label{fig:training_data_study}
+\end{figure} 

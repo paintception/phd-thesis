@@ -1,0 +1,98 @@
+\begin{figure}[ht!]
+\centering
+	\begin{tikzpicture}[scale = 0.5]
+\begin{axis}[
+	name=ax1,
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+	x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+  	xlabel=Fraction of Weights Pruned,
+  	ylabel= Accuracy ($\%$),
+	title=Artist Classification 1,
+	%width=1,
+	xtick=data,
+	legend pos=south west,
+	label style={font=\scriptsize},
+	xticklabels = {0.0,0.2,0.36,0.488,0.59,0.672,0.738,0.79,0.832,0.866,0.893,0.914,0.931,0.945,0.956,0.965,0.972,0.977,0.982,0.986,0.988,0.991,0.993,0.994,0.995,0.996,0.997,0.998,0.998,0.998,0.999},
+	x=4.5mm,
+	ymin=0,
+    	ymax=75,
+	scale only axis,
+	xticklabel style={rotate=90},
+        %log ticks with fixed point,
+        scaled ticks=true,
+	/pgf/number format/fixed,
+        %log ticks with fixed point,
+  	%legend pos=outer north east,
+	%legend style={font=\small, at={(-0.8,-0.2,-0.2)},anchor=north west, legend columns = 1}
+	]
+
+	\addlegendentry{Baseline}
+	\addlegendentry{Winning Ticket $f(x;m\odot\theta_k)$}
+	\addlegendentry{Random Ticket $f(x;m\odot\theta_r)$}
+	\addlegendentry{CIFAR-10}
+	\addlegendentry{CIFAR-100}
+	\addlegendentry{Fashion-MNIST}
+
+
+\addplot [ultra thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Chapter06/logs/artist_classification_1.txt};
+\addplot [ultra thick, blue, mark=x] table [x expr=\coordindex, y=winning_ticket]{./Chapter06/logs/artist_classification_1.txt};
+\addplot [ultra thick, orange, mark=x] table [x expr=\coordindex, y=random_mask]{./Chapter06/logs/artist_classification_1.txt};
+\addplot [ultra thick, green, mark=x] table [x expr=\coordindex, y=cifar10]{./Chapter06/logs/artist_classification_1.txt};
+\addplot [ultra thick, red, mark=x] table [x expr=\coordindex, y=cifar100]{./Chapter06/logs/artist_classification_1.txt};
+\addplot [ultra thick, purple, mark=x] table [x expr=\coordindex, y=fahion_mnist]{./Chapter06/logs/artist_classification_1.txt};
+
+\legend{}
+\end{axis}
+    
+\begin{axis}[
+	at={(ax1.south east)},
+	xshift=-16cm,
+	yshift=-11cm,
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+	x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+  	xlabel=Fraction of Weights Pruned,
+  	ylabel= Accuracy ($\%$),
+	title=Type Classification,
+	%width=1,
+	xtick=data,
+	label style={font=\scriptsize},
+	xticklabels = {0.0,0.2,0.36,0.488,0.59,0.672,0.738,0.79,0.832,0.866,0.893,0.914,0.931,0.945,0.956,0.965,0.972,0.977,0.982,0.986,0.988,0.991,0.993,0.994,0.995,0.996,0.997,0.998,0.998,0.998,0.999},
+	x=4.5mm,
+	ymin=10,
+    	ymax=70,
+	scale only axis,
+	xticklabel style={rotate=90},
+        %log ticks with fixed point,
+        scaled ticks=true,
+	/pgf/number format/fixed,
+        %log ticks with fixed point,
+  	legend pos=outer north east,
+	legend style={font=\Large, at={(0.05,-0.35,-0.2)},anchor=north west, legend columns = 2}
+	]
+
+	\addlegendentry{Baseline}
+	\addlegendentry{Winning Ticket $f(x;m\odot\theta_k)$}
+	\addlegendentry{Random Ticket $f(x;m\odot\theta_r)$}
+	\addlegendentry{CIFAR-10}
+	\addlegendentry{CIFAR-100}
+	\addlegendentry{Fashion-MNIST}
+
+
+\addplot [ultra thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Chapter06/logs/type_classification.txt};
+\addplot [ultra thick, blue, mark=x] table [x expr=\coordindex, y=winning_ticket]{./Chapter06/logs/type_classification.txt};
+\addplot [ultra thick, orange, mark=x] table [x expr=\coordindex, y=random_mask]{./Chapter06/logs/type_classification.txt};
+\addplot [ultra thick, green, mark=x] table [x expr=\coordindex, y=cifar10]{./Chapter06/logs/type_classification.txt};
+\addplot [ultra thick, red, mark=x] table [x expr=\coordindex, y=cifar100]{./Chapter06/logs/type_classification.txt};
+\addplot [ultra thick, purple, mark=x] table [x expr=\coordindex, y=fahion_mnist]{./Chapter06/logs/type_classification.txt};
+
+\end{axis} 
+    \end{tikzpicture}
+
+
+   \caption{An overview of the results showing that sparse models that are the winners of the LTH (represented by the coloured lines) significantly outperform unpruned networks which get randomly initialized and trained from scratch (dashed black line). This happens to be the case on all tested datasets, no matter whether a winning initialization comes from a natural image source or not. It is however worth mentioning that, especially on the biomedical datasets, natural image tickets get outperformed by sparse networks that that are the winners of the LTH on a biomedical dataset. On the other hand this is not the case when it comes to the classification of arts where natural image tickets outperform the ones which are found within artistic collections.}
+    \label{fig:tl_learning_with_lottery_tickets_results}
+\end{figure} 

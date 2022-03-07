@@ -1,0 +1,50 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.65]
+      \begin{axis}[
+	name=ax1,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Pong,
+        xlabel=Training Steps,
+        ylabel=Value Estimates,
+      ]
+
+
+      \addlegendentry{DQV-Max-True Value}
+      \addlegendentry{DQV-Max-Estimated Value}
+      
+      \addplot [ultra thick, black, mark=.] table [y=true_return_DQV-Max, x=training_steps]
+      {./Results/Chapter07/logs/overestimation_pong.txt};
+      \addplot [ultra thick, yellow, mark=.] table [y=estimate_DQV-Max, x=training_steps]{./Results/Chapter07/logs/overestimation_pong.txt};
+     
+      \legend{}
+
+      \end{axis}
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=2cm,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Enduro,
+        xlabel=Training Steps,
+        ylabel= Value Estimates,
+	legend columns=3, 
+        legend style={font=\Large, at={(-1,-0.3,-0.4)},anchor=north west,legend columns=3},
+      ]
+
+      \addlegendentry{DQV-Max-True Value}
+      \addlegendentry{DQV-Max-Estimated Value}
+
+      \addplot [ultra thick, black, mark=.] table [y=true_return_DQV-Max, x=training_steps]
+      {./Results/Chapter07/logs/overestimation_enduro.txt};
+      \addplot [ultra thick, yellow, mark=.] table [y=estimate_DQV-Max, x=training_steps]{./Results/Chapter07/logs/overestimation_enduro.txt};
+ 
+      \end{axis}
+	\end{tikzpicture}
+	\caption{Results investigating the extent to which the DQV-Max algorithm suffers from the overestimation bias of the $Q$ function. We can observe that on the \texttt{Pong} environment the value estimates of the algorithm are comparable to the ones of DDQN and DQV, therefore showing that DQV-Max also diverges significantly less than DQN. On the \texttt{Enduro} environment we can observe that the algorithm does diverge, although, differently from what is reported in Fig. \ref{fig:overestimation_bias_results_dqn} for the DQN algorithm, the $\underset{a \in \cal A}{\max}\:Q(s_{t+1}, a)$ estimates seem to converge towards an upper bound ($\approx 15$). Similarly to what is reported in Fig.\ref{fig:overestimation_bias_results_dqv} we can again observe that the real return obtained by a trained agent is higher compared to the one obtain by DQN, DDQN and DQV, therefore confirming the results presented in Table \ref{tab:ch07_results} which see the DQV-Max algorithm as the best performing algorithm on the \texttt{Enduro} game.}
+	\label{fig:overestimation_bias_results_dqv_max} 
+\end{figure}
+

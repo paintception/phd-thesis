@@ -1,0 +1,46 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.55]
+      \begin{axis}[
+	name=ax1,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Pong,
+        xlabel=Training Steps,
+        ylabel=Value Estimates,
+      ]
+
+
+      \addlegendentry{DQN-True Value}
+      \addlegendentry{DQN-Estimated Value}
+      
+      \addplot [ultra thick, black, mark=.] table [y=true_return_DQN, x=training_steps]
+      {./Chapter07/logs/overestimation_pong.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=estimate_DQN, x=training_steps]{./Chapter07/logs/overestimation_pong.txt};
+     
+      \end{axis}
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=2cm,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Pong,
+        xlabel=Training Steps,
+        ylabel= Value Estimates,
+	%legend columns=3, 
+        %legend style={font=\Large, at={(-1,-0.3,-0.4)},anchor=north west,legend columns=3},
+      ]
+
+      \addlegendentry{DQV-Max-True Value}
+      \addlegendentry{DQV-Max-Estimated Value}
+
+      \addplot [ultra thick, black, mark=.] table [y=true_return_DQV-Max, x=training_steps]
+      {./Chapter07/logs/overestimation_pong.txt};
+      \addplot [ultra thick, yellow, mark=.] table [y=estimate_DQV-Max, x=training_steps]{./Chapter07/logs/overestimation_pong.txt};
+ 
+      \end{axis}
+	\end{tikzpicture}
+\end{figure}
+

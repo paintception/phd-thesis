@@ -1,0 +1,54 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.65]
+      \begin{axis}[
+	name=ax1,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Acrobot,
+        xlabel=Episodes,
+        ylabel=Reward,
+      ]
+
+
+      \addlegendentry{DQV}
+      \addlegendentry{DQN}
+      \addlegendentry{DDQN}
+      
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Results/Chapter07/logs/acrobot_results.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=DQN, x=episodes]{./Results/Chapter07/logs/acrobot_results.txt};
+      \addplot [ultra thick, green, mark=.] table [y=DDQN, x=episodes]{./Results/Chapter07/logs/acrobot_results.txt};
+     
+      \legend{}
+
+      \end{axis}
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=2cm,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Cartpole,
+        xlabel=Episodes,
+        ylabel= Reward,
+	legend columns=3, 
+        legend style={font=\Large, at={(-0.65,-0.3,-0.4)},anchor=north west,legend columns=3},
+      ]
+
+      \addlegendentry{DQV}
+      \addlegendentry{DQN}
+      \addlegendentry{DDQN}
+ 
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Results/Chapter07/logs/cartpole_results.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=DQN, x=episodes]{./Results/Chapter07/logs/cartpole_results.txt};
+      \addplot [ultra thick, green, mark=.] table [y=DDQN, x=episodes]{./Results/Chapter07/logs/cartpole_results.txt};
+ 
+      \end{axis}
+	\end{tikzpicture}
+	\caption{Our preliminary results that show the benefits in terms of convergence time that can come from jointly approximating the $V$ function alongside the $Q$ function. We can observe that the DQV-Learning algorithm yields faster convergence when compared to popular algorithms which only approximate the $Q$ function: DQN and DDQN.}
+	\label{fig:mlp_dqv_results} 
+\end{figure}
+

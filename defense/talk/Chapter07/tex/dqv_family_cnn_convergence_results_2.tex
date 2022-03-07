@@ -1,0 +1,90 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.4]
+      \begin{axis}[
+	name=ax1,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Boxing,
+        xlabel=Episodes,
+        ylabel=Reward,
+      ]
+
+
+      \addlegendentry{DQV} 
+      \addlegendentry{DQV-Max}  
+      \addlegendentry{DQN}
+      \addlegendentry{DDQN}
+      
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Chapter07/logs/boxing_results.txt};
+       \addplot [ultra thick, yellow, mark=.] table [y=DQV-Max, x=episodes]
+      {./Chapter07/logs/boxing_results.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=DQN, x=episodes]{./Chapter07/logs/boxing_results.txt};
+      \addplot [ultra thick, green, mark=.] table [y=DDQN, x=episodes]{./Chapter07/logs/boxing_results.txt};
+     
+      \legend{}
+
+      \end{axis}
+
+      \begin{axis}[
+      	at={(ax1.south east)},
+	xshift=2cm,
+	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Enduro,
+        xlabel=Episodes,
+        ylabel=Reward,
+      ]
+
+
+      \addlegendentry{DQV} 
+      \addlegendentry{DQV-Max}  
+      \addlegendentry{DQN}
+      \addlegendentry{DDQN}
+      
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Chapter07/logs/enduro_results.txt};
+      \addplot [ultra thick, yellow, mark=.] table [y=DQV-Max, x=episodes]
+      {./Chapter07/logs/enduro_results.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=DQN, x=episodes]{./Chapter07/logs/enduro_results.txt};
+      \addplot [ultra thick, green, mark=.] table [y=DDQN, x=episodes]{./Chapter07/logs/enduro_results.txt};
+     
+      \legend{}
+
+      \end{axis}
+
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=-2cm,
+      	yshift=-8cm,
+	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Pong,
+        xlabel=Episodes,
+        ylabel= Reward,
+	legend columns=4, 
+        legend style={font=\Large, at={(-0.15,-0.3,-0.4)},anchor=north west,legend columns=3},
+      ]
+
+
+	\addlegendentry{DQV} 
+	\addlegendentry{DQV-Max}  
+	\addlegendentry{DQN}
+	\addlegendentry{DDQN}
+
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Chapter07/logs/pong_results.txt};
+      \addplot [ultra thick, yellow, mark=.] table [y=DQV-Max, x=episodes]
+      {./Chapter07/logs/pong_results.txt};
+      
+      \addplot [ultra thick, blue, mark=.] table [y=DQN, x=episodes]{./Chapter07/logs/pong_results.txt};
+      \addplot [ultra thick, green, mark=.] table [y=DDQN, x=episodes]{./Chapter07/logs/pong_results.txt};
+ 
+      \end{axis}
+	\end{tikzpicture}
+\end{figure}
+

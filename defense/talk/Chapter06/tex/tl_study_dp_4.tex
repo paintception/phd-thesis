@@ -1,0 +1,47 @@
+\begin{figure}[ht!]
+\centering
+	\begin{tikzpicture}[scale = 0.5]
+
+\begin{axis}[
+	name=ax1,
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+	xlabel=Fraction of Weights Pruned,
+  	ylabel= Accuracy ($\%$),
+	ylabel style={font=\Large},
+	title=Human-LBA,
+	xtick=data,
+	legend pos=south west,
+	label style={font=\scriptsize},
+	xticklabels = {0.0,0.2,0.36,0.488,0.59,0.672,0.738,0.79,0.832,0.866,0.893,0.914,0.931,0.945,0.956,0.965,0.972,0.977,0.982,0.986,0.988,0.991,0.993,0.994,0.995,0.996,0.997,0.998,0.998,0.998,0.999},
+	x=4.5mm,
+	ymin=40,
+    	ymax=90,
+	scale only axis,
+	xticklabel style={rotate=90},
+        %log ticks with fixed point,
+        scaled ticks=true,
+	/pgf/number format/fixed,
+        %log ticks with fixed point,
+]
+
+	\addlegendentry{Baseline}
+	\addlegendentry{Winning Ticket $f(x;m\odot\theta_k)$}
+	\addlegendentry{Random Ticket $f(x;m\odot\theta_r)$}
+	\addlegendentry{CIFAR-10}
+	\addlegendentry{CIFAR-100}
+	\addlegendentry{Fashion-MNIST}
+
+
+\addplot [ultra thick, black, mark=x] table [x expr=\coordindex, y=baseline]{./Chapter06/logs/human_lba.txt};
+\addplot [ultra thick, blue, mark=x] table [x expr=\coordindex, y=winning_ticket]{./Chapter06/logs/human_lba.txt};
+\addplot [ultra thick, orange, mark=x] table [x expr=\coordindex, y=random_mask]{./Chapter06/logs/human_lba.txt};
+\addplot [ultra thick, green, mark=x] table [x expr=\coordindex, y=cifar10]{./Chapter06/logs/human_lba.txt};
+%\addplot [ultra thick, red, mark=x] table [x expr=\coordindex, y=cifar100]{./Chapter06/logs/human_lba.txt};
+%\addplot [ultra thick, purple, mark=x] table [x expr=\coordindex, y=fahion_mnist]{./Chapter06/logs/human_lba.txt};
+
+\end{axis}
+\end{tikzpicture}
+\end{figure} 

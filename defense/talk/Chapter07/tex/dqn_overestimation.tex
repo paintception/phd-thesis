@@ -1,0 +1,50 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.65]
+      \begin{axis}[
+	name=ax1,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Pong,
+        xlabel=Training Steps,
+        ylabel=Value Estimates,
+      ]
+
+
+      \addlegendentry{DQN-True Value}
+      \addlegendentry{DQN-Estimated Value}
+      
+      \addplot [ultra thick, black, mark=.] table [y=true_return_DQN, x=training_steps]
+      {./Results/Chapter07/logs/overestimation_pong.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=estimate_DQN, x=training_steps]{./Results/Chapter07/logs/overestimation_pong.txt};
+     
+      \legend{}
+
+      \end{axis}
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=2cm,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Enduro,
+        xlabel=Training Steps,
+        ylabel= Value Estimates,
+	legend columns=3, 
+        legend style={font=\Large, at={(-0.85,-0.3,-0.4)},anchor=north west,legend columns=3},
+      ]
+
+      \addlegendentry{DQN-True Value}
+      \addlegendentry{DQN-Estimated Value}
+
+      \addplot [ultra thick, black, mark=.] table [y=true_return_DQN, x=training_steps]
+      {./Results/Chapter07/logs/overestimation_enduro.txt};
+      \addplot [ultra thick, blue, mark=.] table [y=estimate_DQN, x=training_steps]{./Results/Chapter07/logs/overestimation_enduro.txt};
+ 
+      \end{axis}
+	\end{tikzpicture}
+	\caption{Results investigating the extent to which the DQN algorithm suffers from the overestimation bias of the $Q$ function. We can observe that on the \texttt{Pong} environment during the early stages of training, the $\underset{a \in \cal A}{\max}\:Q(s_{t+1}, a)$ estimates quickly grow, while on the \texttt{Enduro} game the values estimated by the $Q$ network keep indefinitely growing, therefore making the algorithm significantly diverge from the real return that is obtained by a trained agent.}
+	\label{fig:overestimation_bias_results_dqn} 
+\end{figure}
+

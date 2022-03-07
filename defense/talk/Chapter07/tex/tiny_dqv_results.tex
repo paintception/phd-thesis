@@ -1,0 +1,50 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.65]
+      \begin{axis}[
+	name=ax1,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Bank Heist,
+        xlabel=Episodes,
+        ylabel=Reward,
+      ]
+
+
+      \addlegendentry{DQV}
+      \addlegendentry{Tiny-DQV}
+      
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Results/Chapter07/logs/tiny_dqv_bankheist_results.txt};
+      \addplot [ultra thick, black, mark=.] table [y=Tiny-dqv, x=episodes]{./Results/Chapter07/logs/tiny_dqv_bankheist_results.txt};
+     
+      \legend{}
+
+      \end{axis}
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=2cm,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Crazy Climber,
+        xlabel=Episodes,
+        ylabel= Reward,
+	legend columns=2,
+        legend style={font=\Large, at={(-0.65,-0.3,-0.4)},anchor=north west,legend columns=2},
+      ]
+
+      \addlegendentry{DQV}
+      \addlegendentry{Tiny-DQV}
+ 
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Results/Chapter07/logs/tiny_dqv_crazyclimber_results.txt};
+      \addplot [ultra thick, black, mark=.] table [y=Tiny-dqv, x=episodes]{./Results/Chapter07/logs/tiny_dqv_crazyclimber_results.txt};
+ 
+      \end{axis}
+	\end{tikzpicture}
+	\caption{Learning curves obtained when reducing the capacity of the convolutional networks that approximate the $V$ and the $Q$ functions. We can observe that albeit each value function is approximated with its own parametrized network, the tiny-dqv extension still yields worse performance. These results highlight that it is not sufficient to simply have two separate neural networks for DQV to perform well, but that a crucial role in DQV's performance is played by the capacity of the networks that are used as well.}
+	\label{fig:tiny_dqv_results} 
+\end{figure}
+

@@ -1,0 +1,50 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.65]
+      \begin{axis}[
+	name=ax1,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Boxing,
+        xlabel=Episodes,
+        ylabel=Reward,
+      ]
+
+
+      \addlegendentry{DQV}
+      \addlegendentry{Hard-DQV}
+      
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Results/Chapter07/logs/hard_dqv_boxing_results.txt};
+      \addplot [ultra thick, brown, mark=.] table [y=Hard-DQV, x=episodes]{./Results/Chapter07/logs/hard_dqv_boxing_results.txt};
+     
+      \legend{}
+
+      \end{axis}
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=2cm,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Pong,
+        xlabel=Episodes,
+        ylabel= Reward,
+	legend columns=3, 
+        legend style={font=\Large, at={(-0.65,-0.3,-0.4)},anchor=north west,legend columns=3},
+      ]
+
+      \addlegendentry{DQV}
+      \addlegendentry{Hard-DQV}
+ 
+      \addplot [ultra thick, red, mark=.] table [y=DQV, x=episodes]
+      {./Results/Chapter07/logs/hard_dqv_pong_results.txt};
+      \addplot [ultra thick, brown, mark=.] table [y=Hard-DQV, x=episodes]{./Results/Chapter07/logs/hard_dqv_pong_results.txt};
+ 
+      \end{axis}
+	\end{tikzpicture}
+	\caption{Our results which aim to approximate the $V$ and the $Q$ function with a unique, shared paramterized network, an approach that is heavily inspired by multi-task learning studies that can be found in supervised learning \cite{caruana1997multitask,zhong2020fine,mormont2020multi}. We can see that this extension of DQV, named Hard-DQV, significantly underperforms the original DQV-Learning algorithm.}
+	\label{fig:hard_dqv_results} 
+\end{figure}
+
