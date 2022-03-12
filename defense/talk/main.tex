@@ -9,13 +9,24 @@
 \usepackage{xcolor}
 \usepackage{xmpmulti}
 \usepackage{amsmath}
-\usepackage{eucal}
+\usepackage[mathscr]{eucal}
+%\usepackage{eucal}
+\usepackage{pgf}
+\usepackage{pgfplots}
+\usepackage{wrapfig}
 \usepackage{tikz}
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{dsfont}
-
+\usepackage{xcolor}
+\usepackage{colortbl}
 \usepackage{pgfplots}
+\usepackage{highlight}
+\usepackage{collcell}
+\usepackage{tabularx}
+\usepackage{textcomp}
+\usepackage{xstring}
+
 \usepgfplotslibrary{groupplots}
 \usetikzlibrary{pgfplots.groupplots,arrows.meta,shadows,positioning,angles,quotes}
 \usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows}
@@ -25,6 +36,15 @@
 
 \usepgfplotslibrary{fillbetween}
 
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=0.5pt] (char) {#1};}}
+\renewcommand{\vec}[1]{\mathbf{#1}
+}
+\newcommand{\colorpos}{green}
+\newcommand{\colorneg}{red}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
@@ -57,26 +77,125 @@
 \frame{\frametitle{Presentation outline}\tableofcontents}
 
 %============================================================================
-
 \begin{frame}
 	\section{Part I: Preliminaries}
-	\subsection{Deep Transfer Learning}
-\end{frame}
+	\subsection{Transfer Learning}
 
-
-
-\begin{frame}
 	\begin{center}
 		\textcolor{skymagenta}{\textbf{PART I}}
 	\end{center}
 \end{frame}
 
-
-\begin{frame}{Deep Transfer Learning}
+\begin{frame}{Transfer Learning}
 
 \end{frame}
 
 
+\begin{frame}{Transfer Learning}
+	
+
+
+	\begin{columns}
+		\begin{column}{.5\textwidth}
+			On the one hand we have the concept of \textcolor{RoyalBlue}{\textbf{source}} $S$, which is needed to build some prior knowledge available for transfer
+		
+		\bigskip
+		\begin{itemize}
+			\item	Source Domain $\mathcal{D}_S$
+			\item	Source Task $\mathcal{T}_S$
+		\end{itemize}
+
+		\end{column}
+		
+		\begin{column}{.5\textwidth}
+			While on the other hand we have the concept of \textcolor{RoyalBlue}{\textbf{target}} $T$, defining the machine learning problem we would like to solve
+		
+		\bigskip
+		\begin{itemize}
+			\item Target Domain $\mathcal{D}_T$
+			\item Target Task $\mathcal{T}_T$
+		\end{itemize}
+
+
+		\end{column}
+		
+	\end{columns}
+
+
+
+\end{frame}
+
+
+\begin{frame}{Transfer Learning}
+	
+	\bigskip
+	Transfer Learning in practice ...
+	\bigskip
+	\input{./Chapter03/tex/tl_examples_1.tex}
+
+\end{frame}
+
+
+\begin{frame}{Transfer Learning}
+	
+	\bigskip
+	Transfer Learning in practice ...
+	\bigskip
+	\input{./Chapter03/tex/tl_examples_2.tex}
+
+\end{frame}
+
+\begin{frame}{Transfer Learning}
+
+	The family of machine learning models that is studied under the lens of transfer learning is that of \textcolor{RoyalBlue}{Convolutional Neural Networks}
+
+	\begin{itemize}
+		\item One of the main architectures when it comes to high-dimensional and spatially organized inputs
+		\item Have achieved state-of-the-art results across many different machine learning problems
+		\item We focus our analysis on Supervised Learning and Reinforcement Learning
+	\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Transfer Learning}
+	
+	When it comes to Supervised Learning ...
+	\bigskip	
+	\begin{figure}
+		\includegraphics[width=1\textwidth]{figures/dogo}
+	\end{figure}
+
+
+\end{frame}
+
+\begin{frame}{Transfer Learning}
+
+	When it comes to Reinforcement Learning ...
+	\bigskip
+
+	\begin{figure}
+		\includegraphics[width=1\textwidth]{figures/dqn}
+	\end{figure}
+
+\end{frame}
+
+
+
+\begin{frame}{Transfer Learning}
+
+	Why is Transfer Learning so interesting?
+
+	\begin{itemize}
+		\item It allows us to train deep learning models when there is a \textcolor{Maroon}{lack} of training data
+		\item Is useful when computational resources are \textcolor{Maroon}{scarce}
+		\item Results in \textcolor{RoyalBlue}{better performing} models
+		\item Provides a unique tool for \textcolor{RoyalBlue}{better understanding} neural networks  
+		\item Having models that generalize and transfer across different domains and tasks is \textcolor{RoyalBlue}{key} for the development of Artificial Intelligence 
+	\end{itemize}
+
+
+\end{frame}
 
 %============================================================================
 
@@ -149,31 +268,268 @@
 		\begin{column}{.5\textwidth}
 			We have three target-tasks $\mathcal{T}_T$ defined by the Rijksmuseum collection
 
+			\begin{figure}
+				\includegraphics[width=0.85\textwidth]{figures/rijks}
+			\end{figure}
+
 		\end{column}
 		
 	\end{columns}
 
 \end{frame}
 
+
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
+
+	More specifically we aim to classify the artworks of the Rijksmuseum by:
+	\bigskip
+
+	\begin{columns}
+		\begin{column}{.3\textwidth}
+			\textcolor{RoyalBlue}{Material}: $\mathcal{T}_T$ \circled{1}
+			\begin{figure}
+				\includegraphics[width=0.9\textwidth]{figures/paper}
+			\end{figure}
+		\end{column}
+		
+		\begin{column}{.3\textwidth}
+			\textcolor{RoyalBlue}{Type}: $\mathcal{T}_T$ \circled{2}
+			\begin{figure}
+				\includegraphics[width=1\textwidth]{figures/portrait}
+			\end{figure}
+		\end{column}
+			
+		\begin{column}{.3\textwidth}
+			\textcolor{RoyalBlue}{Artist}: $\mathcal{T}_T$ \circled{3}
+			\begin{figure}
+				\includegraphics[width=1\textwidth]{figures/rembrandt}
+			\end{figure}
+		\end{column}
+		
+	\end{columns}
+
 \end{frame}
 
 
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
+
+	\textcolor{RoyalBlue}{Experimental setup} ...
+	\bigskip
+
+	\begin{itemize}
+		\item We compare the transfer learning performance of four architectures 
+			\begin{enumerate}
+				\item VGG19
+				\item InceptionV3
+				\item Xception
+				\item ResNet50
+			\end{enumerate}
+	\end{itemize}
+	\begin{itemize}
+		\item Explore three training strategies
+			\begin{enumerate}
+				\item Random initialization (no transfer)
+				\item Off-the-shelf feature extraction
+				\item Fine-Tuning
+			\end{enumerate}
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+	
+	\bigskip
+
+	\begin{itemize}
+		\item Let us consider a simplified neural network
+	\end{itemize}
+
+	\bigskip
+
+	\begin{figure}
+		\includegraphics[width=0.5\textwidth]{figures/mlp.pdf}
+	\end{figure}
+
 \end{frame}
 
 
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
+	
+	\bigskip
+
+	\begin{itemize}
+		\item A \textcolor{RoyalBlue}{randomly} initialized model
+	\end{itemize}
+
+	\bigskip
+
+	\begin{figure}
+		\includegraphics[width=0.5\textwidth]{figures/random_net.pdf}
+	\end{figure}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+	
+	\bigskip
+
+	\begin{itemize}
+		\item The \textcolor{RoyalBlue}{off-the-shelf} approach 
+	\end{itemize}
+
+	\bigskip
+
+	\begin{figure}
+		\includegraphics[width=0.5\textwidth]{figures/frozen_net.pdf}
+	\end{figure}
+
 \end{frame}
 
 
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
+	
+	\bigskip
+
+	\begin{itemize}
+		\item The \textcolor{RoyalBlue}{fine-tuning} approach 
+	\end{itemize}
+
+	\bigskip
+
+	\begin{figure}
+		\includegraphics[width=0.5\textwidth]{figures/fine_tuning_net.pdf}
+	\end{figure}
+
 \end{frame}
 
 
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+	\bigskip
+	The performance on $\mathcal{T}_T$ \circled{1}
+	
+	\input{./Chapter04/tex/results_1.tex}
+\end{frame}
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+	\bigskip
+	The performance on $\mathcal{T}_T$ \circled{1}
+	
+	\input{./Chapter04/tex/results_1_1.tex}
+\end{frame}
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+	\bigskip
+	The performance on $\mathcal{T}_T$ \circled{1}
+	
+	\input{./Chapter04/tex/results_1_2.tex}
+\end{frame}
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+	\bigskip
+	The performance on $\mathcal{T}_T$ \circled{2} and $\mathcal{T}_T$ \circled{3}
+
+	\input{./Chapter04/tex/results_2.tex}
+\end{frame}
+
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+
+	We observe that:
+	\bigskip
+	
+	\begin{itemize}
+		\item Both transfer learning approaches \textcolor{RoyalBlue}{outperform} random initialization
+		\item The off-the-shelf approach performs \textcolor{RoyalBlue}{well} for  $\mathcal{T}_T$ \circled{1} and  $\mathcal{T}_T$ \circled{2} but \textcolor{Maroon}{fails} for  $\mathcal{T}_T$ \circled{3}
+		\item Fine-tuning the networks results in \textcolor{RoyalBlue}{best} performance
+	\end{itemize}
+
+	\bigskip
+
+	Next step ...
+
+\end{frame}
 
 
 \begin{frame}
+	\subsection{On the Transferability of Convolutional Neural Networks}
+	
+	$\Rightarrow$ After having fine-tuned the ImageNet models on the Rijksmuseum collection we investigate whether these models \textcolor{RoyalBlue}{generalize} to different, smaller, artistic collections
+
+	\bigskip
+
+	\begin{itemize}
+		\item We collected a new dataset of heritage objects present in the city of Antwerp
+		\item Aim again at classifying their type $\mathcal{T}_T$ \circled{2} 
+		\item And the respective artist $\mathcal{T}_T$ \circled{3}
+		\item Compare the performance to ImageNet pre-trained models only
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+
+	\input{./Tables/Chapter04/table_3.tex}
+
+\end{frame}
+
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+
+	\bigskip
+
+	To conclude we show that
+	
+	\bigskip
+
+	\begin{itemize}
+		\item Modern Convolutional Neural Networks exhibit \textcolor{RoyalBlue}{strong transfer learning} potential
+		\item Even when the source task $\mathcal{T}_S$ (natural images) and the target task are very different $\mathcal{T}_T$ (art classification)
+		\item Best performance is obtained after fine-tuning, which however comes at a computational cost
+	\end{itemize}
+
+	\bigskip
+
+	The present study only considers the computer vision task of \textcolor{RoyalBlue}{image classification} ...
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+	\bigskip
+	$\Rightarrow$ Which is a \textcolor{Maroon}{limitation} which we have addressed in our follow up work, where we perform a similar study for the computer vision task of \textcolor{RoyalBlue}{object detection}
+
+	\bigskip
+	
+	For this purpose we have created the MINERVA dataset
+
+	\begin{figure}
+		\includegraphics[width=0.8\textwidth]{figures/cytomine_annotations}
+	\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+	\begin{figure}
+		\includegraphics[width=1\textwidth]{figures/minerva}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
+	
+	In line with the classification experiments performed on the Rijksmuseum dataset, also when it comes to object detection we show that
+	\bigskip
+	\begin{itemize}
+		\item Pre-trained object detectors \textcolor{RoyalBlue}{can get transferred} across domains 
+		\item Fine-tuning these networks results in \textcolor{RoyalBlue}{best} performance
+		\item This is the case for \textcolor{RoyalBlue}{different families} of object detection models ranging from YOLO, to networks that use region proposals and selective search \footnote{Claes, Yann. "Deep Learning for the Classification and Detection of Animals in Artworks." (2021).}.
+	\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{On the Transferability of Lottery Winners}
 	\subsection{On the Transferability of Lottery Winners}
 \end{frame}
 
@@ -333,6 +689,7 @@
 \begin{frame}{On the Transferability of Lottery Winners}
 	Transferring lottery winners to the \textcolor{RoyalBlue}{Digital Pathology} data ...
 	\input{./Chapter06/tex/tl_study_dp_1.tex}
+
 \end{frame}
 
 \begin{frame}{On the Transferability of Lottery Winners}
@@ -416,6 +773,9 @@
 \begin{frame}{A Novel Family of Deep Reinforcement Learning Algorithms}
 	\section{Part III: Reinforcement Learning}
 	\subsection{A Novel Family of Deep Reinforcement Learning Algorithms}
+\end{frame}
+
+\begin{frame}{A Novel Family of Deep Reinforcement Learning Algorithms}
 
 	\bigskip
 	We now consider a different machine learning paradigm: \textcolor{RoyalBlue}{Reinforcement Learning} (RL), where an agent needs to learn how to interact with its environment
@@ -503,16 +863,12 @@ Therefore we can define an MDP as $\mathcal{M}=\langle\mathcal{S}, \mathcal{A}, 
 
 		$V^{\pi}(s)\approx V^\pi{(s;\theta)}$ and $Q^{\pi}(s,a;\theta)\approx Q(s,a;\theta)$
 	\end{center}
-
-\end{frame}
-
-
-\begin{frame}{A Novel Family of Deep Reinforcement Learning Algorithms}
+	
+	\bigskip
 
 	This approximation can be represented by a \textcolor{RoyalBlue}{Convolutional Neural Network}
 
 \end{frame}
-
 
 \begin{frame}{A Novel Family of Deep Reinforcement Learning Algorithms}
 
@@ -613,13 +969,240 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 \end{frame}
 
 
-
-
-\begin{frame}
+\begin{frame}{On the Transferability of Deep-Q Networks}
 	\subsection{On the Transferability of Deep-Q Networks}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+	
+	Let's take a look at the performance of the DQV algorithms more closely ...
+	
+	\bigskip
+	\input{./Tables/Chapter07/dqv_dqv_max_results.tex}
+
+\end{frame}
+
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+
+	Based on which we have formulated the following research questions:
+
+	\begin{itemize}
+		\item Can we \textcolor{RoyalBlue}{improve} the performance of DQV and DQV-Max Learning through Transfer Learning?
+		\item Is parametric transfer \textcolor{RoyalBlue}{as effective} in the model-free Reinforcement Learning setting as it is in the Supervised Learning setting?
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+
+	$\Rightarrow$ We study the Transfer Learning potential of several types of Deep-Q Networks
+
+	\begin{itemize}
+		\item We consider \textcolor{RoyalBlue}{two variants} of Deep-Q Networks: the DDQN and DQV-Learning algorithms
+		\item The popular \texttt{Atari} games are used as benchmark
+		\item We explore what happens when models that are pre-trained on $\mathcal{M}_S$ get \textcolor{RoyalBlue}{fine-tuned} on $\mathcal{M}_T$
+	\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+
+	Some examples of source and target tasks ...
+
+	\begin{figure}[ht]
+	\centering
+	\begin{minipage}[b]{0.45\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{./figures/similar_sources}
+	\caption{The visually similar \texttt{Ms Pacman} and \texttt{Bank Heist} games.}
+	\label{fig:similar_games}
+	\end{minipage}
+	\hspace{0.5cm}
+	\begin{minipage}[b]{0.45\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{./figures/dissimilar_sources}
+	\caption{The highly different \texttt{Crazy Climber} and \texttt{Pong} games.}
+	\label{fig:dissimilar_games}
+	\end{minipage}
+	\end{figure}
+	\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+
+	We quantitatively measure the benefits of transferring and fine-tuning a pre-trained model by computing the \textcolor{RoyalBlue}{area ratio metric} $\mathscr{R}$
+
+	\begin{equation*}
+		\mathscr{R} = \frac{\text{area of $\mathcal{M}_S$ $-$ area of $\mathcal{M}_T$}}{\text{area of $\mathcal{M}_T$}}
+	\label{eq:area_ratio_metric}
+	\end{equation*}
+
+	\bigskip
+	expecting mostly positive values for $\mathscr{R}$
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+
+	\bigskip
+
+	However, we noticed that adopting Transfer Learning strategies performed \textcolor{Maroon}{surprisingly bad}
+
+	\begin{table}[t!]
+	{\input{./Tables/Chapter08/dqv_tl_results.tex}}
+	\label{tab:dqv_res}
+%\end{table}
+
+
+%\begin{table}[ht!]
+        %	\caption{The results obtained when fine-tuning ten different pre-trained DDQN agents (rows) on nine other Atari games (columns). Similarly to Table \ref{tab:dqv_res} the lower the area ratio score, the redder the color of the cell.} %We can again observe that fine-tuning a pre-trained agent is only beneficial in a very limited number of cases and that the DDQN algorithm results in different transfer learning performance than DQV.}
+        ~\\
+	{\input{./Tables/Chapter08/ddqn_tl_results.tex}}
+	\label{tab:ddqn_res}
+\end{table}
+
+\end{frame}
+
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+
+	Specifically, on the \texttt{Atari} benchmark we have noticed that:
+	\bigskip
+	\begin{itemize}
+		\item Transferring pre-trained Deep-Q Networks mostly results in \textcolor{Maroon}{negative transfer}, even across similar games \texttt{Bank Heist} $\rightarrow$ \texttt{Ms. Pacman}
+		\item Transfer across environments is \textcolor{Maroon}{not symmetric}: \texttt{Bank Heist} $\leftrightarrow$ \texttt{Fishing Derby}
+		\item Different algorithms result in \textcolor{Maroon}{different} transfer learning performance
+	\end{itemize}
+
+	\bigskip
+
+	$\Rightarrow$ Can we \textcolor{RoyalBlue}{explain} these results any further?
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+	\bigskip
+	We have designed a set of novel \textcolor{RoyalBlue}{control tasks} that could help us better understanding the transfer learning potential of Deep-Q Networks 
+	\bigskip
+	\begin{figure}[ht]
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=5cm]{./figures/catch_games}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\input{./Chapter08/tex/catch_baselines.tex}
+\end{minipage}
+\label{fig:catch_baselines}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+
+	\bigskip
+	$\Rightarrow$ Even on our newly designed problems, we keep observing \textcolor{Maroon}{very poor} transfer learning potential
+\begin{table}[ht!]
+	\centering
+	\caption{The area ratio obtained after fine-tuning a pre-trained DQN agent on the different \texttt{Catch} environments. We can see that no matter which source game is used for pre-training, transfer learning surprisingly never results in positive transfer.}
+	\input{./Tables/Chapter08/catch_tl_results.tex}
+	\label{tab:catch_tl_area_ratio}
+\end{table}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+
+	We therefore asked ourselves whether Deep-Q Networks are at least able to \textcolor{RoyalBlue}{self-transfer} ...
+	\bigskip
+	\begin{itemize}
+		\item What happens when the source task $\mathcal{M}_S$ and the target task $\mathcal{M}_T$ are identical?
+		\item Are there any differences between using an off-the-shelf approach compared to a fine-tuning strategy?
+		\item Let's recall that when transferring a pre-trained model only the last layer responsible for estimating $Q(s,a)$ is randomly initialized
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+	
+	We notice that positive self-transfer can get obtained as long as the networks \textcolor{Maroon}{do not get fine-tuned} but are used as feature extractors instead
+
+	\begin{table}[ht!]
+	\centering
+	\caption{The area ratio scores obtained after performing self-transfer. We can see that if only the last linear layer is trained, then positive transfer is obtained on all \texttt{Catch} environments, whereas if the network is fine-tuned, positive transfer is (in part) only obtained on \texttt{Catch-v2}.}
+	\input{./Tables/Chapter08/catch_self_tl_results.tex}
+	\label{tab:self_tl_area_ratio}
+	\end{table}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+
+	\bigskip
+	Our \textcolor{RoyalBlue}{conjecture} is that a Deep-Q Network can only solve a problem if it has carefully found a balance between its feature extractor components and the linear layer that estimates $Q(s,a)$
+
+	\bigskip
+
+	Let us consider the following Deep-Q Networks
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=8cm]{./figures/new_networks_2.pdf}
+	\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+	\bigskip
+	$\Rightarrow$ How does this look like in practice?
+	\bigskip
+	\input{./Chapter08/tex/catch_hybrid_self_tl_1.tex}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+	\bigskip
+	$\Rightarrow$ How does this look like in practice?
+	\bigskip
+	\input{./Chapter08/tex/catch_hybrid_self_tl_2.tex}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+	\bigskip
+	$\Rightarrow$ How does this look like in practice?
+	\bigskip
+	\input{./Chapter08/tex/catch_hybrid_self_tl.tex}
+
+\end{frame}
+
+\begin{frame}{On the Transferability of Deep-Q Networks}
+	
+	To conclude PART III ...
+	\bigskip
+	\begin{itemize}
+		\item We show that fine-tuning pre-trained models in a model-free Deep Reinforcement Learning context is \textcolor{Maroon}{particularly challenging} 
+		\item There is a clear \textcolor{Maroon}{difference} in terms of performance with the results presented in PART II
+		\item We provide some \textcolor{RoyalBlue}{initial intuition} about why negative transfer seems to be happening
+		\item This remains an \textcolor{RoyalBlue}{open problem} that we believe deserves attention
+	\end{itemize}
+
+
 \end{frame}
 
 \begin{frame}{Final References}
+	\begin{itemize}
+		\fontsize{6pt}{7.2}\selectfont
+		\item Sabatelli, Matthia, et al. "Deep transfer learning for art classification problems." Proceedings of the European Conference on Computer Vision (ECCV) Workshops. 2018.
+		\item Sabatelli, Matthia, et al. "Advances in Digital Music Iconography: Benchmarking the detection of musical instruments in unrestricted, non-photorealistic images from the artistic domain." Digital Humanities Quarterly 15.1 (2021).
+		\item Sabatelli, Matthia, Mike Kestemont, and Pierre Geurts. "On the Transferability of Winning Tickets in Non-natural Image Datasets." VISIGRAPP (5: VISAPP). 2021.
+		\item Sabatelli, Matthia, et al. "Deep Quality Value (DQV) Learning." Deep Reinforcement Learning Workshop of the 32nd Conference on Neural Information Processing Systems (2018).
+		\item Sabatelli, Matthia, et al. "The deep quality-value family of deep reinforcement learning algorithms." 2020 International Joint Conference on Neural Networks (IJCNN). IEEE, 2020.
+		\item Sabatelli, Matthia, and Pierre Geurts. "On The Transferability of Deep-Q Networks." Deep Reinforcement Learning Workshop of the 35th Conference on Neural Information Processing Systems. 2021.
+	\end{itemize}
 
 \end{frame}
 

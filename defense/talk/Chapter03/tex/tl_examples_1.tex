@@ -1,0 +1,78 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.35]
+      \begin{axis}[
+	name=ax1,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Learning Speed Improvements,
+        xlabel=Training Iterations,
+        ylabel=Performance,
+      ]
+
+
+      %\addlegendentry{Pre-trained Model} 
+      \addlegendentry{Scratch Model}  
+      
+      %\addplot [ultra thick, blue, mark=.] table [y=Transfer, x=episodes]
+      %{./Chapter03/logs/speed_improvements.txt};
+       \addplot [ultra thick, orange, mark=.] table [y=No-Transfer, x=episodes]
+      {./Chapter03/logs/speed_improvements.txt};
+     
+      \legend{}
+
+      \end{axis}
+
+      \begin{axis}[
+      	at={(ax1.south east)},
+	xshift=2cm,
+	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Jumpstart Improvements,
+        xlabel=Training Iterations,
+        ylabel=Performance,
+      ]
+
+
+
+      %\addlegendentry{Pre-trained Model} 
+      \addlegendentry{Scratch Model}  
+      
+      %\addplot [ultra thick, blue, mark=.] table [y=Transfer, x=episodes]
+      %{./Chapter03/logs/jumpstart_improvements.txt};
+       \addplot [ultra thick, orange, mark=.] table [y=No-Transfer, x=episodes]
+      {./Chapter03/logs/jumpstart_improvements.txt};
+     
+      \legend{}
+
+      \end{axis}
+
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=-2cm,
+      	yshift=-8cm,
+	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=Asymptotic Improvements,
+        xlabel=Training Iterations,
+        ylabel= Performance,
+	legend columns=4, 
+        legend style={font=\Large, at={(0.25,-0.3,-0.4)},anchor=north west,legend columns=3},
+      ]
+
+
+      %\addlegendentry{Pre-trained Model} 
+      \addlegendentry{Scratch Model}  
+ 
+      %\addplot [ultra thick, blue, mark=.] table [y=Transfer, x=episodes]
+      %{./Chapter03/logs/asymptotic_improvements.txt};
+      \addplot [ultra thick, orange, mark=.] table [y=No-Transfer, x=episodes]
+      {./Chapter03/logs/asymptotic_improvements.txt};
+       
+      \end{axis}
+	\end{tikzpicture}
+\end{figure}
+

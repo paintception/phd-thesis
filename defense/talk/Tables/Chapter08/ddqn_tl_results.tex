@@ -1,0 +1,43 @@
+\newcommand*{\MinNumber}{-1.0}%
+\newcommand*{\MidNumber}{0.0}%
+\newcommand*{\MaxNumber}{1.0}%
+
+\newcommand{\ApplyGradient}[1]{%
+  \IfDecimal{#1}{
+    \ifdim #1 pt > \MidNumber pt%
+    \pgfmathsetmacro{\PercentColor}{max(min(100.0*(#1-\MidNumber)/(\MaxNumber-\MidNumber),100.0),0.0)}%
+    \edef\x{\noexpand\cellcolor{\colorpos!\PercentColor!white}}\x\textcolor{black}{#1}%
+    \else%
+    \pgfmathsetmacro{\PercentColor}{max(min(100.0*(\MidNumber-#1)/(\MidNumber-\MinNumber),100.0),0.0)}%
+    \edef\x{\noexpand\cellcolor{\colorneg!\PercentColor!white}}\x\textcolor{black}{#1}%
+    \fi%
+    }{#1}
+}
+
+%% \newcommand{\ApplyGradient}[1]{%
+%%   \IfDecimal{#1}{
+%%   \pgfmathsetmacro{\PercentColor}{100.0*(#1-\MaxNumber)/(\MinNumber-\MaxNumber)}%
+%%   %\textcolor{black!\PercentColor}{#1}
+%%   \edef\x{\noexpand\cellcolor{red!\PercentColor}}\x\textcolor{black}{#1}%
+%%   }{#1}
+%% }
+
+\newcolumntype{R}{>{\collectcell\ApplyGradient}{c}<{\endcollectcell}}
+
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{c|R|R|R|R|R|R|R|R|R|R}
+\hline 
+{DDQN} & BankHeist & Boxing & CrazyClimber & Enduro & FishingDerby & Gopher & IceHockey & Jamesbond & MsPacman & Pong \\
+\hline\hline
+BankHeist    &       -                    &                  0.121 &                       -0.378 &                 -0.006 &                       -0.107 &                  0.042 &                    -0.006 &                    -0.058 &                    0.001 &               -3.013 \\
+Boxing       &                    -0.316 &     -                   &                       -0.104 &                     -0 &                        0.038 &                   0.06 &                     0.015 &                    -0.225 &                   -0.027 &                0.936 \\
+CrazyClimber &                    -0.192 &                 -0.487 &               -               &                 -0.012 &                       -0.084 &                  0.016 &                     0.015 &                     0.016 &                   -0.015 &                -2.64 \\
+Enduro       &                    -0.296 &                  0.193 &                       -0.167 &       -                 &                        0.039 &                   0.03 &                     0.019 &                    -0.235 &                   -0.039 &                0.248 \\
+FishingDerby &                    -0.212 &                 -0.545 &                           -1 &                 -0.085 &         -                     &                  0.016 &                     0.001 &                    -0.055 &                   -0.026 &               -0.935 \\
+Gopher       &                    -0.466 &                  0.044 &                       -0.108 &                 -0.005 &                        0.007 &            -            &                    -0.005 &                    -0.094 &                    -0.02 &               -1.816 \\
+IceHockey    &                    -0.046 &                  0.245 &                       -0.067 &                  0.014 &                       -0.178 &                  0.072 &            -               &                     0.037 &                   -0.015 &                0.112 \\
+Jamesbond    &                    -0.145 &                  0.232 &                       -0.064 &                  0.005 &                       -0.267 &                  0.031 &                    -0.092 &      -                     &                   -0.006 &               -1.578 \\
+MsPacman     &                    -0.173 &                 -1.179 &                       -0.129 &                  -0.06 &                        0.003 &                 -0.019 &                     0.007 &                     0.071 &       -                   &               -2.774 \\
+Pong         &                    -0.127 &                  0.028 &                        -0.12 &                   0.01 &                        0.037 &                  0.042 &                     0.002 &                    -0.174 &                   -0.006 &             -         \\
+\end{tabular}%
+}

@@ -1,0 +1,26 @@
+\begin{tikzpicture}[scale=0.65]
+\begin{axis}
+[	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	ylabel = $\%$ of caught balls,
+	legend pos=outer north east,
+]
+
+\addlegendentry{\texttt{Catch-v0}}
+
+\addplot[blue, ultra thick] table[x=epochs,y=tl] {./Results/Chapter08/logs/final_tl_exp.dat};
+\addplot[name path=upper,draw=none, forget plot] table[x=epochs,y expr=\thisrow{tl}+\thisrow{std_tl}] {./Results/Chapter08/logs/final_tl_exp.dat};
+\addplot[name path=lower,draw=none, forget plot] table[x=epochs,y expr=\thisrow{tl}-\thisrow{std_tl}] {./Results/Chapter08/logs/final_tl_exp.dat};
+\addplot[fill=blue!10, forget plot] fill between[of=upper and lower];
+
+\addlegendentry{\texttt{Catch-v4}}
+\addplot[ultra thick, purple] table[x=epochs,y=baseline] {./Results/Chapter08/logs/final_tl_exp.dat};
+\addplot [name path=upper,draw=none, forget plot] table[x=epochs,y expr=\thisrow{baseline}+\thisrow{std_baseline}] {./Results/Chapter08/logs/final_tl_exp.dat};
+\addplot [name path=lower,draw=none, forget plot] table[x=epochs,y expr=\thisrow{baseline}-\thisrow{std_baseline}] {./Results/Chapter08/logs/final_tl_exp.dat};
+\addplot [fill=purple!10, forget plot] fill between[of=upper and lower];
+
+\end{axis}
+\end{tikzpicture}
+

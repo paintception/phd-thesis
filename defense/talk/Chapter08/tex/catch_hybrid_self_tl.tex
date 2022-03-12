@@ -1,0 +1,41 @@
+\begin{figure}[ht!]
+\resizebox{0.60\textwidth}{!}{
+\begin{tikzpicture}
+\begin{axis}
+[	
+	name=ax1,	
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+	ylabel = $\%$ of caught balls,
+	title = \texttt{Catch-v1},
+	legend pos=south east,	
+]
+
+
+\addlegendentry{\texttt{Catch-v1}}
+\addplot[yellow, ultra thick] table[x=epochs,y=baseline] {./Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [name path=upper,draw=none, forget plot] table[x=epochs,y expr=\thisrow{baseline}+\thisrow{std_baseline}] {./Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [name path=lower,draw=none, forget plot] table[x=epochs,y expr=\thisrow{baseline}-\thisrow{std_baseline}] {./Chapter08/logs/self_transfer_catch_v1.dat};
+\addplot [fill=yellow!10, forget plot] fill between[of=upper and lower];
+
+
+\addlegendentry{Fine-Tuning}
+\addplot[dashed, ultra thick,yellow] table[x=epochs,y=self_transfer_full_fine_tuning] {./Chapter08/logs/hybrid_self_tl_v1.dat};
+\addplot [name path=upper,draw=none, forget plot] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}+\thisrow{std_self_transfer_full_fine_tuning}] {./Chapter08/logs/hybrid_self_tl_v1.dat};
+\addplot [name path=lower,draw=none, forget plot] table[x=epochs,y expr=\thisrow{self_transfer_full_fine_tuning}-\thisrow{std_self_transfer_full_fine_tuning}] {./Chapter08/logs/hybrid_self_tl_v1.dat};
+\addplot [fill=yellow!10, forget plot] fill between[of=upper and lower];
+
+\addlegendentry{Hybrid Fine-Tuning}
+\addplot[dashed, ultra thick,cyan] table[x=epochs,y=hybrid_self_transfer] {./Chapter08/logs/hybrid_self_tl_v1.dat};
+\addplot [name path=upper,draw=none, forget plot] table[x=epochs,y expr=\thisrow{hybrid_self_transfer}+\thisrow{std_hybrid_self_transfer}] {./Chapter08/logs/hybrid_self_tl_v1.dat};
+\addplot [name path=lower,draw=none, forget plot] table[x=epochs,y expr=\thisrow{hybrid_self_transfer}-\thisrow{std_hybrid_self_transfer}] {./Chapter08/logs/hybrid_self_tl_v1.dat};
+\addplot [fill=cyan!10, forget plot] fill between[of=upper and lower];
+
+
+\end{axis}
+
+\end{tikzpicture}%
+}
+\end{figure}

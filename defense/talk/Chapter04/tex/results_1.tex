@@ -1,0 +1,46 @@
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[scale = 0.8]
+
+\begin{axis}[
+	grid style={dashed,gray},
+	grid = both, 
+	tick style=black,
+  	xlabel=Epochs,
+  	ylabel= Accuracy ($\%$),
+	title=$\mathcal{T}_T$ \circled{1},
+	%width=1,
+    	xmin=0,
+    	xmax=10,
+    	ymin=0.80,
+    	ymax=0.95,
+  	legend pos=outer north east,
+]
+	%\addlegendentry{Xception $\theta_{i}$}
+	%\addlegendentry{ResNet50 $\theta_{i}$}
+	%\addlegendentry{InceptionV3 $\theta_{i}$}
+	%\addlegendentry{VGG19 $\theta_{i}$}      	
+	\addlegendentry{Scratch-V3 $\theta$}	      	
+	%\addlegendentry{Xception $\theta^{-}_{i}$}
+      	%\addlegendentry{ResNet50 $\theta^{-}_{i}$}
+      	%\addlegendentry{InceptionV3 $\theta^{-}_{i}$}
+      	%\addlegendentry{VGG19 $\theta^{-}_{i}$}
+
+
+%\addplot [thick, blue, mark=x] table [y=Xception, x=epochs]{./Chapter04/logs/res_1.txt};
+%\addplot [thick, red, mark=x] table [y=ResNet, x=epochs]{./Chapter04/logs/res_1.txt};
+%\addplot [thick, black, mark=x] table [y=V3, x=epochs]{./Chapter04/logs/res_1.txt};
+%\addplot [thick, green, mark=x] table [y=VGG19, x=epochs]{./Chapter04/logs/res_1.txt};
+\addplot [ultra thick, orange, solid] table [y=RandomV3, x=epochs]{./Chapter04/logs/res_1.txt};
+
+
+%\addplot [thick, blue, mark=halfcircle] table [y=Xception, x=epochs]{./Chapter04/logs/res_2.txt};
+%\addplot [thick, red, mark=halfcircle] table [y=ResNet, x=epochs]{./Chapter04/logs/res_2.txt};
+%\addplot [thick, black, mark=halfcircle] table [y=V3, x=epochs]{./Chapter04/logs/res_2.txt};
+%\addplot [thick, green, mark=halfcircle] table [y=VGG19, x=epochs]{./Chapter04/logs/res_2.txt};
+
+
+
+\end{axis}
+    \end{tikzpicture}
+\end{figure} 

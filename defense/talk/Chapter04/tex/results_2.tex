@@ -1,0 +1,84 @@
+\begin{figure}[ht!]
+  \begin{tikzpicture}[scale = 0.55]
+      \begin{axis}[
+	name=ax1,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=$\mathcal{T}_T$ \circled{2},
+        xlabel=Epochs,
+        ylabel= Accuracy ($\%$),
+	ymin=0.65,
+      ]
+
+
+      \addlegendentry{Xception $\theta^{-}_{i}$}
+      \addlegendentry{ResNet50 $\theta^{-}_{i}$}
+      \addlegendentry{InceptionV3 $\theta^{-}_{i}$}
+      \addlegendentry{VGG19 $\theta^{-}_{i}$}
+	\addlegendentry{Scratch-V3 $\theta$}
+	\addlegendentry{Xception $\theta_{i}$}
+	\addlegendentry{ResNet50 $\theta_{i}$}
+	\addlegendentry{InceptionV3 $\theta_{i}$}
+	\addlegendentry{VGG19 $\theta_{i}$}
+
+      \addplot [thick, blue, mark=diamond] table [y=Xception, x=epochs]
+      {./Chapter04/logs/rijksmuseum_type_challenge_only_softmax.txt};
+      \addplot [thick, red, mark=diamond] table [y=ResNet, x=epochs]{./Chapter04/logs/rijksmuseum_type_challenge_only_softmax.txt};
+      \addplot [thick, black, mark=diamond] table [y=V3, x=epochs]{./Chapter04/logs/rijksmuseum_type_challenge_only_softmax.txt};
+      \addplot [thick, green, mark=diamond] table [y=VGG19, x=epochs]{./Chapter04/logs/rijksmuseum_type_challenge_only_softmax.txt};
+            \addplot [ultra thick, orange , solid] table [y=ScratchV3, x=epochs]{./Chapter04/logs/rijksmuseum_type_challenge_full_fine_tuning.txt};
+
+      \addplot [ thick, blue, mark=x] table [y=Xception, x=epochs]{./Chapter04/logs/rijksmuseum_type_challenge_full_fine_tuning.txt};
+      \addplot [ thick, red, mark=x] table [y=ResNet, x=epochs]{./Chapter04/logs/rijksmuseum_type_challenge_full_fine_tuning.txt};
+      \addplot [thick, black, mark=x] table [y=V3, x=epochs]{./Chapter04/logs/rijksmuseum_type_challenge_full_fine_tuning.txt};
+      \addplot [thick, green, mark=x] table [y=VGG19, x=epochs]{./Chapter04/logs/rijksmuseum_type_challenge_full_fine_tuning.txt};
+
+\legend{}
+
+      \end{axis}
+
+      \begin{axis}[
+	at={(ax1.south east)},
+	xshift=2cm,
+      	grid style={dashed,gray},
+      	grid = both, 
+      	tick style=black,
+	title=$\mathcal{T}_T$ \circled{3},
+        xlabel=Epochs,
+        ylabel= Accuracy ($\%$),
+	legend columns=3, 
+        legend style={font=\small, at={(-0.8,-0.2,-0.2)},anchor=north west,legend columns=3},
+      ]
+
+
+      \addlegendentry{Xception $\theta^{-}_{i}$}
+      \addlegendentry{ResNet50 $\theta^{-}_{i}$}
+      \addlegendentry{InceptionV3 $\theta^{-}_{i}$}
+      \addlegendentry{VGG19 $\theta^{-}_{i}$}
+	\addlegendentry{Scratch-V3 $\theta$}
+	\addlegendentry{Xception $\theta_{i}$}
+	\addlegendentry{ResNet50 $\theta_{i}$}
+	\addlegendentry{InceptionV3 $\theta_{i}$}
+	\addlegendentry{VGG19 $\theta_{i}$}
+
+
+
+      \addplot [thick, blue, mark=diamond] table [y=Xception, x=epochs]
+      {./Chapter04/logs/rijksmuseum_artist_challenge_only_softmax.txt};
+      \addplot [thick, red, mark=diamond] table [y=ResNet, x=epochs]{./Chapter04/logs/rijksmuseum_artist_challenge_only_softmax.txt};
+      \addplot [thick, black, mark=diamond] table [y=V3, x=epochs]{./Chapter04/logs/rijksmuseum_artist_challenge_only_softmax.txt};
+      \addplot [thick, green, mark=diamond] table [y=VGG19, x=epochs]{./Chapter04/logs/rijksmuseum_artist_challenge_only_softmax.txt};
+            \addplot [ultra thick, orange , solid] table [y=ScratchV3, x=epochs]{./Chapter04/logs/rijksmuseum_artist_challenge_full_fine_tuning.txt};
+
+      \addplot [ thick, blue, mark=x] table [y=Xception, x=epochs]{./Chapter04/logs/rijksmuseum_artist_challenge_full_fine_tuning.txt};
+      \addplot [ thick, red, mark=x] table [y=ResNet, x=epochs]{./Chapter04/logs/rijksmuseum_artist_challenge_full_fine_tuning.txt};
+      \addplot [thick, black, mark=x] table [y=V3, x=epochs]{./Chapter04/logs/rijksmuseum_artist_challenge_full_fine_tuning.txt};
+      \addplot [thick, green, mark=x] table [y=VGG19, x=epochs]{./Chapter04/logs/rijksmuseum_artist_challenge_full_fine_tuning.txt};
+
+
+
+      \end{axis}
+	\end{tikzpicture}
+\end{figure}
+
