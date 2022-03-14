@@ -176,6 +176,7 @@
 
 	\begin{figure}
 		\includegraphics[width=1\textwidth]{figures/dqn}
+		\caption{Image courtesy of Patel et al. (2019)}
 	\end{figure}
 
 \end{frame}
@@ -215,7 +216,7 @@
 	\begin{itemize}
 		\item An input space $\mathcal{X}$,
 		\item An output space $\mathcal{Y}$,
-		\item A joint probability distribution $P(X,Y)$.
+		\item A joint probability distribution $P(X,Y)$
 		\item A loss function $\ell: \mathcal{Y} \times \mathcal{Y} \rightarrow \mathds{R}$
 	\end{itemize}
 
@@ -230,7 +231,7 @@
 
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
 
-	Typically, the only information available to build this function $f$ is a learning sample of input-output pairs $LS_T=\{(x_i,y_i)|i=1,\ldots,N_T\}$ drawn independently from $P_T(x,y)$.
+	Typically, the only information available to build this function $f$ is a learning sample of input-output pairs $LS_T=\{(x_i,y_i)|i=1,\ldots,N_T\}$ drawn independently from $P_T(X,Y)$.
 
 	\bigskip
 
@@ -244,7 +245,7 @@
 	For our first study ...
 	\bigskip
 	\begin{itemize}
-		\item We consider $f$ to come in the form of a \textcolor{RoyalBlue}{Convolutional Neural Network}
+		\item We consider $f$ to come in the form of a \textcolor{RoyalBlue}{Convolutional Neural Network} (CNN)
 		\item We define the source domain $\mathcal{D}_S$ to be that of \textcolor{RoyalBlue}{natural images}
 		\item We define the target domain $\mathcal{D}_T$ to be that of \textcolor{RoyalBlue}{Digital Heritage}
 		\item We assume that labels are available in both the source and target data and that the input spaces ${\cal X}_T$ and ${\cal X}_S$ match: \textcolor{RoyalBlue}{Inductive Transfer Learning}
@@ -257,7 +258,7 @@
 
 	\begin{columns}
 		\begin{column}{.5\textwidth}
-			We have a CNN pre-trained on the ImageNet dataset as source-task $\mathcal{T}_S$ 
+			As source-task $\mathcal{T}_S$ we have a CNN pre-trained on the ImageNet dataset
 
 			\begin{figure}
 				\includegraphics[width=0.8\textwidth]{figures/imagenet}
@@ -313,11 +314,11 @@
 
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
 
-	\textcolor{RoyalBlue}{Experimental setup} ...
+	$\Rightarrow$ Experimental setup ...
 	\bigskip
 
 	\begin{itemize}
-		\item We compare the transfer learning performance of four architectures 
+		\item We compare the transfer learning performance of four CNN architectures 
 			\begin{enumerate}
 				\item VGG19
 				\item InceptionV3
@@ -438,7 +439,7 @@
 	\bigskip
 	
 	\begin{itemize}
-		\item Both transfer learning approaches \textcolor{RoyalBlue}{outperform} random initialization
+		\item Both transfer learning approaches have significant \textcolor{RoyalBlue}{benefits} 
 		\item The off-the-shelf approach performs \textcolor{RoyalBlue}{well} for  $\mathcal{T}_T$ \circled{1} and  $\mathcal{T}_T$ \circled{2} but \textcolor{Maroon}{fails} for  $\mathcal{T}_T$ \circled{3}
 		\item Fine-tuning the networks results in \textcolor{RoyalBlue}{best} performance
 	\end{itemize}
@@ -450,8 +451,7 @@
 \end{frame}
 
 
-\begin{frame}
-	\subsection{On the Transferability of Convolutional Neural Networks}
+\begin{frame}{On the Transferability of Convolutional Neural Networks}
 	
 	$\Rightarrow$ After having fine-tuned the ImageNet models on the Rijksmuseum collection we investigate whether these models \textcolor{RoyalBlue}{generalize} to different, smaller, artistic collections
 
@@ -579,9 +579,10 @@
 \begin{frame}{On the Transferability of Lottery Winners}
 
 	$\Rightarrow$ How does one \textcolor{RoyalBlue}{find} a winning ticket?
+	\bigskip
 	
 	\begin{itemize}
-		\item Randomly initialize a network $f(x;\theta_0)$ where $\theta_0 \sim \mathcal{D}_{\theta}$
+		\item Randomly initialize a network $f(x;\theta_0)$ where $\theta_0 \sim \mathscr{D}_{\theta}$
 		\item We train the network for $j$ iterations
 		\item We prune $p\%$ of the parameters in $\theta_j$ creating a mask $m$
 		\item Reset the remaining parameters to their values at $\theta_0$, creating a winning ticket $f(x;m \odot \theta_0)$
@@ -617,7 +618,7 @@
 		\item Faster Inference
 		\item (Sometimes) obtain a better final performance
 	\end{itemize}
-
+	\bigskip
 	However ... 
 
 	\begin{itemize}
@@ -749,7 +750,7 @@
 \begin{frame}{On the Transferability of Lottery Winners}
 	
 	We also provide additional empirical insights into the Lottery Ticket Hypothesis:
-
+	\bigskip
 	\begin{itemize}
 		\item We show that completely pre-trained winning tickets $f(x;m \odot \theta_i)$ \textcolor{Maroon}{overfit} on the source task $\mathcal{T}_S$ 
 		\item The presence of winning tickets \textcolor{Maroon}{does not depend} on the size of the training data
@@ -877,7 +878,7 @@ Therefore we can define an MDP as $\mathcal{M}=\langle\mathcal{S}, \mathcal{A}, 
 	\begin{itemize}
 		\item A policy $\pi$ can only be derived from $Q^{\pi}(s,a)$ 
 		\item It is hard to combine RL algorithms with neural networks
-		\item Dealing with one value function is enough
+		\item Dealing with one value function can be complicated enough
 	\end{itemize}
 
 	\bigskip
@@ -901,11 +902,11 @@ Therefore we can define an MDP as $\mathcal{M}=\langle\mathcal{S}, \mathcal{A}, 
 
 	We can do this by either learning $V^{\pi}(s;\phi)$ with
 		\begin{multline*}
-L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \Phi^{-}) - V(s_{t}; \Phi)\big)^{2}\bigg],
+L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \phi^{-}) - V(s_{t}; \phi)\big)^{2}\bigg],
 		\end{multline*}			
 		and $Q^{\pi}(s,a)$ with:
 		\begin{multline*}
-    			L(\theta) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \Phi^{-}) - Q(s_{t}, a_{t}; \theta)\big)^{2}\bigg],
+    			L(\theta) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \phi^{-}) - Q(s_{t}, a_{t}; \theta)\big)^{2}\bigg],
 		\end{multline*}
 
 \end{frame}
@@ -914,11 +915,11 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 	... or by learning $V^{\pi}(s;\phi)$ with
 	\begin{multline*}
-		L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}) - V(s_{t}; \Phi)\big)^{2}\bigg],
+		L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}) - V(s_{t}; \phi)\big)^{2}\bigg],
 	\end{multline*}
 	and $Q^{\pi}(s,a)$ with:
 	\begin{multline*}
-    		L(\theta) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \Phi) - Q(s_{t}, a_{t}; \theta)\big)^{2}\bigg].
+    		L(\theta) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \phi) - Q(s_{t}, a_{t}; \theta)\big)^{2}\bigg].
 	\end{multline*}
 \end{frame}
 
@@ -928,7 +929,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 	\bigskip
 
-	We compare their performance to algorithms which only learn an approximation of the state-action value function $Q^\pi(s,a)$
+	We compare their performance to algorithms which only learn an approximation of the state-action value function $Q^\pi(s,a)$ \footnote{Mnih, Volodymyr, et al. "Human-level control through deep reinforcement learning." nature 518.7540 (2015)} \footnote{Van Hasselt, Hado, Arthur Guez, and David Silver. "Deep reinforcement learning with double q-learning." Proceedings of the AAAI conference on artificial intelligence (2016).}
 
 \end{frame}
 
@@ -986,7 +987,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 \begin{frame}{On the Transferability of Deep-Q Networks}
 
-	Based on which we have formulated the following research questions:
+	Based on these results we have formulated the following research questions:
 
 	\begin{itemize}
 		\item Can we \textcolor{RoyalBlue}{improve} the performance of DQV and DQV-Max Learning through Transfer Learning?
@@ -998,9 +999,10 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 \begin{frame}{On the Transferability of Deep-Q Networks}
 
 	$\Rightarrow$ We study the Transfer Learning potential of several types of Deep-Q Networks
-
+	
+	\bigskip
 	\begin{itemize}
-		\item We consider \textcolor{RoyalBlue}{two variants} of Deep-Q Networks: the DDQN and DQV-Learning algorithms
+		\item We start by considering \textcolor{RoyalBlue}{two variants} of Deep-Q Networks: the DDQN and DQV-Learning algorithms
 		\item The popular \texttt{Atari} games are used as benchmark
 		\item We explore what happens when models that are pre-trained on $\mathcal{M}_S$ get \textcolor{RoyalBlue}{fine-tuned} on $\mathcal{M}_T$
 	\end{itemize}
@@ -1032,7 +1034,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 \begin{frame}{On the Transferability of Deep-Q Networks}
 
-	We quantitatively measure the benefits of transferring and fine-tuning a pre-trained model by computing the \textcolor{RoyalBlue}{area ratio metric} $\mathscr{R}$
+	We quantitatively measure the benefits of transferring and fine-tuning a pre-trained model by computing the \textcolor{RoyalBlue}{area ratio metric} \footnote{Lazaric, Alessandro. "Transfer in reinforcement learning: a framework and a survey." Reinforcement Learning. Springer (2012).} $\mathscr{R}$
 
 	\begin{equation*}
 		\mathscr{R} = \frac{\text{area of $\mathcal{M}_S$ $-$ area of $\mathcal{M}_T$}}{\text{area of $\mathcal{M}_T$}}
@@ -1103,7 +1105,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 \begin{frame}{On the Transferability of Deep-Q Networks}
 
 	\bigskip
-	$\Rightarrow$ Even on our newly designed problems, we keep observing \textcolor{Maroon}{very poor} transfer learning potential
+	$\Rightarrow$ Even on our newly designed problems, we keep observing \textcolor{Maroon}{very poor} transfer learning performance
 \begin{table}[ht!]
 	\centering
 	\caption{The area ratio obtained after fine-tuning a pre-trained DQN agent on the different \texttt{Catch} environments. We can see that no matter which source game is used for pre-training, transfer learning surprisingly never results in positive transfer.}
@@ -1190,7 +1192,12 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 		\item This remains an \textcolor{RoyalBlue}{open problem} that we believe deserves attention
 	\end{itemize}
 
+\end{frame}
 
+\begin{frame}
+	\begin{center}
+		\textcolor{skymagenta}{\textbf{The End.}}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Final References}
