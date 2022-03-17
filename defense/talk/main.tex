@@ -17,6 +17,7 @@
 \usepackage{tikz}
 \usepackage{url}
 \usepackage{graphicx}
+\usepackage{subfig}
 \usepackage{dsfont}
 \usepackage{xcolor}
 \usepackage{colortbl}
@@ -26,6 +27,7 @@
 \usepackage{tabularx}
 \usepackage{textcomp}
 \usepackage{xstring}
+\usepackage{appendixnumberbeamer}
 
 \usepgfplotslibrary{groupplots}
 \usetikzlibrary{pgfplots.groupplots,arrows.meta,shadows,positioning,angles,quotes}
@@ -45,6 +47,7 @@
 
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
+
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
@@ -662,7 +665,7 @@
 
 	\bigskip
 
-	We use three popular Computer Vision datasets as source tasks $\mathcal{T}_S$
+	We use three popular Computer Vision datasets as source domains $\mathcal{D}_S$
 
 	\begin{figure}
  \includegraphics[width=0.8\textwidth]{figures/fashion_mnist}
@@ -1215,5 +1218,141 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 %============================================================================
 
+
+\appendix
+
+\begin{frame}{Backup}
+	\bigskip
+	\textit{"Why not transfer fully pre-trained pruned models $f(x,m\odot\theta_i)$ instead of lottery tickets $f(x,m\odot\theta_k)$?"}
+	\bigskip
+	\input{./Chapter06/tex/full_pretraining_comparison.tex}
+
+\end{frame}
+
+\begin{frame}{Backup}
+
+	\textit{What is the difference between the DQV-Learning algorithms and the Dueling Architecture?} \footnote{Wang, Ziyu, et al. "Dueling network architectures for deep reinforcement learning." International conference on machine learning. PMLR, 2016.}
+
+	\bigskip
+	
+	There's two main \textcolor{RoyalBlue}{differences} among e.g. DQV-Learning and the Dueling Architecture:
+	\begin{enumerate}
+		\item The Dueling Architecture does not explicitly learn the state-value function $V^{\pi}(s)$
+		\item DQV-Learning requires two independent sets of parameters to perform well $\phi$ and $\theta$
+	\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}{Backup}
+
+	1) In the Dueling Architecture the state-value estimates and the advantage estimates are computed
+	\bigskip
+	\begin{multline*}
+	Q(s,a;\theta^{(1)},\theta^{(2)},\theta^{(3)}) = V\bigl(s;\theta^{(1)},\theta^{(3)}\bigr) + \\
+	\bigl(A(s,a;\theta^{(1)},\theta^{(2)}) - \underset{a_{t+1}\in \mathcal{A}}{\max}\: A(s, a_{t+1};\theta^{(1)},\theta^{(2)}) \bigr).
+	\label{eq:dueling}
+\end{multline*}
+	
+	 such that it is easier to train the model with DDQN's TD-target
+	\bigskip
+	\begin{equation*}
+    y^{DDQN}_{t} = r_{t} + \gamma \: Q(s_{t+1}, \underset{a\in \mathcal{A}}{\argmax}\: Q(s_{t+1}, a; \theta); \theta^{-}). 
+\end{equation*}
+
+\end{frame}
+
+
+\begin{frame}{Backup}
+
+	1) But the true state-value function $V^{\pi}(s)$ is never explicitly learned, which \textcolor{RoyalBlue}{is the case} for DQV-Learning and DQV-Max Learning as there's a dedicated objective function for learning $\approx V^{\pi}(s;\phi)$ where we either have
+	\bigskip
+	\begin{multline*}
+			L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: V(s_{t+1};\phi^{-}) - V(s_{t}; \phi)\big)^{2}\bigg],
+		\end{multline*}
+
+	\bigskip
+	or
+	\begin{multline*}
+		L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}) - V(s_{t}; \phi)\big)^{2}\bigg],
+	\end{multline*}
+
+\end{frame}
+
+\begin{frame}{Backup}
+
+	2) We have also tried to train a DQV-Learning agent by following the Dueling neural architecture 
+	\bigskip
+	
+	\begin{figure}[ht]
+	\centering
+	\begin{minipage}[b]{0.45\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{./figures/DuelingDQV_shared}
+	\end{minipage}
+	\hspace{0.5cm}
+	\begin{minipage}[b]{0.45\linewidth}
+	\centering
+	\includegraphics[width=\textwidth]{./figures/dueling_DQV}
+	\end{minipage}
+	\end{figure}
+	\end{frame}
+		
+\end{frame}
+
+\begin{frame}{Backup}
+
+	$\Rightarrow$ But the results were \textcolor{Maroon}{never on par} with regular DQV-Learning	
+	\bigskip
+	\input{./Chapter07/tex/duelling_dqv_results.tex}
+	
+\end{frame}
+
+
+\begin{frame}{Backup}
+
+	\bigskip
+	
+	\textit{"Is there an alternative way of improving the performance of neural networks other than Transfer Learning?"}
+
+	\bigskip
+	
+	We have experimented with \textcolor{RoyalBlue}{Multi-Task Learning}, which for supervised learning problems showed promising results 
+	
+	\bigskip
+	
+	\input{./Appendix/tex/multi_task.tex}
+	 
+
+\end{frame}
+
+\begin{frame}{Backup}
+	\textit{"Does Transfer Learning never work when it comes to Deep Reinforcement Learning?"}
+
+	\bigskip
+	
+	We believe that this is mostly the case for model-free Deep Reinforcement Learning only:
+	\begin{itemize}
+		\item As CNNs need to act as feature extractors as well as function approximators
+		\item In fact, in model-based Reinforcement Learning transferring neural architectures works really well \footnote{Sasso, Remo, Matthia Sabatelli, and Marco A. Wiering. "Fractional transfer learning for deep model-based reinforcement learning." arXiv preprint arXiv:2108.06526 (2021).}
+	\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Backup}
+
+	\bigskip
+	
+	\textit{"Does Transfer Learning never work when it comes to Deep Reinforcement Learning?"}
+
+	\bigskip
+		\begin{figure}
+			\includegraphics[width=0.7\textwidth]{figures/triple}
+			\caption{Results from Sasso, Remo, Matthia Sabatelli, and Marco A. Wiering. "Fractional transfer learning for deep model-based reinforcement learning." arXiv preprint arXiv:2108.06526 (2021)}
+		\end{figure}
+	
+
+\end{frame}
 
 \end{document}

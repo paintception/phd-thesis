@@ -1,0 +1,50 @@
+
+\begin{figure}[H]
+  \begin{tikzpicture}[scale = 0.5]
+    \begin{axis}[
+    grid style={solid,gray},
+    grid = both, 
+    ymax=1,
+    tick style=black,
+      xlabel=Epochs,
+      ylabel= Accuracy,
+      legend pos=south east
+    ]
+    
+    \addlegendentry{Material \%}
+    \addlegendentry{Type \%}
+    \addlegendentry{Artist \%}
+    
+    \addplot [thick, black] table [y=val_material_prediction_acc, x=epoch]
+    {./Appendix/logs/rijks_multitask_results.txt};
+    \addplot [thick, black, dashed] table [y=val_type_prediction_acc, x=epoch]
+    {./Appendix/logs/rijks_multitask_results.txt};
+    \addplot [thick, black, dotted] table [y=val_artist_prediction_acc, x=epoch]
+    {./Appendix/logs/rijks_multitask_results.txt};
+    \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale = 0.5]
+    \begin{axis}[
+    grid style={solid,gray},
+    grid = both, 
+    ymax=1,
+    tick style=black,
+      xlabel=Epochs,
+      ylabel= Accuracy,
+      legend pos=south east
+    ]
+    
+    \addlegendentry{Material \%}
+    \addlegendentry{Type \%}
+    \addlegendentry{Artist \%}
+    \addplot [thick, red] table [y=val_acc, x=epoch]
+    {./Appendix/logs/material_single_resnet.txt};
+    \addplot [ultra thick, red, dashed] table [y=val_acc, x=epoch]
+    {./Appendix/logs/type_single_resnet.txt};
+    \addplot [ultra thick, red, dotted] table [y=val_acc, x=epoch]
+    {./Appendix/logs/artist_single_resnet.txt};
+    \end{axis}
+    \end{tikzpicture}
+    
+    \label{fig:multi_task}
+    \end{figure}
