@@ -90,6 +90,9 @@
 \end{frame}
 
 \begin{frame}{Transfer Learning}
+	\begin{figure}
+		\includegraphics[width=1\textwidth]{figures/example}
+	\end{figure}
 
 \end{frame}
 
@@ -151,7 +154,7 @@
 \begin{frame}{Transfer Learning}
 
 	The family of machine learning models that is studied under the lens of transfer learning is that of \textcolor{RoyalBlue}{Convolutional Neural Networks}
-
+	\bigskip
 	\begin{itemize}
 		\item One of the main architectures when it comes to high-dimensional and spatially organized inputs
 		\item Have achieved state-of-the-art results across many different machine learning problems
@@ -209,6 +212,12 @@
 	\end{center}
 \end{frame}
 
+\begin{frame}
+	\begin{figure}
+		\includegraphics[width=1\textwidth]{figures/insight}
+	\end{figure}
+\end{frame}
+
 
 \begin{frame}
 	\section{Part II: Supervised Learning}
@@ -233,16 +242,21 @@
 \end{frame}
 
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
-
-	Typically, the only information available to build this function $f$ is a learning sample of input-output pairs $LS_T=\{(x_i,y_i)|i=1,\ldots,N_T\}$ drawn independently from $P_T(X,Y)$.
-
 	\bigskip
 
-	However, when it comes to \textcolor{RoyalBlue}{Transfer Learning} we have an additional dataset $LS_S$ that can be used for finding a better $f$ than when only $LS_T$ is used for training. 
+	 \begin{itemize}
+	 	\item Typically, the only information available to build this function $f$ is a learning sample of input-output pairs $LS_T=\{(x_i,y_i)|i=1,\ldots,N_T\}$ drawn independently from $P_T(X,Y)$.
 
+		\bigskip
+	\item In \textcolor{RoyalBlue}{Transfer Learning} we have an additional dataset $LS_S$ that can be used for finding a better $f$ than when only $LS_T$ is used for training. 
+	 \end{itemize}
+	 \bigskip
+	 $\Rightarrow$ Throughout our studies we focus on Inductive Transfer Learning 
+	 
 \end{frame}
 
 
+\iffalse
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
 
 	For our first study ...
@@ -255,7 +269,7 @@
 	\end{itemize}
 
 \end{frame}
-
+\fi
 
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
 
@@ -447,13 +461,9 @@
 		\item Fine-tuning the networks results in \textcolor{RoyalBlue}{best} performance
 	\end{itemize}
 
-	\bigskip
-
-	Next step ...
-
 \end{frame}
 
-
+\iffalse
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
 	
 	$\Rightarrow$ After having fine-tuned the ImageNet models on the Rijksmuseum collection we investigate whether these models \textcolor{RoyalBlue}{generalize} to different, smaller, artistic collections
@@ -474,7 +484,7 @@
 	\input{./Tables/Chapter04/table_3.tex}
 
 \end{frame}
-
+\fi
 
 \begin{frame}{On the Transferability of Convolutional Neural Networks}
 
@@ -903,7 +913,7 @@ Therefore we can define an MDP as $\mathcal{M}=\langle\mathcal{S}, \mathcal{A}, 
 
 	\bigskip
 
-	We can do this by either learning $V^{\pi}(s;\phi)$ with
+	We can do this by either training a \textcolor{skymagenta}{\textbf{DQV}} agent which learns $V^{\pi}(s;\phi)$ by minimizing
 		\begin{multline*}
 L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma V(s_{t+1}; \phi^{-}) - V(s_{t}; \phi)\big)^{2}\bigg],
 		\end{multline*}			
@@ -916,7 +926,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 \begin{frame}{A Novel Family of Deep Reinforcement Learning Algorithms}
 
-	... or by learning $V^{\pi}(s;\phi)$ with
+	... or by training a \textcolor{skymagenta}{\textbf{DQV-Max}} agent that learns $V^{\pi}(s;\phi)$ with
 	\begin{multline*}
 		L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\big(r_{t} + \gamma \: \underset{a\in \mathcal{A}}{\max}\: Q(s_{t+1}, a; \theta^{-}) - V(s_{t}; \phi)\big)^{2}\bigg],
 	\end{multline*}
@@ -927,12 +937,10 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 \end{frame}
 
 \begin{frame}{A Novel Family of Deep Reinforcement Learning Algorithms}
-	The first two objective functions constitute the \textcolor{skymagenta}{\textbf{DQV-Learning}} algorithm, whereas the second two objective functions define the \textcolor{skymagenta}{\textbf{DQV-Max Learning}} algorithm.
-
 
 	\bigskip
 
-	We compare their performance to algorithms which only learn an approximation of the state-action value function $Q^\pi(s,a)$ \footnote{Mnih, Volodymyr, et al. "Human-level control through deep reinforcement learning." nature 518.7540 (2015)} \footnote{Van Hasselt, Hado, Arthur Guez, and David Silver. "Deep reinforcement learning with double q-learning." Proceedings of the AAAI conference on artificial intelligence (2016).}
+	$\Rightarrow$ We compare their performance to algorithms which only learn an approximation of the state-action value function $Q^\pi(s,a)$ \footnote{Mnih, Volodymyr, et al. "Human-level control through deep reinforcement learning." nature 518.7540 (2015)} \footnote{Van Hasselt, Hado, Arthur Guez, and David Silver. "Deep reinforcement learning with double q-learning." Proceedings of the AAAI conference on artificial intelligence (2016).}
 
 \end{frame}
 
@@ -1109,9 +1117,10 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 	\bigskip
 	$\Rightarrow$ Even on our newly designed problems, we keep observing \textcolor{Maroon}{very poor} transfer learning performance
+	\bigskip
 \begin{table}[ht!]
 	\centering
-	\caption{The area ratio obtained after fine-tuning a pre-trained DQN agent on the different \texttt{Catch} environments. We can see that no matter which source game is used for pre-training, transfer learning surprisingly never results in positive transfer.}
+	%\caption{The area ratio obtained after fine-tuning a pre-trained DQN agent on the different \texttt{Catch} environments. We can see that no matter which source game is used for pre-training, transfer learning surprisingly never results in positive transfer.}
 	\input{./Tables/Chapter08/catch_tl_results.tex}
 	\label{tab:catch_tl_area_ratio}
 \end{table}
@@ -1119,7 +1128,8 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 \end{frame}
 
 \begin{frame}{On the Transferability of Deep-Q Networks}
-
+	
+	\bigskip
 	We therefore asked ourselves whether Deep-Q Networks are at least able to \textcolor{RoyalBlue}{self-transfer} ...
 	\bigskip
 	\begin{itemize}
@@ -1136,7 +1146,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 	\begin{table}[ht!]
 	\centering
-	\caption{The area ratio scores obtained after performing self-transfer. We can see that if only the last linear layer is trained, then positive transfer is obtained on all \texttt{Catch} environments, whereas if the network is fine-tuned, positive transfer is (in part) only obtained on \texttt{Catch-v2}.}
+%	\caption{The area ratio scores obtained after performing self-transfer. We can see that if only the last linear layer is trained, then positive transfer is obtained on all \texttt{Catch} environments, whereas if the network is fine-tuned, positive transfer is (in part) only obtained on \texttt{Catch-v2}.}
 	\input{./Tables/Chapter08/catch_self_tl_results.tex}
 	\label{tab:self_tl_area_ratio}
 	\end{table}
@@ -1186,7 +1196,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 \begin{frame}{On the Transferability of Deep-Q Networks}
 	
-	To conclude PART III ...
+	Takeaway of PART III ...
 	\bigskip
 	\begin{itemize}
 		\item We show that fine-tuning pre-trained models in a model-free Deep Reinforcement Learning context is \textcolor{Maroon}{particularly challenging} 
@@ -1194,6 +1204,25 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 		\item We provide some \textcolor{RoyalBlue}{initial intuition} about why negative transfer seems to be happening
 		\item This remains an \textcolor{RoyalBlue}{open problem} that we believe deserves attention
 	\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Conclusion}
+
+	\bigskip
+	\begin{center}
+		\textcolor{skymagenta}{\textbf{Future Work}}
+	\end{center}
+
+	\bigskip
+	\begin{itemize}
+		\item Focus on Unsupervised Learning
+		\item A Transfer Learning study of Vision Transformers (ViTs) \footnote{Dosovitskiy, Alexey, et al. "An image is worth 16x16 words: Transformers for image recognition at scale." arXiv preprint arXiv:2010.11929 (2020).}
+		\item Consider alternative training approaches such as meta-learning and multi-task learning 
+		\item Focus on deep model-based Reinforcement Learning
+	\end{itemize}
+
 
 \end{frame}
 
@@ -1231,7 +1260,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 \begin{frame}{Backup}
 
-	\textit{What is the difference between the DQV-Learning algorithms and the Dueling Architecture?} \footnote{Wang, Ziyu, et al. "Dueling network architectures for deep reinforcement learning." International conference on machine learning. PMLR, 2016.}
+	\textit{"What is the difference between the DQV-Learning algorithms and the Dueling Architecture?"} \footnote{Wang, Ziyu, et al. "Dueling network architectures for deep reinforcement learning." International conference on machine learning. PMLR, 2016.}
 
 	\bigskip
 	
