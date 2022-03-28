@@ -999,6 +999,22 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 \end{frame}
 
+\begin{frame}{On the Transferability of Deep-Q Networks}
+	
+	Let's take a look at the performance of the DQV algorithms more closely ...
+	
+	\bigskip
+	\begin{tikzpicture}
+\node (table) {\input{./Tables/Chapter07/dqv_dqv_max_results.tex}};
+\draw [red,ultra thick,rounded corners]
+  ($(table.south west) !.55! (table.north west)$)
+  rectangle 
+  ($(table.south east) !.5! (table.north east)$);
+\end{tikzpicture}
+	
+
+\end{frame}
+
 
 \begin{frame}{On the Transferability of Deep-Q Networks}
 
