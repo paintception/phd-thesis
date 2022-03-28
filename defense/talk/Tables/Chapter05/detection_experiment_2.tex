@@ -1,0 +1,43 @@
+\begin{minipage}{.5\textwidth}
+\begin{tikzpicture}
+  \begin{axis}[title  = IoU $\geq 10$,
+    xbar,
+    bar width=.3cm,
+    y axis line style = { opacity = 0 },
+    axis x line       = none,
+    tickwidth         = 0.2pt,
+    width=7cm,
+    symbolic y coords = {Stringed, Wind, Percussion,Keyboard, Electronic},
+    ytick = data,
+    nodes near coords,
+  ]
+  \addplot [color=green,fill ] coordinates {(488,Stringed) (123,Wind) (63,Keyboard) (17,Percussion) (0,Electronic)};
+  \addplot [color=red,fill] coordinates {(325,Stringed) (146,Wind) (42,Keyboard) (34,Percussion) (0,Electronic)};
+\legend{TP,FP}
+\end{axis}
+\end{tikzpicture}
+ \end{minipage}
+ \hspace{2cm}
+\begin{minipage}{.5\textwidth}
+\begin{tikzpicture}
+  \begin{axis}[title  = IoU $\geq 50$,
+    xbar,
+    bar width=.3cm,
+    y axis line style = { opacity = 0 },
+    axis x line       = none,
+    tickwidth         = 0.2pt,
+    width=7cm,
+    symbolic y coords = {Stringed, Wind, Percussion,Keyboard, Electronic},
+    ytick = data,
+    nodes near coords,
+  ]
+  \addplot [color=green,fill] coordinates {(412,Stringed) (89,Wind) (47,Keyboard) (15,Percussion) (0,Electronic)};
+  \addplot [color=red,fill] coordinates {(401,Stringed) (182,Wind) (58,Keyboard) (36,Percussion) (0,Electronic)};
+\legend{TP,FP}
+
+\end{axis}
+\end{tikzpicture}
+ \end{minipage}
+ 
+
+

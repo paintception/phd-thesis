@@ -1,0 +1,42 @@
+\begin{minipage}{.5\textwidth}
+
+\begin{tikzpicture}
+\begin{axis}[title = IoU $\geq 10$,
+                    xbar,
+                    y axis line style = {opacity = 0},
+                    axis x line       = none,
+                    tickwidth         = 0pt,
+                    symbolic y coords = {Instrument},
+                    ytick             = data,
+                    nodes near coords,
+                  ]
+
+\addplot [color=black,fill=green]  coordinates { (878,Instrument)  };
+\addplot [color=black,fill=red] coordinates { (508,Instrument)  }; 
+
+\legend{TP,FP}
+\end{axis}
+\end{tikzpicture}
+ \end{minipage}
+ \hspace{3cm}
+\begin{minipage}{.5\textwidth}
+\begin{tikzpicture}
+\begin{axis}[title = IoU $\geq 50$,
+                    xbar,
+                    y axis line style = {opacity = 0},
+                    axis x line       = none,
+                    tickwidth         = 0pt,
+                    legend style={at={(0.91,0.8)},anchor=east},
+                    symbolic y coords = {Instrument},
+                    ytick             = data,
+                    nodes near coords,
+                  ]
+
+\addplot [color=black,fill=green]  coordinates { (648,Instrument)  };
+\addplot [color=black,fill=red] coordinates { (738,Instrument)  }; 
+
+\legend{TP,FP}
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+
