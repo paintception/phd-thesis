@@ -78,17 +78,24 @@
 
 \frame{\titlepage} 
 
-\frame{\frametitle{Presentation outline}\tableofcontents}
+%\frame{\frametitle{Presentation outline}\tableofcontents}
 
 %============================================================================
 
 \begin{frame}
+	\begin{center}
+	\textcolor{skymagenta}{\textbf{PART I}}
+	\end{center}
+\end{frame}
+
+
+\begin{frame}
 	\section{Part I: Preliminaries}
+	
+	\tableofcontents[sectionstyle=show/hide,subsectionstyle=show/show/hide]
+	
 	\subsection{Transfer Learning}
 
-	\begin{center}
-		\textcolor{skymagenta}{\textbf{PART I}}
-	\end{center}
 \end{frame}
 
 \begin{frame}{Transfer Learning}
@@ -210,10 +217,17 @@
 
 %============================================================================
 
+
 \begin{frame}
 	\begin{center}
 		\textcolor{skymagenta}{\textbf{PART II}}
 	\end{center}
+\end{frame}
+
+
+\begin{frame}
+	\section{Part II: Supervised Learning}
+		\tableofcontents[sectionstyle=show/hide,subsectionstyle=show/show/hide]		
 \end{frame}
 
 \begin{frame}
@@ -224,7 +238,6 @@
 
 
 \begin{frame}
-	\section{Part II: Supervised Learning}
 	\subsection{On the Transferability of Convolutional Neural Networks}
 
 	We start by defining the components of \textcolor{RoyalBlue}{Supervised Learning}:
@@ -796,8 +809,9 @@
 %============================================================================
 
 
-\begin{frame}{A Novel Family of DRL Algorithms}
-	\section{Part III: Reinforcement Learning}
+\begin{frame}
+	\section{Part III: Reinforcement Learning}	
+		\tableofcontents[sectionstyle=show/hide,subsectionstyle=show/show/hide]	
 	\subsection{A Novel Family of DRL Algorithms}
 \end{frame}
 
@@ -1064,7 +1078,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 	\end{frame}
 
 \begin{frame}{On the Transferability of Deep-Q Networks}
-
+	\bigskip
 	We quantitatively measure the benefits of transferring and fine-tuning a pre-trained model by computing the \textcolor{RoyalBlue}{area ratio metric} \footnote{Lazaric, Alessandro. "Transfer in reinforcement learning: a framework and a survey." Reinforcement Learning. Springer (2012).} $\mathscr{R}$
 
 	\begin{equation*}
@@ -1072,8 +1086,10 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 	\label{eq:area_ratio_metric}
 	\end{equation*}
 
-	\bigskip
-	expecting mostly positive values for $\mathscr{R}$
+	\begin{figure}
+		\includegraphics[width=0.5\textwidth]{figures/BankHeist_Enduro}
+	\end{figure}
+
 
 \end{frame}
 
