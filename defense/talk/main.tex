@@ -28,6 +28,7 @@
 \usepackage{textcomp}
 \usepackage{xstring}
 \usepackage{appendixnumberbeamer}
+\usepackage[absolute,overlay]{textpos}
 
 \usepgfplotslibrary{groupplots}
 \usetikzlibrary{pgfplots.groupplots,arrows.meta,shadows,positioning,angles,quotes}
@@ -99,6 +100,10 @@
 \end{frame}
 
 \begin{frame}{Transfer Learning}
+	%\begin{textblock*}{5cm}(7cm,3cm) % {block width} (coords) 
+   %Your text here
+%\end{textblock*}
+	
 	\begin{figure}
 		\includegraphics[width=1\textwidth]{figures/example}
 	\end{figure}
@@ -263,7 +268,7 @@
 	\bigskip
 
 	\begin{figure}
-		\includegraphics[width=1.2\textwidth]{figures/tl_}
+		\includegraphics[width=1.2\textwidth]{figures/1}
 	\end{figure}
 	 
 \end{frame}
@@ -272,7 +277,7 @@
 	\bigskip
 
 	\begin{figure}
-		\includegraphics[width=1.2\textwidth]{figures/tl__}
+		\includegraphics[width=1.2\textwidth]{figures/2}
 	\end{figure}
 	 
 \end{frame}
@@ -281,7 +286,7 @@
 	\bigskip
 
 	\begin{figure}
-		\includegraphics[width=1.2\textwidth]{figures/tl___}
+		\includegraphics[width=1.2\textwidth]{figures/3}
 	\end{figure}
 	 
 \end{frame}
@@ -722,8 +727,22 @@
   		\includegraphics[width=1.8cm,height=\textheight,keepaspectratio]{figures/type.pdf}%
 	\end{figure}
 
+	\bigskip
 \end{frame}
 
+\begin{frame}{On the Transferability of Lottery Winners}
+	\input{./Tables/Chapter06/datasets_overview}
+\end{frame}
+
+\begin{frame}{On the Transferability of Lottery Winners}
+	\begin{tikzpicture}
+		\node (table) {\input{./Tables/Chapter06/datasets_overview}};
+		\draw [red,ultra thick,rounded corners]
+		  ($(table.south west) !.5! (table.north west)$)
+		  rectangle 
+		  ($(table.south east) !.4! (table.north east)$);
+	\end{tikzpicture}
+\end{frame}
 
 \begin{frame}{On the Transferability of Lottery Winners}
 	Transferring lottery winners to the \textcolor{RoyalBlue}{Digital Pathology} data ...
@@ -792,7 +811,7 @@
 	\begin{itemize}
 		\item We show that completely pre-trained winning tickets $f(x;m \odot \theta_i)$ \textcolor{Maroon}{overfit} on the source task $\mathcal{T}_S$ 
 		\item The presence of winning tickets \textcolor{Maroon}{does not depend} on the size of the training data
-		\item The closer the source task $\mathcal{S}_T$ and the target task $\mathcal{T}_T$ the \textcolor{RoyalBlue}{better} the transferability of $f(x;m \odot \theta_k)$
+		\item The closer the source task $\mathcal{T}_S$ and the target task $\mathcal{T}_T$ the \textcolor{RoyalBlue}{better} the transferability of $f(x;m \odot \theta_k)$
 	\end{itemize}
 
 \end{frame}
@@ -1262,7 +1281,7 @@ L(\phi) = \mathds{E}_{\langle s_{t},a_{t},r_{t},s_{t+1}\rangle\sim U(D)} \bigg[\
 
 \begin{frame}{Final References}
 	\begin{itemize}
-		\fontsize{6pt}{7.2}\selectfont
+		\fontsize{8pt}{7.2}\selectfont
 		\item Sabatelli, Matthia, et al. "Deep transfer learning for art classification problems." Proceedings of the European Conference on Computer Vision (ECCV) Workshops. 2018.
 		\item Sabatelli, Matthia, et al. "Advances in Digital Music Iconography: Benchmarking the detection of musical instruments in unrestricted, non-photorealistic images from the artistic domain." Digital Humanities Quarterly 15.1 (2021).
 		\item Sabatelli, Matthia, Mike Kestemont, and Pierre Geurts. "On the Transferability of Winning Tickets in Non-natural Image Datasets." VISIGRAPP (5: VISAPP). 2021.

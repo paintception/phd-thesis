@@ -1,0 +1,22 @@
+\begin{table*}[ht!]
+\small
+\caption{Some additional information about the lottery winners which performance is reported in Table \ref{tab:results}. For each winning ticket we report the fraction of weights that is pruned from an original ResNet-50 architecture and that therefore characterizes the level of sparsity of the overall best performing lottery ticket. The results in the Scratch-Training column are not reported as these are unpruned models that are trained from scratch.}
+\resizebox{\columnwidth}{!}{%
+\centering
+\begin{tabular}{lccccc }
+\hline
+Target-Dataset & Scratch-Training & CIFAR-10 & CIFAR-100 & Fashion-MNIST & Target-Ticket \\
+\hline \hline
+\texttt{Human-LBA} & - & 0.945  & 0.79 & 0.886 & 0.832\\
+\texttt{Lung-Tissues} & - & 0.977 & 0.977 & 0.672 &  0.965\\
+\texttt{Mouse-LBA} & - & 0.972 & 0.893 & 0.738 & 0.931\\
+\texttt{Bone-Marrow} & - & 0.866 & 0.988 & 0.931 & 0.914\\
+\hline
+\texttt{Artist} \circled{1} & - & 0.972 & 0.993 & 0.991 & 0.931\\
+\texttt{Type} & - & 0.991 & 0.931 & 0.995 & 0.963\\
+
+\hline
+\end{tabular}%
+}
+\label{tab:fraction_results}
+\end{table*}
