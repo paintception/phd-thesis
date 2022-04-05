@@ -189,7 +189,7 @@ TD-Learning is a very effective strategy for building algorithms that can learn 
 
 \paragraph{\textbf{\uppercase{Q}-\uppercase{L}earning}} Introduced by \citet{watkins1992q} is arguably the most popular model-free RL algorithm. It works by keeping track of an estimate of the state-action value function $Q: \mathcal{S} \times \mathcal{A} \rightarrow \Re$ and updates each visited state-action pair with the following update rule:
 \begin{equation}
-Q(s_t,a_t):=Q(s_t,a_t) + \alpha\big[r_t + \gamma \:\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t) \big].
+Q(s_t,a_t):=Q(s_t,a_t) + \alpha\big[r_t + \gamma \:\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a) - Q(s_t, a_t) \big].
 \label{eq:q_learning}
 \end{equation}
 The key component of Q-Learning's update rule is the $\max$ operator, which characterizes its TD-error and that is necessary for constructing the TD-target. Since there are as many Q values as there are actions available to the agent, one must choose which Q value to use as a reference when updating the value of the state-action pair that the agent is currently visiting. The $\max$ operator simply chooses the state-action pair with the largest Q value, a simple design choice that has the appealing property of making Q-Learning converge to $Q^{*}(s, a)$ with probability 1 as long as all state-action pairs are visited infinitely often. Interestingly, this guarantee holds even if the agent follows a random policy. The $\max$ operator also defines Q-Learning as an \textcolor{RoyalBlue}{off-policy} learning algorithm, since the Q values chosen for the construction of the TD-target might not correspond to the ones that are associated with the state that the agent will visit after having updated its $Q$ function.
@@ -243,15 +243,15 @@ The most straightforward type of function approximator one can use is a linear f
 \end{equation}
 Given a trajectory $\langle s_t,a_t,r_t,s_{t+1}\rangle$, the Q-Learning algorithm presented in Eq. \ref{eq:q_learning} can now be used for updating the parameters $\theta^a_i$ for all $i$ with the following update rule:
 \begin{equation}
-	\theta^{a_t}_{i} := \theta^{a_t}_{i} + \alpha(r_t +\gamma\:\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t)) x_i(s_t).
+	\theta^{a_t}_{i} := \theta^{a_t}_{i} + \alpha(r_t +\gamma\:\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a) - Q(s_t, a_t)) x_i(s_t).
 	\label{eq:q_learning_fa}
 \end{equation}
 We can observe that this update rule modifies the parameter vectors $\mathbold{\theta}^a$ by minimizing the mean squared error loss between a given state-action tuple and Q-Learning's TD-target since  
 \begin{equation}
 \begin{split}
-	& \mathcal{L}(\theta) = \frac{1}{2}\big(y_t - Q(s_t, a_t)\big)^2 \mbox{ with } y_t = r_t +\gamma\:\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) \\ 
+	& \mathcal{L}(\theta) = \frac{1}{2}\big(y_t - Q(s_t, a_t)\big)^2 \mbox{ with } y_t = r_t +\gamma\:\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a) \\ 
 	& \frac{\partial\mathcal{L}}{\partial \theta_{i,a_t}}=-\big(y_t - Q(s_t, a_t)\big) x_i(s_t)  \\ 
- 	& \theta^{a_t}_{i} := \theta^{a_t}_{i} + \alpha(r_t +\gamma\:\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a_t) - Q(s_t, a_t)) x_i(s_t).
+ 	& \theta^{a_t}_{i} := \theta^{a_t}_{i} + \alpha(r_t +\gamma\:\underset{a\in \mathcal{A}}{\max} Q(s_{t+1},a) - Q(s_t, a_t)) x_i(s_t).
 \end{split}
 \end{equation}
 
